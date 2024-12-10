@@ -31,29 +31,24 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     async void StartGame(GameMode mode)
     {
+        // Create the Fusion runner and let it know that we will be providing user input
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;
 
-        var sceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
-
-        // Create a SceneRef from the current scene's build index
-        var currentScene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-
-        // Create a NetworkSceneInfo and add the current scene
+        // Create a NetworkSceneInfo from the current scene
+        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
         var sceneInfo = new NetworkSceneInfo();
-        sceneInfo.AddSceneRef(currentScene, LoadSceneMode.Additive);
+        sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
 
+        // Start or join (depends on gamemode) a session with a specific name
         await _runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
             SessionName = "TestRoom",
-            Scene = sceneInfo,  // Use the NetworkSceneInfo here
-            SceneManager = sceneManager
+            Scene = sceneInfo,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }
-
-
-
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
@@ -130,6 +125,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 {
                     if (input.spawnUnit)
                     {
+                        Debug.Log($"Attempting to spawn unit for player {player} at position {input.mousePosition}");
                         SpawnUnit(player, input.mousePosition);
                     }
                 }
@@ -139,7 +135,16 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private void SpawnUnit(PlayerRef player, Vector3 position)
     {
+        Debug.Log($"Spawning unit for player {player} at position {position}");
         NetworkObject unitObject = _runner.Spawn(_unitPrefab, position, Quaternion.identity, player);
-        _spawnedUnits[player].Add(unitObject);
+        if (unitObject != null)
+        {
+            _spawnedUnits[player].Add(unitObject);
+            Debug.Log($"Unit spawned successfully: {unitObject.name}");
+        }
+        else
+        {
+            Debug.LogError("Failed to spawn unit");
+        }
     }
 }
