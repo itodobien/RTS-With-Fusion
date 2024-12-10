@@ -1,14 +1,17 @@
-using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class UnitSelectedVisual : MonoBehaviour
+namespace Unit_Activities
 {
-    [SerializeField] private Unit unit;
-    
-    private MeshRenderer meshRenderer;
-
-    private void Awake()
+    public class UnitSelectedVisual : MonoBehaviour
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        [SerializeField] private Unit unit;
+    
+        private MeshRenderer _meshRenderer;
+
+        private void Awake()
+        {
+            _meshRenderer = GetComponent<MeshRenderer>();
+        }
     }
 }

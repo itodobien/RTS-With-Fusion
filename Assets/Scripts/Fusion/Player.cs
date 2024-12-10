@@ -1,20 +1,21 @@
-using Fusion;
-
-public class Player : NetworkBehaviour
+namespace Fusion
 {
-    private NetworkCharacterController _characterController;
-
-    private void Awake()
+    public class Player : NetworkBehaviour
     {
-        _characterController = GetComponent<NetworkCharacterController>();
-    }
+        private NetworkCharacterController _characterController;
 
-    public override void FixedUpdateNetwork()
-    {
-        if (GetInput(out NetworkInputData data))
+        private void Awake()
         {
-            data.direction.Normalize();
-            _characterController.Move(5*data.direction*Runner.DeltaTime);
+            _characterController = GetComponent<NetworkCharacterController>();
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (GetInput(out NetworkInputData data))
+            {
+                data.direction.Normalize();
+                _characterController.Move(5*data.direction*Runner.DeltaTime);
+            }
         }
     }
 }

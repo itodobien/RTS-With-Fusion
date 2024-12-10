@@ -1,9 +1,11 @@
-using Fusion;
 using UnityEngine;
 
-public struct NetworkInputData : INetworkInput
+namespace Fusion
 {
-    public Vector3 direction;
-    public Vector3 mousePosition;
-    public bool spawnUnit;
+    public struct NetworkInputData : INetworkInput
+    {
+        public Vector3 direction;
+        public Vector3 mousePosition;
+        public bool spawnUnit;
+    }
 }

@@ -1,46 +1,49 @@
 using Fusion;
 using UnityEngine;
 
-public class UnitActionSystem : NetworkBehaviour
+namespace Unit_Activities
 {
-    [Networked] private NetworkBool IsUnitSelected { get; set; }
-    [Networked] private NetworkId SelectedUnitId { get; set; }
-
-    public override void FixedUpdateNetwork()
+    public class UnitActionSystem : NetworkBehaviour
     {
-        if (GetInput(out NetworkInputData data))
+        [Networked] private NetworkBool IsUnitSelected { get; set; }
+        [Networked] private NetworkId SelectedUnitId { get; set; }
+
+        public override void FixedUpdateNetwork()
         {
-            if (!data.spawnUnit && data.mousePosition != Vector3.zero)
+            if (GetInput(out NetworkInputData data))
             {
-                HandleUnitAction(data.mousePosition);
+                if (!data.spawnUnit && data.mousePosition != Vector3.zero)
+                {
+                    HandleUnitAction(data.mousePosition);
+                }
             }
         }
-    }
 
-    private void HandleUnitAction(Vector3 targetPosition)
-    {
-        if (IsUnitSelected)
+        private void HandleUnitAction(Vector3 targetPosition)
         {
-            // Use FindObject instead of TryGetNetworkedObject
-            NetworkObject unitObject = Runner.FindObject(SelectedUnitId);
-            if (unitObject != null)
+            if (IsUnitSelected)
             {
-                Unit selectedUnit = unitObject.GetComponent<Unit>();
-                selectedUnit.RPC_SetTargetPosition(targetPosition);
+                // Use FindObject instead of TryGetNetworkedObject
+                NetworkObject unitObject = Runner.FindObject(SelectedUnitId);
+                if (unitObject != null)
+                {
+                    Unit selectedUnit = unitObject.GetComponent<Unit>();
+                    selectedUnit.RPC_SetTargetPosition(targetPosition);
+                }
             }
         }
-    }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_SelectUnit(NetworkId unitId)
-    {
-        SelectedUnitId = unitId;
-        IsUnitSelected = true;
-    }
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SelectUnit(NetworkId unitId)
+        {
+            SelectedUnitId = unitId;
+            IsUnitSelected = true;
+        }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_DeselectUnit()
-    {
-        IsUnitSelected = false;
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_DeselectUnit()
+        {
+            IsUnitSelected = false;
+        }
     }
 }
