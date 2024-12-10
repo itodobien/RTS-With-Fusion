@@ -495,7 +495,6 @@ GameObject:
   m_Component:
   - component: {fileID: 485741465}
   - component: {fileID: 485741464}
-  - component: {fileID: 485741466}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -515,10 +514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129384122ef82644cbf67907d6eae3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab:
+  playerPrefab:
     RawGuidValue: 1126181a543cc9347b54e882e60ab2f0
-  _unitPrefab:
-    RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
 --- !u!4 &485741465
 Transform:
   m_ObjectHideFlags: 0
@@ -534,23 +531,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &485741466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485741463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3161501139
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
 --- !u!1 &548003955
 GameObject:
   m_ObjectHideFlags: 0

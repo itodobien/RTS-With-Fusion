@@ -106,9 +106,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -9.81
   jumpImpulse: 5
-  acceleration: 10
+  acceleration: 22.4
   braking: 10
-  maxSpeed: 4
+  maxSpeed: 10
   rotationSpeed: 15
 --- !u!1 &4812821657662403433
 GameObject:

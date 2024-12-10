@@ -4,16 +4,13 @@ using Fusion.Sockets;
 using Unit_Activities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace Fusion
 {
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
-        [FormerlySerializedAs("_playerPrefab")] [SerializeField] private NetworkPrefabRef playerPrefab;
-        [FormerlySerializedAs("_unitPrefab")] [SerializeField] private NetworkPrefabRef unitPrefab;
+        [SerializeField] private NetworkPrefabRef playerPrefab;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-        private Dictionary<PlayerRef, List<NetworkObject>> _spawnedUnits = new Dictionary<PlayerRef, List<NetworkObject>>();
     
         private NetworkRunner _runner;
 
@@ -37,6 +34,7 @@ namespace Fusion
             // Create the Fusion _runner and let it know that we will be providing user input
             _runner = gameObject.AddComponent<NetworkRunner>();
             _runner.ProvideInput = true;
+            _runner.AddCallbacks(this);
 
             // Create a NetworkSceneInfo from the current scene
             var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
@@ -62,7 +60,6 @@ namespace Fusion
                 Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
-                _spawnedUnits.Add(player, new List<NetworkObject>());
                 Debug.Log($"Player {player} added to _spawnedCharacters");
             }
         }
@@ -72,15 +69,6 @@ namespace Fusion
             {
                 runner.Despawn(networkObject);
                 _spawnedCharacters.Remove(player);
-            }
-        
-            if (_spawnedUnits.TryGetValue(player, out List<NetworkObject> units))
-            {
-                foreach (var unit in units)
-                {
-                    runner.Despawn(unit);
-                }
-                _spawnedUnits.Remove(player);
             }
         }
 
@@ -92,11 +80,13 @@ namespace Fusion
             if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;
             if (Input.GetKey(KeyCode.A)) data.direction += Vector3.left;
             if (Input.GetKey(KeyCode.D)) data.direction += Vector3.right;
+            if (Input.GetKey(KeyCode.U)) data.spawnUnit = true;
         
             data.mousePosition = MouseWorldPosition.GetMouseWorldPosition();
-            data.spawnUnit = Input.GetKeyDown(KeyCode.U);
-
             input.Set(data);
+            
+            //Debug.Log(data.mousePosition);
+            //Debug.Log(data.spawnUnit);
         }
     
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -115,52 +105,6 @@ namespace Fusion
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
         public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-
-        public void OnSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-
-        public void FixedUpdateNetwork()
-        {
-            Debug.Log("FixedUpdateNetwork called");
-            if (_runner != null && _runner.IsServer)
-            {
-                Debug.Log("Runner is server");
-                foreach (var kvp in _spawnedCharacters)
-                {
-                    var player = kvp.Key;
-                    var playerObject = kvp.Value;
-
-                    Debug.Log($"Checking input for player {player}");
-                    if (_runner.TryGetInputForPlayer(player, out NetworkInputData input))
-                    {
-                        Debug.Log($"Got input for player {player}, spawnUnit: {input.spawnUnit}");
-                        if (input.spawnUnit)
-                        {
-                            Debug.Log($"Attempting to spawn unit for player {player} at position {input.mousePosition}");
-                            SpawnUnit(player, input.mousePosition);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("Runner is null or not server");
-            }
-        }
-
-
-        private void SpawnUnit(PlayerRef player, Vector3 position)
-        {
-            Debug.Log($"Spawning unit for player {player} at position {position}");
-            NetworkObject unitObject = _runner.Spawn(unitPrefab, position, Quaternion.identity, player);
-            if (unitObject != null)
-            {
-                _spawnedUnits[player].Add(unitObject);
-                Debug.Log($"Unit spawned successfully: {unitObject.name}");
-            }
-            else
-            {
-                Debug.LogError("Failed to spawn unit");
-            }
-        }
+        
     }
 }

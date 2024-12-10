@@ -28,7 +28,7 @@ namespace Unit_Activities
             IsMoving = true;
         }
 
-        private void MoveUnit()
+        public void MoveUnit()
         {
             if (Vector3.Distance(transform.position, TargetPosition) > stopDistance)
             {
