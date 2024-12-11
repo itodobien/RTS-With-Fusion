@@ -1,10 +1,14 @@
 using Fusion;
 using UnityEngine;
 
+
 namespace Unit_Activities
 {
     public class Unit : NetworkBehaviour
     {
+        
+        private BaseAction[] baseActionsArray;
+        
         [Networked] private Vector3 TargetPosition { get; set; }
         private NetworkCharacterController _unitCharacterController;
         
@@ -16,6 +20,7 @@ namespace Unit_Activities
         private void Awake()
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
+            baseActionsArray = GetComponents<BaseAction>();
         }
 
         public override void Spawned()
@@ -58,6 +63,11 @@ namespace Unit_Activities
         public void RPC_SetTargetPosition(Vector3 newTargetPosition)
         {
             TargetPosition = newTargetPosition;
+        }
+
+        public BaseAction[] GetBaseActionArray()
+        {
+            return baseActionsArray;
         }
     }
 }
