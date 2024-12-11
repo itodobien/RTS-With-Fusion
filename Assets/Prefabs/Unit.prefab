@@ -111,7 +111,6 @@ GameObject:
   - component: {fileID: 7887037735244742319}
   - component: {fileID: 7222754836991821725}
   - component: {fileID: 7495006153523953547}
-  - component: {fileID: 1920362813987248815}
   - component: {fileID: 6472570155130852145}
   - component: {fileID: 7366638985930796108}
   - component: {fileID: -2324179521120485681}
@@ -174,27 +173,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7222754836991821725}
   - {fileID: -2324179521120485681}
---- !u!65 &1920362813987248815
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8381045223856706878}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.42413282, y: 1.7739877, z: 1}
-  m_Center: {x: 0.012217045, y: 0.8910287, z: 0}
 --- !u!114 &6472570155130852145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,13 +204,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.75
+  m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &-2324179521120485681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +226,7 @@ MonoBehaviour:
   gravity: -9.81
   jumpImpulse: 5
   acceleration: 10
-  braking: 10
+  braking: 20
   maxSpeed: 5
   rotationSpeed: 15
 --- !u!1001 &2920823552252434870

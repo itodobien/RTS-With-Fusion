@@ -40,17 +40,15 @@ namespace Fusion
 
         async void StartGame(GameMode mode)
         {
-            // Create the Fusion _runner and let it know that we will be providing user input
+            
             _runner = gameObject.AddComponent<NetworkRunner>();
             _runner.ProvideInput = true;
             _runner.AddCallbacks(this);
-
-            // Create a NetworkSceneInfo from the current scene
+            
             var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
             var sceneInfo = new NetworkSceneInfo();
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-
-            // Start or join (depends on gamemode) a session with a specific name
+            
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = mode,

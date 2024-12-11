@@ -27,12 +27,18 @@ namespace Unit_Activities
         {
             if (HasStateAuthority)
             {
-                if (Vector3.Distance(transform.position, TargetPosition) > stopDistance)
+                Vector3 toTarget = TargetPosition - transform.position;
+                toTarget.y = 0; // Ignore vertical distance
+
+                if (toTarget.magnitude > stopDistance)
                 {
-                    Vector3 moveDirection = (TargetPosition - transform.position).normalized;
-                    _unitCharacterController.Move(moveDirection * (Runner.DeltaTime * moveSpeed));
-                    transform.forward = Vector3.Lerp(transform.forward, moveDirection, Runner.DeltaTime * rotateSpeed);
-                
+                    Vector3 moveDirection = toTarget.normalized;
+                    _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
+
+                    // Smooth rotation
+                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
+
                     if (playerAnimator != null)
                     {
                         playerAnimator.SetBool("IsWalking", true);

@@ -12,7 +12,7 @@ namespace Unit_Activities
         {
             if (TryHandleUnitSelection()) return;
 
-            if (Input.GetMouseButtonDown(1) && selectedUnit != null) // Right mouse button
+            if (Input.GetMouseButtonDown(1) && selectedUnit != null) 
             {
                 Vector3 targetPosition = MouseWorldPosition.GetMouseWorldPosition();
                 selectedUnit.RPC_SetTargetPosition(targetPosition);
@@ -21,7 +21,7 @@ namespace Unit_Activities
 
         public bool TryHandleUnitSelection()
         {
-            if (Input.GetMouseButtonDown(0)) // Left mouse button
+            if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
@@ -32,6 +32,7 @@ namespace Unit_Activities
                         return true;
                     }
                 }
+                selectedUnit = null;
             }
             return false;
         }

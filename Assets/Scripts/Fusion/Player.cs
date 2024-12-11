@@ -26,8 +26,7 @@ namespace Fusion
                 if (data.spawnUnit && delay.ExpiredOrNotRunning(Runner))
                 {
                     delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
-                    Vector3 spawnPosition = transform.position + transform.forward * 2f;
-                    spawnPosition.y = 1f; // Ensure the unit spawns at ground level
+                    Vector3 spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
                     NetworkObject unitObject = Runner.Spawn(_prefabUnit, spawnPosition, Quaternion.identity, Object.InputAuthority);
                     if (unitObject.TryGetComponent(out Unit unit))
                     {
