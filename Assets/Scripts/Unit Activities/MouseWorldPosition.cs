@@ -13,7 +13,7 @@ namespace Unit_Activities
 
         void Update()
         {
-            transform.position = MouseWorldPosition.GetMouseWorldPosition();
+            transform.position = GetMouseWorldPosition();
         }
         public static Vector3 GetMouseWorldPosition()
         {

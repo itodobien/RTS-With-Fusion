@@ -6,7 +6,7 @@ namespace Fusion
     public class Player : NetworkBehaviour
     {
         private NetworkCharacterController _characterController;
-        [SerializeField] private Unit _prefabUnit;
+        [SerializeField] private NetworkPrefabRef _prefabUnit;
         [SerializeField] private float spawnDelay = 0.5f;
         
         [Networked] private TickTimer delay { get; set; }
@@ -22,12 +22,18 @@ namespace Fusion
             {
                 data.direction.Normalize();
                 _characterController.Move(5*data.direction*Runner.DeltaTime);
-            }
 
-            if (data.spawnUnit && delay.ExpiredOrNotRunning(Runner))
-            {
-                delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
-                Runner.Spawn(_prefabUnit, MouseWorldPosition.GetMouseWorldPosition());
+                if (data.spawnUnit && delay.ExpiredOrNotRunning(Runner))
+                {
+                    delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
+                    Vector3 spawnPosition = transform.position + transform.forward * 2f;
+                    spawnPosition.y = 1f; // Ensure the unit spawns at ground level
+                    NetworkObject unitObject = Runner.Spawn(_prefabUnit, spawnPosition, Quaternion.identity, Object.InputAuthority);
+                    if (unitObject.TryGetComponent(out Unit unit))
+                    {
+                        unit.RPC_SetTargetPosition(spawnPosition);
+                    }
+                }
             }
         }
     }

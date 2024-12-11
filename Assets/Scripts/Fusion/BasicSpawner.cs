@@ -13,6 +13,15 @@ namespace Fusion
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     
         private NetworkRunner _runner;
+        
+        private bool _mouseButton0;
+        private bool _mouseButton1;
+        
+        private void Update()
+        {
+            _mouseButton0 |= Input.GetMouseButton(0);
+            _mouseButton1 |= Input.GetMouseButton(1);
+        }
 
         private void OnGUI()
         {
@@ -49,18 +58,15 @@ namespace Fusion
                 Scene = sceneInfo,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
-
-            Debug.Log($"Game started in {mode} mode");
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            Debug.Log($"Player joined: {player}");
+            
             if (runner.IsServer)
             {
                 Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
-                Debug.Log($"Player {player} added to _spawnedCharacters");
             }
         }
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -71,7 +77,6 @@ namespace Fusion
                 _spawnedCharacters.Remove(player);
             }
         }
-
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
             var data = new NetworkInputData();
@@ -81,12 +86,15 @@ namespace Fusion
             if (Input.GetKey(KeyCode.A)) data.direction += Vector3.left;
             if (Input.GetKey(KeyCode.D)) data.direction += Vector3.right;
             if (Input.GetKey(KeyCode.U)) data.spawnUnit = true;
+
+            data.buttons.Set(NetworkInputData.MOUSEBUTTON0, _mouseButton0);
+            _mouseButton0 = false;
+            data.buttons.Set(NetworkInputData.MOUSEBUTTON1, _mouseButton1);
+            _mouseButton1 = false;
+            data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
         
             data.mousePosition = MouseWorldPosition.GetMouseWorldPosition();
             input.Set(data);
-            
-            //Debug.Log(data.mousePosition);
-            //Debug.Log(data.spawnUnit);
         }
     
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
