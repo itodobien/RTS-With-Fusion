@@ -10,7 +10,7 @@ namespace Fusion
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
-        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
         private NetworkRunner _runner;
         
@@ -90,10 +90,11 @@ namespace Fusion
             data.buttons.Set(NetworkInputData.MOUSEBUTTON1, _mouseButton1);
             _mouseButton1 = false;
             data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
-        
             data.mousePosition = MouseWorldPosition.GetMouseWorldPosition();
+
             input.Set(data);
         }
+
     
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

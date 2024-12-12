@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 6472570155130852145}
   - component: {fileID: 7366638985930796108}
   - component: {fileID: -2324179521120485681}
+  - component: {fileID: 1826299695959393122}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -229,6 +230,20 @@ MonoBehaviour:
   braking: 20
   maxSpeed: 5
   rotationSpeed: 15
+--- !u!114 &1826299695959393122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8381045223856706878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guid:
+    RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
 --- !u!1001 &2920823552252434870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -496,7 +511,7 @@ PrefabInstance:
     - target: {fileID: 137720934533220950, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 6ba9f4735549d5b44b46a1e2a07ff751, type: 2}
+      objectReference: {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1439959150613198, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}

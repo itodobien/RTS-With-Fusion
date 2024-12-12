@@ -17,6 +17,8 @@ namespace Unit_Activities
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
         
+        private bool isSelected;
+        
         private void Awake()
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
@@ -58,12 +60,20 @@ namespace Unit_Activities
                 }
             }
         }
+        
+        public void SetSelected(bool isSelected)
+        {
+            this.isSelected = isSelected;
+        }
+        
+        public bool IsSelected => isSelected;
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RPC_SetTargetPosition(Vector3 newTargetPosition)
         {
             TargetPosition = newTargetPosition;
         }
+
 
         public BaseAction[] GetBaseActionArray()
         {
