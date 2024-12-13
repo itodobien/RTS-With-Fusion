@@ -10,6 +10,8 @@ namespace Fusion
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
+        [SerializeField] private NetworkPrefabRef unitActionSystemPrefab;
+
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
         private NetworkRunner _runner;
@@ -17,12 +19,11 @@ namespace Fusion
         private bool _mouseButton0;
         private bool _mouseButton1;
         
-        private void Update()
+        private void Awake()
         {
-            _mouseButton0 |= Input.GetMouseButton(0);
-            _mouseButton1 |= Input.GetMouseButton(1);
+            _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
         }
-
+        
         private void OnGUI()
         {
             if (_runner == null)
@@ -37,10 +38,8 @@ namespace Fusion
                 }
             }
         }
-
         async void StartGame(GameMode mode)
         {
-            
             _runner = gameObject.AddComponent<NetworkRunner>();
             _runner.ProvideInput = true;
             _runner.AddCallbacks(this);
@@ -59,12 +58,17 @@ namespace Fusion
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            
             if (runner.IsServer)
             {
                 Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
+
+                if (player == runner.LocalPlayer)
+                {
+                    NetworkObject unitActionSystemObject = runner.Spawn(unitActionSystemPrefab, inputAuthority: player);
+                    Debug.Log($"Spawned UnitActionSystem for local player with input authority: {player}");
+                }
             }
         }
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -77,24 +81,35 @@ namespace Fusion
         }
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
+            Debug.Log("[OnInput] Called");
             var data = new NetworkInputData();
+      
+            if (Input.GetMouseButton(1))
+            {
+                data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
+                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
+                Debug.Log($"[OnInput] Right-click detected. Target Position: {data.targetPosition}");
+            } 
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
             if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;
             if (Input.GetKey(KeyCode.A)) data.direction += Vector3.left;
             if (Input.GetKey(KeyCode.D)) data.direction += Vector3.right;
             if (Input.GetKey(KeyCode.U)) data.spawnUnit = true;
+            
+            data.buttons.Set(NetworkInputData.MOUSEBUTTON1, Input.GetMouseButton(1));
 
-            data.buttons.Set(NetworkInputData.MOUSEBUTTON0, _mouseButton0);
-            _mouseButton0 = false;
-            data.buttons.Set(NetworkInputData.MOUSEBUTTON1, _mouseButton1);
-            _mouseButton1 = false;
-            data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
-            data.mousePosition = MouseWorldPosition.GetMouseWorldPosition();
+            if (Input.GetMouseButton(1)) 
+            {
+                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
+            }
+            
+            /*Debug.Log($"OnInput called: MOUSEBUTTON1 = {Input.GetMouseButton(1)}");
+            Debug.Log($"[OnInput] targetPosition: {data.targetPosition}");*/
+            Debug.Log($"Input set in BasicSpawner: MOUSEBUTTON1 = {data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1)}, targetPosition = {data.targetPosition}");
 
             input.Set(data);
         }
-
     
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

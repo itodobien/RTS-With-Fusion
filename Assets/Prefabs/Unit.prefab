@@ -114,7 +114,6 @@ GameObject:
   - component: {fileID: 6472570155130852145}
   - component: {fileID: 7366638985930796108}
   - component: {fileID: -2324179521120485681}
-  - component: {fileID: 1826299695959393122}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -230,20 +229,6 @@ MonoBehaviour:
   braking: 20
   maxSpeed: 5
   rotationSpeed: 15
---- !u!114 &1826299695959393122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8381045223856706878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
 --- !u!1001 &2920823552252434870
 PrefabInstance:
   m_ObjectHideFlags: 0

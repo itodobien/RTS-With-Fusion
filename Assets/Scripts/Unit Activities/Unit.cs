@@ -1,12 +1,10 @@
 using Fusion;
 using UnityEngine;
 
-
 namespace Unit_Activities
 {
     public class Unit : NetworkBehaviour
     {
-        
         private BaseAction[] baseActionsArray;
         
         [Networked] private Vector3 TargetPosition { get; set; }
@@ -34,29 +32,39 @@ namespace Unit_Activities
         {
             if (HasStateAuthority)
             {
-                Vector3 toTarget = TargetPosition - transform.position;
-                toTarget.y = 0; // Ignore vertical distance
+                HandleMovement();
+            }
+        }
+        private void HandleMovement()
+        {
+            Vector3 toTarget = TargetPosition - transform.position;
+            toTarget.y = 0;
 
-                if (toTarget.magnitude > stopDistance)
+            float distance = toTarget.magnitude;
+            Debug.Log($"[Unit] Distance to Target: {distance} StopDistance: {stopDistance}");
+
+            if (distance > stopDistance)
+            {
+                Vector3 moveDirection = toTarget.normalized;
+                Debug.Log($"[Unit] Move Direction: {moveDirection}");
+        
+                _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
+        
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
+
+                if (playerAnimator != null)
                 {
-                    Vector3 moveDirection = toTarget.normalized;
-                    _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
-
-                    // Smooth rotation
-                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
-
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool("IsWalking", true);
-                    }
+                    Debug.Log("[Unit] Setting IsWalking = true");
+                    playerAnimator.SetBool("IsWalking", true);
                 }
-                else
+            }
+            else
+            {
+                if (playerAnimator != null)
                 {
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool("IsWalking", false);
-                    }
+                    Debug.Log("[Unit] Setting IsWalking = false");
+                    playerAnimator.SetBool("IsWalking", false);
                 }
             }
         }
@@ -71,9 +79,9 @@ namespace Unit_Activities
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RPC_SetTargetPosition(Vector3 newTargetPosition)
         {
+            Debug.Log($"[Unit] RPC_SetTargetPosition received on {name}, newTargetPosition: {newTargetPosition}");
             TargetPosition = newTargetPosition;
         }
-
 
         public BaseAction[] GetBaseActionArray()
         {

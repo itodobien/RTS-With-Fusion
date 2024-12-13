@@ -112,7 +112,6 @@ namespace Unit_Activities
             }
             SetSelectedUnits(new List<Unit>());
         }
-
         private List<Unit> GetUnitsInSelectionBox()
         {
             List<Unit> unitsInBox = new List<Unit>();
@@ -140,9 +139,21 @@ namespace Unit_Activities
 
         private void SetSelectedUnits(List<Unit> units)
         {
+            foreach (var unit in selectedUnits)
+            {
+                unit.SetSelected(false); 
+            }
+
             selectedUnits.Clear();
             selectedUnits.AddRange(units);
+           
+            foreach (var unit in selectedUnits)
+            {
+                unit.SetSelected(true);
+            }
+
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+            Debug.Log("Selected Units: " + selectedUnits.Count);
         }
 
         public List<Unit> GetSelectedUnits()

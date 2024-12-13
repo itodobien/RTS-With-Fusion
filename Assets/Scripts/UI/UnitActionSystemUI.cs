@@ -12,19 +12,14 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private IEnumerator Start()
     {
-        // Wait until UnitSelectionManager.Instance is available
+
         yield return new WaitUntil(() => UnitSelectionManager.Instance != null);
-
-        // Subscribe to the OnSelectedUnitsChanged event
         UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
-
-        // Initialize action buttons
         CreateUnitActionButtons();
     }
 
     private void OnDestroy()
     {
-        // Unsubscribe from the event to prevent memory leaks
         if (UnitSelectionManager.Instance != null)
         {
             UnitSelectionManager.Instance.OnSelectedUnitsChanged -= UnitSelectionManager_OnSelectedUnitsChanged;
@@ -38,21 +33,18 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private void CreateUnitActionButtons()
     {
-        // Ensure references are valid
         if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null)
         {
             Debug.LogError("Missing references in UnitActionSystemUI");
             return;
         }
 
-        // Clear existing buttons
         foreach (GameObject button in actionButtons)
         {
             Destroy(button);
         }
         actionButtons.Clear();
 
-        // Get selected units
         var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
         if (selectedUnits.Count > 0)
         {
