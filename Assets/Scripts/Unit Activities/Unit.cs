@@ -30,11 +30,14 @@ namespace Unit_Activities
 
         public override void FixedUpdateNetwork()
         {
-            if (HasStateAuthority)
+            // Only the player with input authority processes movement
+            if (HasStateAuthority && Object.HasInputAuthority)
             {
                 HandleMovement();
             }
         }
+
+
         private void HandleMovement()
         {
             Vector3 toTarget = TargetPosition - transform.position;
