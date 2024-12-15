@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
 namespace Unit_Activities
@@ -7,11 +9,11 @@ namespace Unit_Activities
     public class UnitSelectionManager : MonoBehaviour
     {
         public static UnitSelectionManager Instance { get; private set; }
-
         public event EventHandler OnSelectedUnitsChanged;
 
         [SerializeField] private RectTransform selectionBoxVisual;
         [SerializeField] private LayerMask unitLayerMask;
+        private PlayerRef localPlayerRef;
 
         private Vector2 selectionBoxStart;
         private Vector2 selectionBoxEnd;
@@ -36,6 +38,17 @@ namespace Unit_Activities
             isMouseDown = false;
             isMouseDragging = false;
             selectionBoxVisual.gameObject.SetActive(false);
+            StartCoroutine(WaitForNetworkRunner());
+        }
+        private IEnumerator WaitForNetworkRunner()
+        {
+            while (FindObjectOfType<NetworkRunner>() == null)
+            {
+                yield return null;
+            }
+            var networkRunner = FindObjectOfType<NetworkRunner>();
+            localPlayerRef = networkRunner.LocalPlayer;
+            Debug.Log($"NetworkRunner found. Local PlayerRef: {localPlayerRef}");
         }
 
         private void Update()
@@ -82,7 +95,6 @@ namespace Unit_Activities
                 }
             }
         }
-
         private void UpdateSelectionBoxVisual()
         {
             selectionBoxEnd = Input.mousePosition;
@@ -102,16 +114,21 @@ namespace Unit_Activities
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            Debug.Log($"Attempting selection at screen position: {mousePosition}");
             if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
             {
+                Debug.Log($"Raycast hit: {raycastHit.transform.name}");
                 if (raycastHit.transform.TryGetComponent(out Unit unit))
                 {
+                    Debug.Log($"Unit found: {unit.name}, OwnerPlayerRef: {unit.OwnerPlayerRef}");
                     SetSelectedUnits(new List<Unit> { unit });
                     return;
                 }
             }
+            Debug.Log("No unit selected");
             SetSelectedUnits(new List<Unit>());
         }
+
         private List<Unit> GetUnitsInSelectionBox()
         {
             List<Unit> unitsInBox = new List<Unit>();
@@ -119,10 +136,13 @@ namespace Unit_Activities
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                Vector3 unitScreenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
-                if (selectionRect.Contains(unitScreenPos))
+                if (unit.OwnerPlayerRef == localPlayerRef)
                 {
-                    unitsInBox.Add(unit);
+                    Vector3 unitScreenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
+                    if (selectionRect.Contains(unitScreenPos))
+                    {
+                        unitsInBox.Add(unit);
+                    }
                 }
             }
             return unitsInBox;

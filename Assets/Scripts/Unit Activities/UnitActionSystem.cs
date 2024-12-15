@@ -19,48 +19,36 @@ namespace Unit_Activities
         }
         public override void FixedUpdateNetwork()
         {
-            if (!Object.HasInputAuthority)
+            if (!Object.HasInputAuthority) 
             {
-                Debug.Log($"[UnitActionSystem] No input authority. Skipping input processing.");
                 return;
             }
 
-            Debug.Log($"[UnitActionSystem] HasStateAuthority: {HasStateAuthority}, InputAuthority: {Object.InputAuthority}");
-
             if (GetInput(out NetworkInputData data))
             {
-                Debug.Log($"[UnitActionSystem] Input received: MOUSEBUTTON1 = {data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1)}, targetPosition = {data.targetPosition}");
-
                 if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                 {
                     Vector3 targetPosition = data.targetPosition;
                     var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits();
 
+                    Debug.Log($"UnitActionSystem: Target position: {targetPosition}, Selected units: {selectedUnits?.Count ?? 0}");
+
                     if (selectedUnits != null && selectedUnits.Count > 0)
                     {
-                        Debug.Log($"[UnitActionSystem] Right-click detected. targetPosition: {targetPosition}, selectedUnits: {selectedUnits.Count}");
-
                         foreach (Unit unit in selectedUnits)
                         {
-                            if (unit != null && unit.Object != null && unit.Object.HasStateAuthority)
+                            if (unit != null && unit.Object != null && unit.Object.HasInputAuthority)
                             {
                                 unit.RPC_SetTargetPosition(targetPosition);
+                                Debug.Log($"UnitActionSystem: Sending move command to unit: {unit.name}");
                             }
                             else
                             {
-                                Debug.LogWarning($"[UnitActionSystem] Unable to set target position for unit. HasStateAuthority: {unit?.Object?.HasStateAuthority}");
+                                Debug.Log($"UnitActionSystem: Cannot move unit {unit.name}, no input authority");
                             }
                         }
                     }
-                    else
-                    {
-                        Debug.Log("[UnitActionSystem] Right-click detected, but no units are selected.");
-                    }
                 }
-            }
-            else
-            {
-                Debug.Log("[UnitActionSystem] No input received this frame.");
             }
         }
 

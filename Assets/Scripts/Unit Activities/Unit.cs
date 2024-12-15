@@ -8,6 +8,8 @@ namespace Unit_Activities
         private BaseAction[] baseActionsArray;
         
         [Networked] private Vector3 TargetPosition { get; set; }
+        [Networked] public PlayerRef OwnerPlayerRef { get; set; }
+        
         private NetworkCharacterController _unitCharacterController;
         
         [SerializeField] private float stopDistance = 0.1f;
@@ -26,17 +28,16 @@ namespace Unit_Activities
         public override void Spawned()
         {
             TargetPosition = transform.position;
+            OwnerPlayerRef = Object.InputAuthority;
         }
 
         public override void FixedUpdateNetwork()
         {
-            // Only the player with input authority processes movement
-            if (HasStateAuthority && Object.HasInputAuthority)
+            if (HasStateAuthority)
             {
                 HandleMovement();
             }
         }
-
 
         private void HandleMovement()
         {
@@ -44,21 +45,21 @@ namespace Unit_Activities
             toTarget.y = 0;
 
             float distance = toTarget.magnitude;
-            Debug.Log($"[Unit] Distance to Target: {distance} StopDistance: {stopDistance}");
+            Debug.Log($"[Unit {name}] Distance to Target: {distance} StopDistance: {stopDistance}, TargetPosition: {TargetPosition}, CurrentPosition: {transform.position}");
 
             if (distance > stopDistance)
             {
                 Vector3 moveDirection = toTarget.normalized;
-                Debug.Log($"[Unit] Move Direction: {moveDirection}");
-        
+                Debug.Log($"[Unit {name}] Move Direction: {moveDirection}");
+
                 _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
-        
+
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
 
                 if (playerAnimator != null)
                 {
-                    Debug.Log("[Unit] Setting IsWalking = true");
+                    Debug.Log($"[Unit {name}] Setting IsWalking = true");
                     playerAnimator.SetBool("IsWalking", true);
                 }
             }
@@ -66,7 +67,7 @@ namespace Unit_Activities
             {
                 if (playerAnimator != null)
                 {
-                    Debug.Log("[Unit] Setting IsWalking = false");
+                    Debug.Log($"[Unit {name}] Setting IsWalking = false");
                     playerAnimator.SetBool("IsWalking", false);
                 }
             }
@@ -79,11 +80,27 @@ namespace Unit_Activities
         
         public bool IsSelected => isSelected;
 
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RPC_SetTargetPosition(Vector3 newTargetPosition)
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetTargetPosition(Vector3 newTargetPosition, RpcInfo info = default)
         {
-            Debug.Log($"[Unit] RPC_SetTargetPosition received on {name}, newTargetPosition: {newTargetPosition}");
-            TargetPosition = newTargetPosition;
+            Debug.Log($"[Unit {name}] RPC_SetTargetPosition received. NewTargetPosition: {newTargetPosition}, InputAuthority: {Object.InputAuthority}, OwnerPlayerRef: {OwnerPlayerRef}");
+            if (info.IsInvokeLocal || Runner.IsServer)
+            {
+                TargetPosition = newTargetPosition;
+                Debug.Log($"[Unit {name}] Target position set to {TargetPosition}");
+            }
+            else
+            {
+                Debug.Log($"[Unit {name}] Rejected target position change due to mismatched authority");
+            }
+        }
+
+        public void SetTargetPositionLocal(Vector3 newTargetPosition)
+        {
+            if (HasStateAuthority)
+            {
+                TargetPosition = newTargetPosition;
+            }
         }
 
         public BaseAction[] GetBaseActionArray()

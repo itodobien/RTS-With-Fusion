@@ -64,13 +64,14 @@ namespace Fusion
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
 
-                if (player == runner.LocalPlayer)
+                if (runner.LocalPlayer == player && FindObjectOfType<UnitActionSystem>() == null)
                 {
                     NetworkObject unitActionSystemObject = runner.Spawn(unitActionSystemPrefab, inputAuthority: player);
                     Debug.Log($"Spawned UnitActionSystem for local player with input authority: {player}");
                 }
             }
         }
+
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
@@ -81,7 +82,7 @@ namespace Fusion
         }
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            Debug.Log("[OnInput] Called");
+            //Debug.Log("[OnInput] Called");
             var data = new NetworkInputData();
       
             if (Input.GetMouseButton(1))
@@ -106,7 +107,7 @@ namespace Fusion
             
             /*Debug.Log($"OnInput called: MOUSEBUTTON1 = {Input.GetMouseButton(1)}");
             Debug.Log($"[OnInput] targetPosition: {data.targetPosition}");*/
-            Debug.Log($"Input set in BasicSpawner: MOUSEBUTTON1 = {data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1)}, targetPosition = {data.targetPosition}");
+            //Debug.Log($"Input set in BasicSpawner: MOUSEBUTTON1 = {data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1)}, targetPosition = {data.targetPosition}");
 
             input.Set(data);
         }
