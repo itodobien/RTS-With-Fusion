@@ -83,15 +83,20 @@ namespace Unit_Activities
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetTargetPosition(Vector3 newTargetPosition, RpcInfo info = default)
         {
-            Debug.Log($"[Unit {name}] RPC_SetTargetPosition received. NewTargetPosition: {newTargetPosition}, InputAuthority: {Object.InputAuthority}, OwnerPlayerRef: {OwnerPlayerRef}");
-            if (info.IsInvokeLocal || Runner.IsServer)
+            Debug.Log($"RPC_SetTargetPosition called by {info.Source}. New Target Position: {newTargetPosition}");
+
+            // Allow processing only if called by the correct party (client InputAuthority or host StateAuthority)
+            if (info.IsInvokeLocal || Object.HasStateAuthority)
             {
                 TargetPosition = newTargetPosition;
-                Debug.Log($"[Unit {name}] Target position set to {TargetPosition}");
+
+                // Log confirmation for debugging
+                Debug.Log($"Set Target Position updated for unit: {name}. Processed by: {(Object.HasStateAuthority ? "Server (StateAuthority)" : "Client (InputAuthority)")}");
             }
             else
             {
-                Debug.Log($"[Unit {name}] Rejected target position change due to mismatched authority");
+                // Invalid command attempts are logged
+                Debug.LogWarning($"RPC_SetTargetPosition: Rejected due to improper authority. Caller: {info.Source}");
             }
         }
 

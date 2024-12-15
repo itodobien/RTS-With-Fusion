@@ -45,30 +45,35 @@ namespace Fusion
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_RequestUnitSpawn(Vector3 spawnPosition)
         {
+            // Use the `PlayerRef` of the RPC source (the client that called it)
             SpawnUnitForPlayer(spawnPosition, Object.InputAuthority);
         }
 
         private void SpawnUnitForPlayer(Vector3 spawnPosition, PlayerRef owner)
         {
+            // Spawns the unit on the network
             NetworkObject unitObject = Runner.Spawn(_prefabUnit, spawnPosition, Quaternion.identity, owner);
     
             if (unitObject.TryGetComponent(out Unit unit))
             {
+                // Assign input authority to the correct player (client or host)
                 unitObject.AssignInputAuthority(owner);
 
+                // Assign proper target position
                 if (owner == Runner.LocalPlayer)
                 {
+                    // For local player-right now
                     unit.SetTargetPositionLocal(spawnPosition);
                 }
                 else
                 {
+                    // For remote player through an RPC
                     unit.RPC_SetTargetPosition(spawnPosition);
                 }
+
+                // Debug to confirm correct ownership
                 Debug.Log($"Unit Spawned: OwnerPlayerRef = {unit.OwnerPlayerRef}, InputAuthority = {unitObject.InputAuthority}");
             }
         }
-
-
     }
-
 }
