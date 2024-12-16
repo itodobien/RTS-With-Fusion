@@ -82,32 +82,27 @@ namespace Fusion
         }
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            //Debug.Log("[OnInput] Called");
             var data = new NetworkInputData();
-      
+
+            if (Input.GetMouseButton(0))
+                data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
-                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
-                Debug.Log($"[OnInput] Right-click detected. Target Position: {data.targetPosition}");
-            } 
+                data.unitMoveTargetPosition = MouseWorldPosition.GetMouseWorldPosition();
+                data.hasUnitMoveCommand = true;
+            }
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
             if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;
             if (Input.GetKey(KeyCode.A)) data.direction += Vector3.left;
             if (Input.GetKey(KeyCode.D)) data.direction += Vector3.right;
-            if (Input.GetKey(KeyCode.U)) data.spawnUnit = true;
-            
-            data.buttons.Set(NetworkInputData.MOUSEBUTTON1, Input.GetMouseButton(1));
 
-            if (Input.GetMouseButton(1)) 
+            if (Input.GetKey(KeyCode.U))
             {
-                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
+                data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
+                data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
-            
-            /*Debug.Log($"OnInput called: MOUSEBUTTON1 = {Input.GetMouseButton(1)}");
-            Debug.Log($"[OnInput] targetPosition: {data.targetPosition}");*/
-            //Debug.Log($"Input set in BasicSpawner: MOUSEBUTTON1 = {data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1)}, targetPosition = {data.targetPosition}");
 
             input.Set(data);
         }

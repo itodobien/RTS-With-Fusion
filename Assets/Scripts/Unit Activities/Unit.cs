@@ -17,7 +17,7 @@ namespace Unit_Activities
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
         
-        private bool isSelected;
+        [Networked] private NetworkBool IsSelected { get; set; }
         
         private void Awake()
         {
@@ -35,6 +35,16 @@ namespace Unit_Activities
         {
             if (HasStateAuthority)
             {
+                if (GetInput(out NetworkInputData data))
+                {
+                    Debug.Log($"Unit {Object.Id} received input. HasMoveCommand: {data.hasUnitMoveCommand}, IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, InputAuthority: {Object.InputAuthority}");
+                
+                    if (data.hasUnitMoveCommand && IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                    {
+                        TargetPosition = data.unitMoveTargetPosition;
+                        Debug.Log($"Unit {Object.Id} moving to {TargetPosition}. Owner: {OwnerPlayerRef}, InputAuthority: {Object.InputAuthority}");
+                    }
+                }
                 HandleMovement();
             }
         }
@@ -45,12 +55,11 @@ namespace Unit_Activities
             toTarget.y = 0;
 
             float distance = toTarget.magnitude;
-            Debug.Log($"[Unit {name}] Distance to Target: {distance} StopDistance: {stopDistance}, TargetPosition: {TargetPosition}, CurrentPosition: {transform.position}");
+            Debug.Log($"Unit {Object.Id} handling movement. Current position: {transform.position}, Target position: {TargetPosition}");
 
             if (distance > stopDistance)
             {
                 Vector3 moveDirection = toTarget.normalized;
-                Debug.Log($"[Unit {name}] Move Direction: {moveDirection}");
 
                 _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
 
@@ -59,7 +68,6 @@ namespace Unit_Activities
 
                 if (playerAnimator != null)
                 {
-                    Debug.Log($"[Unit {name}] Setting IsWalking = true");
                     playerAnimator.SetBool("IsWalking", true);
                 }
             }
@@ -67,37 +75,14 @@ namespace Unit_Activities
             {
                 if (playerAnimator != null)
                 {
-                    Debug.Log($"[Unit {name}] Setting IsWalking = false");
                     playerAnimator.SetBool("IsWalking", false);
                 }
             }
         }
         
-        public void SetSelected(bool isSelected)
+        public void SetSelected(bool selected)
         {
-            this.isSelected = isSelected;
-        }
-        
-        public bool IsSelected => isSelected;
-
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetTargetPosition(Vector3 newTargetPosition, RpcInfo info = default)
-        {
-            Debug.Log($"RPC_SetTargetPosition called by {info.Source}. New Target Position: {newTargetPosition}");
-
-            // Allow processing only if called by the correct party (client InputAuthority or host StateAuthority)
-            if (info.IsInvokeLocal || Object.HasStateAuthority)
-            {
-                TargetPosition = newTargetPosition;
-
-                // Log confirmation for debugging
-                Debug.Log($"Set Target Position updated for unit: {name}. Processed by: {(Object.HasStateAuthority ? "Server (StateAuthority)" : "Client (InputAuthority)")}");
-            }
-            else
-            {
-                // Invalid command attempts are logged
-                Debug.LogWarning($"RPC_SetTargetPosition: Rejected due to improper authority. Caller: {info.Source}");
-            }
+            IsSelected = selected;
         }
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
