@@ -9,6 +9,7 @@ namespace Unit_Activities
         
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
+        [Networked] public NetworkBool IsSelected { get; set; }
         
         private NetworkCharacterController _unitCharacterController;
         
@@ -16,9 +17,7 @@ namespace Unit_Activities
         [SerializeField] private Animator playerAnimator;
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
-        
-        [Networked] private NetworkBool IsSelected { get; set; }
-        
+       
         private void Awake()
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
@@ -29,38 +28,40 @@ namespace Unit_Activities
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
+            Debug.Log($"Unit spawned: OwnerPlayerRef = {OwnerPlayerRef}, Object.InputAuthority = {Object.InputAuthority}, Local Player = {Runner.LocalPlayer}");
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (HasStateAuthority)
+            if (GetInput(out NetworkInputData data))
             {
-                if (GetInput(out NetworkInputData data))
+                Debug.Log($"Input received by Unit {Object.Id}: MoveCommand = {data.hasUnitMoveCommand}, TargetPosition = {data.unitMoveTargetPosition}");
+    
+                if (data.hasUnitMoveCommand && IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                 {
-                    Debug.Log($"Unit {Object.Id} received input. HasMoveCommand: {data.hasUnitMoveCommand}, IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, InputAuthority: {Object.InputAuthority}");
-                
-                    if (data.hasUnitMoveCommand && IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
-                    {
-                        TargetPosition = data.unitMoveTargetPosition;
-                        Debug.Log($"Unit {Object.Id} moving to {TargetPosition}. Owner: {OwnerPlayerRef}, InputAuthority: {Object.InputAuthority}");
-                    }
+                    TargetPosition = data.unitMoveTargetPosition;
+                    Debug.Log($"Unit {Object.Id} setting target position to: {TargetPosition}");
                 }
-                HandleMovement();
             }
+            HandleMovement();
         }
-
+        
+        public void SetSelected(bool selected)
+        {
+            IsSelected = selected;
+            Debug.Log($"Unit {Object.Id} selection changed. IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, HasStateAuthority: {Object.HasStateAuthority}");
+        }
         private void HandleMovement()
         {
             Vector3 toTarget = TargetPosition - transform.position;
             toTarget.y = 0;
 
             float distance = toTarget.magnitude;
-            Debug.Log($"Unit {Object.Id} handling movement. Current position: {transform.position}, Target position: {TargetPosition}");
+            Debug.Log($"Unit {Object.Id} handling movement. Current position: {transform.position}, Target position: {TargetPosition}, Distance: {distance}");
 
             if (distance > stopDistance)
             {
                 Vector3 moveDirection = toTarget.normalized;
-
                 _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
 
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -78,11 +79,6 @@ namespace Unit_Activities
                     playerAnimator.SetBool("IsWalking", false);
                 }
             }
-        }
-        
-        public void SetSelected(bool selected)
-        {
-            IsSelected = selected;
         }
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)

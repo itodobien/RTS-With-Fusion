@@ -43,11 +43,11 @@ namespace Fusion
             _runner = gameObject.AddComponent<NetworkRunner>();
             _runner.ProvideInput = true;
             _runner.AddCallbacks(this);
-            
+    
             var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
             var sceneInfo = new NetworkSceneInfo();
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-            
+    
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = mode,
@@ -55,6 +55,10 @@ namespace Fusion
                 Scene = sceneInfo,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
+
+            // DEBUG LOG for the Local Player
+            Debug.Log($"Local PlayerRef after game start: {_runner.LocalPlayer}");
+            UnitSelectionManager.Instance.SetLocalPlayerRef(_runner.LocalPlayer);
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
@@ -64,10 +68,10 @@ namespace Fusion
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
 
-                if (runner.LocalPlayer == player && FindObjectOfType<UnitActionSystem>() == null)
+                if (runner.LocalPlayer == player)
                 {
-                    NetworkObject unitActionSystemObject = runner.Spawn(unitActionSystemPrefab, inputAuthority: player);
-                    Debug.Log($"Spawned UnitActionSystem for local player with input authority: {player}");
+                    Debug.Log($"Setting local player reference for Player: {player}");
+                    UnitSelectionManager.Instance.SetLocalPlayerRef(player);
                 }
             }
         }
@@ -103,6 +107,8 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
+
+            Debug.Log($"Input collected: Buttons = {data.buttons}, MoveCommand = {data.hasUnitMoveCommand}, TargetPosition = {data.unitMoveTargetPosition}");
 
             input.Set(data);
         }
