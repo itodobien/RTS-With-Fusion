@@ -6,7 +6,6 @@ namespace Unit_Activities
     public class Unit : NetworkBehaviour
     {
         private BaseAction[] baseActionsArray;
-        
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] public NetworkBool IsSelected { get; set; }
@@ -29,27 +28,40 @@ namespace Unit_Activities
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
             Debug.Log($"Unit spawned: OwnerPlayerRef = {OwnerPlayerRef}, Object.InputAuthority = {Object.InputAuthority}, Local Player = {Runner.LocalPlayer}");
+            Debug.Log($"Unit spawned with the following: " +
+                      $"World Position: {transform.position}, " +
+                      $"InputAuthority: {Object.InputAuthority}, " +
+                      $"OwnerPlayerRef: {OwnerPlayerRef}, " +
+                      $"HasStateAuthority: {HasStateAuthority}, " +
+                      $"Local Player: {Runner.LocalPlayer}");
+            
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (GetInput(out NetworkInputData data))
+            if (HasStateAuthority)
             {
-                Debug.Log($"Input received by Unit {Object.Id}: MoveCommand = {data.hasUnitMoveCommand}, TargetPosition = {data.unitMoveTargetPosition}");
-    
-                if (data.hasUnitMoveCommand && IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                if (GetInput(out NetworkInputData data))
                 {
-                    TargetPosition = data.unitMoveTargetPosition;
-                    Debug.Log($"Unit {Object.Id} setting target position to: {TargetPosition}");
+                    Debug.Log($"Input received by Unit {Object.Id}: TargetPosition = {data.targetPosition}");
+    
+                    if (IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                    {
+                        TargetPosition = data.targetPosition;
+                        Debug.Log($"Unit {Object.Id} setting target position to: {TargetPosition}");
+                    }
                 }
+                HandleMovement();
             }
-            HandleMovement();
         }
         
         public void SetSelected(bool selected)
         {
-            IsSelected = selected;
-            Debug.Log($"Unit {Object.Id} selection changed. IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, HasStateAuthority: {Object.HasStateAuthority}");
+            if (HasStateAuthority)
+            {
+                IsSelected = selected;
+                Debug.Log($"Unit {Object.Id} selection changed. IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, HasStateAuthority: {Object.HasStateAuthority}");
+            }
         }
         private void HandleMovement()
         {
@@ -57,7 +69,6 @@ namespace Unit_Activities
             toTarget.y = 0;
 
             float distance = toTarget.magnitude;
-            Debug.Log($"Unit {Object.Id} handling movement. Current position: {transform.position}, Target position: {TargetPosition}, Distance: {distance}");
 
             if (distance > stopDistance)
             {

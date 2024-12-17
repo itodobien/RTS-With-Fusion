@@ -52,13 +52,12 @@ namespace Fusion
             {
                 GameMode = mode,
                 SessionName = "TestRoom",
-                Scene = sceneInfo,
+                Scene = scene,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
-
-            // DEBUG LOG for the Local Player
             Debug.Log($"Local PlayerRef after game start: {_runner.LocalPlayer}");
-            UnitSelectionManager.Instance.SetLocalPlayerRef(_runner.LocalPlayer);
+            
+            UnitSelectionManager.Instance.SetActivePlayer(_runner.LocalPlayer);
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
@@ -67,12 +66,6 @@ namespace Fusion
                 Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
-
-                if (runner.LocalPlayer == player)
-                {
-                    Debug.Log($"Setting local player reference for Player: {player}");
-                    UnitSelectionManager.Instance.SetLocalPlayerRef(player);
-                }
             }
         }
 
@@ -93,8 +86,7 @@ namespace Fusion
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
-                data.unitMoveTargetPosition = MouseWorldPosition.GetMouseWorldPosition();
-                data.hasUnitMoveCommand = true;
+                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
@@ -108,7 +100,7 @@ namespace Fusion
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
 
-            Debug.Log($"Input collected: Buttons = {data.buttons}, MoveCommand = {data.hasUnitMoveCommand}, TargetPosition = {data.unitMoveTargetPosition}");
+            Debug.Log($"Input collected: Buttons = {data.buttons}, TargetPosition = {data.targetPosition}");
 
             input.Set(data);
         }

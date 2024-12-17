@@ -1,19 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
 namespace Unit_Activities
 {
-    public class UnitSelectionManager : MonoBehaviour
+    public class UnitSelectionManager : NetworkBehaviour
     {
+        
+        [Networked] private NetworkDictionary<PlayerRef, NetworkArray<NetworkId>> SelectedUnits { get; }
         public static UnitSelectionManager Instance { get; private set; }
         public event EventHandler OnSelectedUnitsChanged;
 
         [SerializeField] private RectTransform selectionBoxVisual;
         [SerializeField] private LayerMask unitLayerMask;
-        private PlayerRef localPlayerRef;
+        private PlayerRef activePlayer;
 
         private Vector2 selectionBoxStart;
         private Vector2 selectionBoxEnd;
@@ -50,10 +53,9 @@ namespace Unit_Activities
                 yield return null;
             }
             _runner = FindObjectOfType<NetworkRunner>();
-            localPlayerRef = _runner.LocalPlayer;
-            Debug.Log($"NetworkRunner found. Local PlayerRef: {localPlayerRef}");
+            activePlayer = _runner.LocalPlayer;
+            Debug.Log($"NetworkRunner found. Local PlayerRef: {activePlayer}");
         }
-
 
         private void Update()
         {
@@ -99,6 +101,50 @@ namespace Unit_Activities
                 }
             }
         }
+        
+        public void SelectUnit(Unit unit, bool selected)
+        {
+            if (HasStateAuthority)
+            {
+                bool selectionChanged = false;
+                PlayerRef localPlayer = Runner.LocalPlayer;
+                List<NetworkId> currentSelection = new List<NetworkId>();
+
+                if (SelectedUnits.TryGet(localPlayer, out NetworkArray<NetworkId> existingSelection))
+                {
+                    currentSelection.AddRange(existingSelection);
+                }
+
+                if (selected && !currentSelection.Contains(unit.Object.Id))
+                {
+                    currentSelection.Add(unit.Object.Id);
+                    selectionChanged = true;
+                }
+                else if (!selected && currentSelection.Contains(unit.Object.Id))
+                {
+                    currentSelection.Remove(unit.Object.Id);
+                    selectionChanged = true;
+                }
+
+                if (selectionChanged)
+                {
+                    NetworkArray<NetworkId> newSelection = new NetworkArray<NetworkId>();
+                    for (int i = 0; i < currentSelection.Count; i++)
+                    {
+                        newSelection.Set(i, currentSelection[i]);
+                    }
+                    SelectedUnits.Set(localPlayer, newSelection);
+                }
+                unit.SetSelected(selected);
+            }
+        }
+
+
+        public bool IsUnitSelected(Unit unit)
+        {
+            return SelectedUnits.TryGet(Runner.LocalPlayer, out var playerUnits) && 
+                   playerUnits.Contains(unit.Object.Id);
+        }
         private void UpdateSelectionBoxVisual()
         {
             selectionBoxEnd = Input.mousePosition;
@@ -119,33 +165,25 @@ namespace Unit_Activities
         {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
-            bool unitSelected = false;
-
             if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
             {
-                Debug.Log($"Raycast hit: {raycastHit.transform.name}");
                 if (raycastHit.transform.TryGetComponent(out Unit unit))
                 {
-                    Debug.Log($"Unit found: {unit.name}, OwnerPlayerRef: {unit.OwnerPlayerRef}, Local PlayerRef: {localPlayerRef}");
-                    if (unit.OwnerPlayerRef == localPlayerRef)
+                    if (unit.OwnerPlayerRef == activePlayer)
                     {
                         SetSelectedUnits(new List<Unit> { unit });
-                        Debug.Log($"Unit selected successfully by Local PlayerRef: {localPlayerRef}");
-                        unitSelected = true;
+                        Debug.Log($"Unit '{unit.name}' selected by player {activePlayer}.");
                     }
                     else
                     {
-                        Debug.Log($"Selection FAILED: Unit belongs to {unit.OwnerPlayerRef}, but Local PlayerRef is {localPlayerRef}");
-                        SetSelectedUnits(new List<Unit>());
+                        Debug.Log($"Cannot select unit '{unit.name}' - owned by player {unit.OwnerPlayerRef}, not {activePlayer}.");
+                        SetSelectedUnits(new List<Unit>()); 
                     }
+                    return;
                 }
             }
-            
-            if (!unitSelected)
-            {
-                Debug.Log("No unit selected");
-                SetSelectedUnits(new List<Unit>());
-            }
+            Debug.Log("No selectable unit detected.");
+            SetSelectedUnits(new List<Unit>());
         }
 
         private List<Unit> GetUnitsInSelectionBox()
@@ -155,7 +193,7 @@ namespace Unit_Activities
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                if (unit.OwnerPlayerRef == localPlayerRef)
+                if (unit.OwnerPlayerRef == activePlayer)
                 {
                     Vector3 unitScreenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
                     if (selectionRect.Contains(unitScreenPos))
@@ -176,41 +214,46 @@ namespace Unit_Activities
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         }
 
-        private void SetSelectedUnits(List<Unit> units)
+        private void SetSelectedUnits(IEnumerable<Unit> units)
         {
-            foreach (var unit in selectedUnits)
+            foreach (var unit in selectedUnits.Except(units))
             {
                 unit.SetSelected(false);
             }
-
-            selectedUnits.Clear();
-            selectedUnits.AddRange(units);
-
-            foreach (var unit in selectedUnits)
+            foreach (var unit in units.Except(selectedUnits))
             {
                 unit.SetSelected(true);
             }
+            selectedUnits = units.ToList();
 
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
-            Debug.Log($"Selected Units: {selectedUnits.Count}, Local PlayerRef: {localPlayerRef}");
+
+            Debug.Log($"Selected Units: {selectedUnits.Count}, Local PlayerRef: {activePlayer}");
         }
 
-        public List<Unit> GetSelectedUnits()
+        public List<Unit> GetSelectedUnits(PlayerRef playerRef)
         {
-            return new List<Unit>(selectedUnits);
-        }
-        public void AddToSelection(Unit unit)
-        {
-            if (!selectedUnits.Contains(unit))
+            List<Unit> units = new List<Unit>();
+            if (SelectedUnits.TryGet(playerRef, out NetworkArray<NetworkId> selectedUnits))
             {
-                selectedUnits.Add(unit);
-                OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+                for (int i = 0; i < selectedUnits.Length; i++)
+                {
+                    NetworkId unitId = selectedUnits.Get(i);
+                    if (Runner.TryFindObject(unitId, out NetworkObject networkObject))
+                    {
+                        if (networkObject.TryGetComponent(out Unit unit))
+                        {
+                            units.Add(unit);
+                        }
+                    }
+                }
             }
+            return units;
         }
-        public void SetLocalPlayerRef(PlayerRef playerRef)
+        public void SetActivePlayer(PlayerRef playerRef)
         {
-            localPlayerRef = playerRef;
-            Debug.Log($"SetLocalPlayerRef called. Local PlayerRef is now: {localPlayerRef}");
+            activePlayer = playerRef;
+            Debug.Log($"Active player set: {activePlayer}");
         }
     }
 }

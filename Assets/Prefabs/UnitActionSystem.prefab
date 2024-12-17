@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3675985779790383047}
   - component: {fileID: 7504771693074854139}
   - component: {fileID: 7549131016531947849}
+  - component: {fileID: -5347475806540850320}
   m_Layer: 0
   m_Name: UnitActionSystem
   m_TagString: Untagged
@@ -45,8 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4a8d0647dcc34d800656bc00f36ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPrefab:
-    RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
 --- !u!114 &7549131016531947849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,3 +64,17 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7504771693074854139}
+--- !u!114 &-5347475806540850320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213985626190987681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guid:
+    RawGuidValue: a8e2be81d79435140917ce66e59d7ebb

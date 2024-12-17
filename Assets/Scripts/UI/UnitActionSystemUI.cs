@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using Unit_Activities;
 using UnityEngine;
 
@@ -9,12 +10,14 @@ public class UnitActionSystemUI : MonoBehaviour
     [SerializeField] private Transform actionButtonContainerTransform;
 
     private List<GameObject> actionButtons = new ();
+    private NetworkRunner _runner;
 
     private IEnumerator Start()
     {
 
         yield return new WaitUntil(() => UnitSelectionManager.Instance != null);
         UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
+        _runner = FindObjectOfType<NetworkRunner>();
         CreateUnitActionButtons();
     }
 
@@ -33,7 +36,7 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private void CreateUnitActionButtons()
     {
-        if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null)
+        if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null || _runner == null)
         {
             Debug.LogError("Missing references in UnitActionSystemUI");
             return;
@@ -45,7 +48,7 @@ public class UnitActionSystemUI : MonoBehaviour
         }
         actionButtons.Clear();
 
-        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
+        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits(_runner.LocalPlayer);
         if (selectedUnits.Count > 0)
         {
             Unit firstSelectedUnit = selectedUnits[0];

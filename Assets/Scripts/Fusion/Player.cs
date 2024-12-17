@@ -1,11 +1,14 @@
 using Unit_Activities;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Fusion
 {
     public class Player : NetworkBehaviour
     {
         private NetworkCharacterController _characterController;
+        private Vector3 _forward;
+
         [SerializeField] private NetworkPrefabRef _prefabUnit;
         [SerializeField] private float spawnDelay = 0.5f;
 
@@ -14,6 +17,7 @@ namespace Fusion
         private void Awake()
         {
             _characterController = GetComponent<NetworkCharacterController>();
+            _forward = transform.forward;
         }
 
         public override void FixedUpdateNetwork()
@@ -23,29 +27,42 @@ namespace Fusion
                 data.direction.Normalize();
                 _characterController.Move(5 * data.direction * Runner.DeltaTime);
 
-                if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT) && delay.ExpiredOrNotRunning(Runner))
+                if (data.direction.sqrMagnitude > 0)
                 {
-                    delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
-                    if (Object.HasStateAuthority)
+                    _forward = data.direction;
+                }
+
+                if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+                {
+                    if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT)) 
                     {
-                        SpawnUnitForPlayer(data.spawnPosition, Object.InputAuthority);
+                        delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
+                        Debug.Log($"[Host Validation] Data.spawnPosition received: {data.spawnPosition}");
+
+                        if (data.spawnPosition == Vector3.zero)
+                        {
+                            Debug.LogWarning("Spawn position is Vector3.zero, using fallback position.");
+                        }
+
+                        Vector3 spawnPos = data.spawnPosition != Vector3.zero
+                            ? data.spawnPosition
+                            : transform.position + _forward;
+
+                        Runner.Spawn(
+                            _prefabUnit,
+                            spawnPos,
+                            Quaternion.LookRotation(_forward),
+                            Object.InputAuthority,
+                            (runner, o) =>
+                            {
+                                Debug.Log(
+                                    $"[Host] Spawned Unit with Authority: {Object.InputAuthority}, Spawn Position: {spawnPos}");
+                                o.GetComponent<Unit>();
+                            }
+                        );
                     }
                 }
             }
         }
-        private void SpawnUnitForPlayer(Vector3 spawnPosition, PlayerRef owner)
-        {
-            NetworkObject unitObject = Runner.Spawn(_prefabUnit, spawnPosition, Quaternion.identity, owner);
-
-            if (unitObject.TryGetComponent(out Unit unit))
-            {
-                unitObject.AssignInputAuthority(owner);
-                unit.OwnerPlayerRef = owner;
-                Debug.Log($"Unit Spawned: OwnerPlayerRef = {unit.OwnerPlayerRef}, InputAuthority = {unitObject.InputAuthority}");
-            }
-        }
-
-
     }
-
 }

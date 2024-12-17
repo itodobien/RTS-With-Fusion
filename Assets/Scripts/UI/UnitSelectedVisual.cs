@@ -1,3 +1,4 @@
+using Fusion;
 using UnityEngine;
 
 namespace Unit_Activities
@@ -7,10 +8,12 @@ namespace Unit_Activities
         [SerializeField] private Unit unit;
     
         private MeshRenderer meshRenderer;
+        private NetworkRunner _runner;
 
         private void Awake()
         {
             meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _runner = FindObjectOfType<NetworkRunner>();
         }
 
         private void Start()
@@ -26,7 +29,6 @@ namespace Unit_Activities
                 UnitSelectionManager.Instance.OnSelectedUnitsChanged -= UnitSelectionManager_OnSelectedUnitsChanged;
             }
         }
-        
         private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, System.EventArgs e)
         {
             UpdateVisual();
@@ -34,7 +36,11 @@ namespace Unit_Activities
 
         private void UpdateVisual()
         {
-            meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
+            if (_runner != null)
+            {
+                meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits(_runner.LocalPlayer).Contains(unit);
+            }
+            
         }
     }
 }

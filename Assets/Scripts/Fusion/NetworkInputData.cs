@@ -12,8 +12,7 @@ namespace Fusion
         public NetworkButtons buttons;
         public Vector3 targetPosition;
         public Vector3 spawnPosition;
-        public Vector3 unitMoveTargetPosition;
-        public bool hasUnitMoveCommand;
+
     }
 
 }

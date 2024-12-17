@@ -1,4 +1,5 @@
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Unit_Activities
@@ -19,22 +20,19 @@ namespace Unit_Activities
         }
         public override void FixedUpdateNetwork()
         {
-            if (!Object.HasInputAuthority) return;
-
-            if (GetInput(out NetworkInputData data))
+            if (HasStateAuthority)
             {
-                if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                if (GetInput(out NetworkInputData data))
                 {
-                    Vector3 targetPosition = data.targetPosition;
-                    var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits();
-
-                    if (selectedUnits != null && selectedUnits.Count > 0)
+                    if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                     {
-                        foreach (Unit unit in selectedUnits)
+                        var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits(Runner.LocalPlayer);
+
+                        foreach (var unit in selectedUnits)
                         {
-                            if (unit != null && unit.Object != null && unit.Object.HasInputAuthority)
+                            if (unit.OwnerPlayerRef == Runner.LocalPlayer)
                             {
-                                unit.SetTargetPositionLocal(targetPosition);
+                                unit.SetTargetPositionLocal(data.targetPosition);
                             }
                         }
                     }
