@@ -38,7 +38,7 @@ namespace Unit_Activities
         {
             if (_runner != null)
             {
-                meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits(_runner.LocalPlayer).Contains(unit);
+                meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
             }
             
         }

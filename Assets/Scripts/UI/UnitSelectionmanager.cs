@@ -1,32 +1,28 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Fusion;
 using UnityEngine;
+using Fusion;
 
 namespace Unit_Activities
 {
-    public class UnitSelectionManager : NetworkBehaviour
+    public class UnitSelectionManager : MonoBehaviour
     {
-        
-        [Networked] private NetworkDictionary<PlayerRef, NetworkArray<NetworkId>> SelectedUnits { get; }
         public static UnitSelectionManager Instance { get; private set; }
         public event EventHandler OnSelectedUnitsChanged;
 
         [SerializeField] private RectTransform selectionBoxVisual;
         [SerializeField] private LayerMask unitLayerMask;
-        private PlayerRef activePlayer;
 
         private Vector2 selectionBoxStart;
         private Vector2 selectionBoxEnd;
 
-        private bool isMouseDown;
         private bool isMouseDragging;
-        private Vector3 mouseStartPosition;
-        private List<Unit> selectedUnits = new();
+        private bool isMouseDown;
 
-        private NetworkRunner _runner;
+        private Vector3 mouseStartPosition;
+        private List<Unit> selectedUnits = new(); 
+        private PlayerRef activePlayer; 
 
         private void Awake()
         {
@@ -43,18 +39,6 @@ namespace Unit_Activities
             isMouseDown = false;
             isMouseDragging = false;
             selectionBoxVisual.gameObject.SetActive(false);
-            StartCoroutine(WaitForNetworkRunner());
-        }
-
-        private IEnumerator WaitForNetworkRunner()
-        {
-            while (FindObjectOfType<NetworkRunner>() == null)
-            {
-                yield return null;
-            }
-            _runner = FindObjectOfType<NetworkRunner>();
-            activePlayer = _runner.LocalPlayer;
-            Debug.Log($"NetworkRunner found. Local PlayerRef: {activePlayer}");
         }
 
         private void Update()
@@ -68,21 +52,21 @@ namespace Unit_Activities
 
         private void HandleMouseInputs()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) // Left mouse button down
             {
                 isMouseDown = true;
                 isMouseDragging = false;
                 mouseStartPosition = Input.mousePosition;
                 selectionBoxStart = mouseStartPosition;
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(0)) // Left mouse button up
             {
-                if (isMouseDragging)
+                if (isMouseDragging) // Drag selection
                 {
-                    List<Unit> unitsInSelection = GetUnitsInSelectionBox();
-                    SetSelectedUnits(unitsInSelection);
+                    var unitsInSelection = GetUnitsInSelectionBox();
+                    UpdateSelectedUnits(unitsInSelection);
                 }
-                else
+                else // Single click selection
                 {
                     TrySingleUnitSelection(Input.mousePosition);
                 }
@@ -91,7 +75,6 @@ namespace Unit_Activities
                 isMouseDragging = false;
                 selectionBoxVisual.gameObject.SetActive(false);
             }
-
             if (isMouseDown && !isMouseDragging)
             {
                 if (Vector3.Distance(Input.mousePosition, mouseStartPosition) > 10f)
@@ -101,97 +84,51 @@ namespace Unit_Activities
                 }
             }
         }
-        
-        public void SelectUnit(Unit unit, bool selected)
-        {
-            if (HasStateAuthority)
-            {
-                bool selectionChanged = false;
-                PlayerRef localPlayer = Runner.LocalPlayer;
-                List<NetworkId> currentSelection = new List<NetworkId>();
-
-                if (SelectedUnits.TryGet(localPlayer, out NetworkArray<NetworkId> existingSelection))
-                {
-                    currentSelection.AddRange(existingSelection);
-                }
-
-                if (selected && !currentSelection.Contains(unit.Object.Id))
-                {
-                    currentSelection.Add(unit.Object.Id);
-                    selectionChanged = true;
-                }
-                else if (!selected && currentSelection.Contains(unit.Object.Id))
-                {
-                    currentSelection.Remove(unit.Object.Id);
-                    selectionChanged = true;
-                }
-
-                if (selectionChanged)
-                {
-                    NetworkArray<NetworkId> newSelection = new NetworkArray<NetworkId>();
-                    for (int i = 0; i < currentSelection.Count; i++)
-                    {
-                        newSelection.Set(i, currentSelection[i]);
-                    }
-                    SelectedUnits.Set(localPlayer, newSelection);
-                }
-                unit.SetSelected(selected);
-            }
-        }
-
-
-        public bool IsUnitSelected(Unit unit)
-        {
-            return SelectedUnits.TryGet(Runner.LocalPlayer, out var playerUnits) && 
-                   playerUnits.Contains(unit.Object.Id);
-        }
-        private void UpdateSelectionBoxVisual()
-        {
-            selectionBoxEnd = Input.mousePosition;
-            Vector2 boxStart = selectionBoxStart;
-            Vector2 boxEnd = selectionBoxEnd;
-
-            Vector2 boxCenter = (boxStart + boxEnd) / 2;
-            selectionBoxVisual.position = boxCenter;
-
-            Vector2 boxSize = new Vector2(
-                Mathf.Abs(boxEnd.x - boxStart.x),
-                Mathf.Abs(boxEnd.y - boxStart.y)
-            );
-            selectionBoxVisual.sizeDelta = boxSize;
-        }
-
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-
             if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
             {
                 if (raycastHit.transform.TryGetComponent(out Unit unit))
                 {
                     if (unit.OwnerPlayerRef == activePlayer)
                     {
-                        SetSelectedUnits(new List<Unit> { unit });
-                        Debug.Log($"Unit '{unit.name}' selected by player {activePlayer}.");
+                        UpdateSelectedUnits(new List<Unit> { unit }); 
                     }
                     else
                     {
-                        Debug.Log($"Cannot select unit '{unit.name}' - owned by player {unit.OwnerPlayerRef}, not {activePlayer}.");
-                        SetSelectedUnits(new List<Unit>()); 
+                        Debug.Log($"Cannot select: Unit owned by {unit.OwnerPlayerRef}, not {activePlayer}");
+                        UpdateSelectedUnits(new List<Unit>()); // Clear selection
                     }
                     return;
                 }
             }
-            Debug.Log("No selectable unit detected.");
-            SetSelectedUnits(new List<Unit>());
+            UpdateSelectedUnits(new List<Unit>());
+        }
+        
+        private void UpdateSelectionBoxVisual()
+        {
+            selectionBoxEnd = Input.mousePosition;
+
+            Vector2 boxStart = selectionBoxStart;
+            Vector2 boxEnd = selectionBoxEnd;
+
+            Vector2 boxCenter = (boxStart + boxEnd) / 2; 
+            selectionBoxVisual.position = boxCenter;     
+
+            Vector2 boxSize = new Vector2(
+                Mathf.Abs(boxEnd.x - boxStart.x),        
+                Mathf.Abs(boxEnd.y - boxStart.y)         
+            );
+            selectionBoxVisual.sizeDelta = boxSize;
         }
 
         private List<Unit> GetUnitsInSelectionBox()
         {
-            List<Unit> unitsInBox = new List<Unit>();
+            List<Unit> unitsInBox = new();
             Rect selectionRect = GetScreenRect(selectionBoxStart, selectionBoxEnd);
 
-            foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
+            foreach (var unit in FindObjectsOfType<Unit>())
             {
                 if (unit.OwnerPlayerRef == activePlayer)
                 {
@@ -202,58 +139,51 @@ namespace Unit_Activities
                     }
                 }
             }
+
             return unitsInBox;
         }
 
-        private Rect GetScreenRect(Vector2 screenPosition1, Vector2 screenPosition2)
+        private Rect GetScreenRect(Vector2 start, Vector2 end)
         {
-            screenPosition1.y = Screen.height - screenPosition1.y;
-            screenPosition2.y = Screen.height - screenPosition2.y;
-            Vector2 bottomLeft = Vector2.Min(screenPosition1, screenPosition2);
-            Vector2 topRight = Vector2.Max(screenPosition1, screenPosition2);
+            start.y = Screen.height - start.y; 
+            end.y = Screen.height - end.y;
+            Vector2 bottomLeft = Vector2.Min(start, end);
+            Vector2 topRight = Vector2.Max(start, end);
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         }
 
-        private void SetSelectedUnits(IEnumerable<Unit> units)
+        private void UpdateSelectedUnits(List<Unit> newSelection)
         {
-            foreach (var unit in selectedUnits.Except(units))
+            foreach (var unit in selectedUnits.Except(newSelection))
             {
-                unit.SetSelected(false);
-            }
-            foreach (var unit in units.Except(selectedUnits))
-            {
-                unit.SetSelected(true);
-            }
-            selectedUnits = units.ToList();
-
-            OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
-
-            Debug.Log($"Selected Units: {selectedUnits.Count}, Local PlayerRef: {activePlayer}");
-        }
-
-        public List<Unit> GetSelectedUnits(PlayerRef playerRef)
-        {
-            List<Unit> units = new List<Unit>();
-            if (SelectedUnits.TryGet(playerRef, out NetworkArray<NetworkId> selectedUnits))
-            {
-                for (int i = 0; i < selectedUnits.Length; i++)
+                if (unit.HasInputAuthority)
                 {
-                    NetworkId unitId = selectedUnits.Get(i);
-                    if (Runner.TryFindObject(unitId, out NetworkObject networkObject))
-                    {
-                        if (networkObject.TryGetComponent(out Unit unit))
-                        {
-                            units.Add(unit);
-                        }
-                    }
+                    unit.SetSelected(false);
                 }
             }
-            return units;
+            foreach (var unit in newSelection.Except(selectedUnits))
+            {
+                if (!unit.HasInputAuthority)
+                {
+                    unit.SetSelected(true);
+                }
+            }
+
+            selectedUnits = newSelection.ToList();
+            OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+
+            Debug.Log($"Selection Updated. Count: {selectedUnits.Count}");
         }
+
         public void SetActivePlayer(PlayerRef playerRef)
         {
             activePlayer = playerRef;
-            Debug.Log($"Active player set: {activePlayer}");
+            Debug.Log($"Active player set to {activePlayer}");
+        }
+        
+        public List<Unit> GetSelectedUnits()
+        {
+            return new List<Unit>(selectedUnits);
         }
     }
 }

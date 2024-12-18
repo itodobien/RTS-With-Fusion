@@ -36,7 +36,7 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private void CreateUnitActionButtons()
     {
-        if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null || _runner == null)
+        if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null)
         {
             Debug.LogError("Missing references in UnitActionSystemUI");
             return;
@@ -48,7 +48,7 @@ public class UnitActionSystemUI : MonoBehaviour
         }
         actionButtons.Clear();
 
-        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits(_runner.LocalPlayer);
+        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
         if (selectedUnits.Count > 0)
         {
             Unit firstSelectedUnit = selectedUnits[0];

@@ -26,7 +26,7 @@ namespace Unit_Activities
                 {
                     if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                     {
-                        var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits(Runner.LocalPlayer);
+                        var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits();
 
                         foreach (var unit in selectedUnits)
                         {

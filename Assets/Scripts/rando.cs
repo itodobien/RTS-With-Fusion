@@ -1,10 +1,11 @@
+/*
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Unit_Activities
 {
-    public class Unit : NetworkBehaviour
+    public class testing : NetworkBehaviour
     {
         private BaseAction[] baseActionsArray;
         [Networked] private Vector3 TargetPosition { get; set; }
@@ -40,7 +41,20 @@ namespace Unit_Activities
 
         public override void FixedUpdateNetwork()
         {
-            HandleMovement();
+            if (HasStateAuthority)
+            {
+                if (GetInput(out NetworkInputData data))
+                {
+                    Debug.Log($"Input received by Unit {Object.Id}: TargetPosition = {data.targetPosition}");
+    
+                    if (IsSelected && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                    {
+                        TargetPosition = data.targetPosition;
+                        Debug.Log($"Unit {Object.Id} setting target position to: {TargetPosition}");
+                    }
+                }
+                HandleMovement();
+            }
         }
         
         public void SetSelected(bool selected)
@@ -53,6 +67,7 @@ namespace Unit_Activities
         }
         private void HandleMovement()
         {
+
             if (GetInput(out NetworkInputData data))
             {
                 TargetPosition = data.targetPosition;
@@ -62,6 +77,8 @@ namespace Unit_Activities
 
                 if (distance > stopDistance)
                 {
+                    Debug.Log($"[Unit {Object.Id}] at {transform.position} moving to {TargetPosition}. current mouse position is {Input.mousePosition}");
+                
                     Vector3 moveDirection = toTarget.normalized;
                     _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
 
@@ -75,6 +92,7 @@ namespace Unit_Activities
                 }
                 else
                 {
+                    Debug.Log($"[Unit {Object.Id}] Reached TargetPosition or within stopDistance.");
                     if (playerAnimator != null)
                     {
                         playerAnimator.SetBool("IsWalking", false);
@@ -82,7 +100,6 @@ namespace Unit_Activities
                 }
             }
         }
-
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
         {
@@ -98,3 +115,4 @@ namespace Unit_Activities
         }
     }
 }
+*/

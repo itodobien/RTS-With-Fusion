@@ -19,6 +19,8 @@ namespace Fusion
         private bool _mouseButton0;
         private bool _mouseButton1;
         
+        
+        
         private void Awake()
         {
             _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
@@ -37,6 +39,12 @@ namespace Fusion
                     StartGame(GameMode.Client);
                 }
             }
+        }
+
+        private void Update()
+        {
+            _mouseButton0 = Input.GetMouseButton(0);
+            _mouseButton1 = Input.GetMouseButton(1);
         }
         async void StartGame(GameMode mode)
         {
@@ -82,11 +90,16 @@ namespace Fusion
             var data = new NetworkInputData();
 
             if (Input.GetMouseButton(0))
+            {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
+                _mouseButton0 = false; // Reset button after it's recorded here as well
+            }
+            
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
                 data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
+                _mouseButton1 = false; // Reset button after it's recorded
             }
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
@@ -98,9 +111,8 @@ namespace Fusion
             {
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
+                
             }
-
-            Debug.Log($"Input collected: Buttons = {data.buttons}, TargetPosition = {data.targetPosition}");
 
             input.Set(data);
         }

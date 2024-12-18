@@ -13,6 +13,7 @@ namespace Unit_Activities
         public static Vector3 GetMouseWorldPosition()
         {
             Camera camera = Camera.main;
+            
             if (camera == null)
             {
                 Debug.LogWarning("No main camera found for MouseWorldPosition.");
@@ -24,9 +25,12 @@ namespace Unit_Activities
             {
                 return hit.point;
             }
-
-            Debug.LogWarning("MouseWorldPosition raycast failed. Returning (0,0,0).");
-            return Vector3.zero;
+            else
+            {
+                Debug.LogWarning("MouseWorldPosition raycast failed. Returning (0,0,0).");
+                return Vector3.zero;
+            }
+            
         }
     }
 }
