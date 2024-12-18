@@ -705,14 +705,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4264436451288314649, guid: cc8d183ec41bf8b428028f93e8e8ce39, type: 3}
-      propertyPath: SortKey
-      value: 3483541333
-      objectReference: {fileID: 0}
-    - target: {fileID: 4264436451288314649, guid: cc8d183ec41bf8b428028f93e8e8ce39, type: 3}
-      propertyPath: NetworkedBehaviours.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7080674277379285287, guid: cc8d183ec41bf8b428028f93e8e8ce39, type: 3}
       propertyPath: m_Name
       value: Canvas

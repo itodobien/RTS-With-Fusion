@@ -11,6 +11,8 @@ namespace Unit_Activities
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] public NetworkBool IsSelected { get; set; }
         
+        [Networked] private bool IsMoving { get; set; }
+        
         private NetworkCharacterController _unitCharacterController;
         
         [SerializeField] private float stopDistance = 0.1f;
@@ -48,41 +50,48 @@ namespace Unit_Activities
             {
                 if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                 {
+                    Debug.Log($"Unit {Object.Id} setting target position to: {data.targetPosition}");
                     TargetPosition = data.targetPosition;
+                    IsMoving = true;
                 }
-                
-                Vector3 toTarget = TargetPosition - transform.position;
-                toTarget.y = 0;
-                float distance = toTarget.magnitude;
 
-                if (distance > stopDistance)
+                if (IsMoving)
                 {
-                    Vector3 moveDirection = toTarget.normalized;
-                    _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
+                    Vector3 toTarget = TargetPosition - transform.position;
+                    toTarget.y = 0;
+                    float distance = toTarget.magnitude;
 
-                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
-
-                    if (playerAnimator != null)
+                    if (distance > stopDistance)
                     {
-                        playerAnimator.SetBool("IsWalking", true);
+                        Vector3 moveDirection = toTarget.normalized;
+                        _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
+
+                        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
+
+                        if (playerAnimator != null)
+                        {
+                            playerAnimator.SetBool("IsWalking", true);
+                        }
                     }
-                }
-                else
-                {
-                    if (playerAnimator != null)
+                    else
                     {
-                        playerAnimator.SetBool("IsWalking", false);
+                        if (playerAnimator != null)
+                        {
+                            playerAnimator.SetBool("IsWalking", false);
+                        }
                     }
                 }
             }
+            
         }
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
         {
-            if (HasStateAuthority)
+            if (HasStateAuthority && IsSelected)
             {
                 TargetPosition = newTargetPosition;
+                IsMoving = true;
             }
         }
 

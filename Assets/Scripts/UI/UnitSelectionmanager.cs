@@ -152,16 +152,13 @@ namespace Unit_Activities
 
         private void UpdateSelectedUnits(List<Unit> newSelection)
         {
-            foreach (var unit in selectedUnits.Except(newSelection))
+            foreach (var unit in selectedUnits)
             {
-                if (unit.HasInputAuthority)
-                {
-                    unit.SetSelected(false);
-                }
+                unit.SetSelected(false);
             }
-            foreach (var unit in newSelection.Except(selectedUnits))
+            foreach (var unit in newSelection)
             {
-                if (!unit.HasInputAuthority)
+                if (unit.OwnerPlayerRef == activePlayer)
                 {
                     unit.SetSelected(true);
                 }
@@ -169,6 +166,7 @@ namespace Unit_Activities
             selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
         }
+
 
         public void SetActivePlayer(PlayerRef playerRef)
         {

@@ -16,10 +16,8 @@ namespace Fusion
     
         private NetworkRunner _runner;
         
-        private bool _mouseButton0;
-        private bool _mouseButton1;
-        
-        
+        private bool _mouseButton0; // I don't know why these are greyed out
+        private bool _mouseButton1; // I use them in OnInput. 
         
         private void Awake()
         {
