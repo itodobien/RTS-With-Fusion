@@ -63,7 +63,6 @@ namespace Fusion
                 Scene = scene,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
-            Debug.Log($"Local PlayerRef after game start: {_runner.LocalPlayer}");
             
             UnitSelectionManager.Instance.SetActivePlayer(_runner.LocalPlayer);
         }
@@ -111,9 +110,7 @@ namespace Fusion
             {
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
-                
             }
-
             input.Set(data);
         }
     

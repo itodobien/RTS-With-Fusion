@@ -52,21 +52,21 @@ namespace Unit_Activities
 
         private void HandleMouseInputs()
         {
-            if (Input.GetMouseButtonDown(0)) // Left mouse button down
+            if (Input.GetMouseButtonDown(0))
             {
                 isMouseDown = true;
                 isMouseDragging = false;
                 mouseStartPosition = Input.mousePosition;
                 selectionBoxStart = mouseStartPosition;
             }
-            else if (Input.GetMouseButtonUp(0)) // Left mouse button up
+            else if (Input.GetMouseButtonUp(0))
             {
-                if (isMouseDragging) // Drag selection
+                if (isMouseDragging)
                 {
                     var unitsInSelection = GetUnitsInSelectionBox();
                     UpdateSelectedUnits(unitsInSelection);
                 }
-                else // Single click selection
+                else
                 {
                     TrySingleUnitSelection(Input.mousePosition);
                 }
@@ -97,7 +97,6 @@ namespace Unit_Activities
                     }
                     else
                     {
-                        Debug.Log($"Cannot select: Unit owned by {unit.OwnerPlayerRef}, not {activePlayer}");
                         UpdateSelectedUnits(new List<Unit>()); // Clear selection
                     }
                     return;
@@ -139,7 +138,6 @@ namespace Unit_Activities
                     }
                 }
             }
-
             return unitsInBox;
         }
 
@@ -168,17 +166,13 @@ namespace Unit_Activities
                     unit.SetSelected(true);
                 }
             }
-
             selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
-
-            Debug.Log($"Selection Updated. Count: {selectedUnits.Count}");
         }
 
         public void SetActivePlayer(PlayerRef playerRef)
         {
             activePlayer = playerRef;
-            Debug.Log($"Active player set to {activePlayer}");
         }
         
         public List<Unit> GetSelectedUnits()

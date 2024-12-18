@@ -28,14 +28,6 @@ namespace Unit_Activities
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
-            Debug.Log($"Unit spawned: OwnerPlayerRef = {OwnerPlayerRef}, Object.InputAuthority = {Object.InputAuthority}, Local Player = {Runner.LocalPlayer}");
-            Debug.Log($"Unit spawned with the following: " +
-                      $"World Position: {transform.position}, " +
-                      $"InputAuthority: {Object.InputAuthority}, " +
-                      $"OwnerPlayerRef: {OwnerPlayerRef}, " +
-                      $"HasStateAuthority: {HasStateAuthority}, " +
-                      $"Local Player: {Runner.LocalPlayer}");
-            
         }
 
         public override void FixedUpdateNetwork()
@@ -48,14 +40,17 @@ namespace Unit_Activities
             if (HasStateAuthority)
             {
                 IsSelected = selected;
-                Debug.Log($"Unit {Object.Id} selection changed. IsSelected: {IsSelected}, Owner: {OwnerPlayerRef}, HasStateAuthority: {Object.HasStateAuthority}");
             }
         }
         private void HandleMovement()
         {
             if (GetInput(out NetworkInputData data))
             {
-                TargetPosition = data.targetPosition;
+                if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                {
+                    TargetPosition = data.targetPosition;
+                }
+                
                 Vector3 toTarget = TargetPosition - transform.position;
                 toTarget.y = 0;
                 float distance = toTarget.magnitude;
@@ -82,7 +77,6 @@ namespace Unit_Activities
                 }
             }
         }
-
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
         {

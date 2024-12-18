@@ -14,7 +14,6 @@ public class UnitActionSystemUI : MonoBehaviour
 
     private IEnumerator Start()
     {
-
         yield return new WaitUntil(() => UnitSelectionManager.Instance != null);
         UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
         _runner = FindObjectOfType<NetworkRunner>();

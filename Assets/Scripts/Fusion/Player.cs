@@ -19,7 +19,6 @@ namespace Fusion
             _characterController = GetComponent<NetworkCharacterController>();
             _forward = transform.forward;
         }
-
         public override void FixedUpdateNetwork()
         {
             if (GetInput(out NetworkInputData data))
@@ -37,7 +36,6 @@ namespace Fusion
                     if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT)) 
                     {
                         delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
-                        Debug.Log($"[Host Validation] Data.spawnPosition received: {data.spawnPosition}");
 
                         if (data.spawnPosition == Vector3.zero)
                         {
@@ -55,8 +53,6 @@ namespace Fusion
                             Object.InputAuthority,
                             (runner, o) =>
                             {
-                                Debug.Log(
-                                    $"[Host] Spawned Unit with Authority: {Object.InputAuthority}, Spawn Position: {spawnPos}");
                                 o.GetComponent<Unit>();
                             }
                         );
