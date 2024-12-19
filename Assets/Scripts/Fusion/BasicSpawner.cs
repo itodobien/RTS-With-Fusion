@@ -10,11 +10,11 @@ namespace Fusion
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
-        [SerializeField] private NetworkPrefabRef unitActionSystemPrefab;
-
+        
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
         private NetworkRunner _runner;
+        private NetworkObject _unitActionSystem;
         
         private bool _mouseButton0; // I don't know why these are greyed out
         private bool _mouseButton1; // I use them in OnInput. 
@@ -113,8 +113,9 @@ namespace Fusion
             var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();
             if (selectionChange.HasValue)
             {
-                data.buttons.Set(NetworkInputData.SELECT_UNIT, selectionChange.Value.isSelected);
+                data.buttons.Set(NetworkInputData.SELECT_UNIT, true);
                 data.selectedUnitId = selectionChange.Value.unitId;
+                data.isSelected = selectionChange.Value.isSelected;                
             }
             input.Set(data);
         }
@@ -135,6 +136,5 @@ namespace Fusion
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
         public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-        
     }
 }

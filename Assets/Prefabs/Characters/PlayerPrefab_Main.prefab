@@ -189,6 +189,10 @@ MonoBehaviour:
   _prefabUnit:
     RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
   spawnDelay: 0.5
+  stopDistance: 0.1
+  playerAnimator: {fileID: 242778183055768082}
+  moveSpeed: 4
+  rotateSpeed: 10
 --- !u!114 &7012137610215788588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +336,11 @@ Transform:
 --- !u!4 &151590265792174858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4580766925885248, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}
+  m_PrefabInstance: {fileID: 147150552304292938}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &242778183055768082 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95787105524477528, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}
   m_PrefabInstance: {fileID: 147150552304292938}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2691981558520564222

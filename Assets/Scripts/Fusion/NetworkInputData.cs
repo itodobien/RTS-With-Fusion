@@ -15,6 +15,7 @@ namespace Fusion
         public Vector3 spawnPosition;
 
         public NetworkId selectedUnitId;
+        public bool isSelected;
 
 
     }

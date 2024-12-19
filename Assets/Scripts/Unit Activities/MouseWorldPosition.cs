@@ -27,7 +27,6 @@ namespace Unit_Activities
             }
             else
             {
-                Debug.LogWarning("MouseWorldPosition raycast failed. Returning (0,0,0).");
                 return Vector3.zero;
             }
             

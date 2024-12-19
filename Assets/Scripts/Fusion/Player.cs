@@ -10,7 +10,7 @@ namespace Fusion
 
         [SerializeField] private NetworkPrefabRef _prefabUnit;
         [SerializeField] private float spawnDelay = 0.5f;
-
+        [SerializeField] private Animator playerAnimator;
         [Networked] private TickTimer delay { get; set; }
 
         private void Awake()
@@ -28,6 +28,11 @@ namespace Fusion
                 if (data.direction.sqrMagnitude > 0)
                 {
                     _forward = data.direction;
+                    playerAnimator.SetBool("IsWalking", true);
+                }
+                else
+                {
+                    playerAnimator.SetBool("IsWalking", false);
                 }
 
                 if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))

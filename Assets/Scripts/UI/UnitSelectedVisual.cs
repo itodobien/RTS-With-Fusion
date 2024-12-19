@@ -13,6 +13,7 @@ namespace Unit_Activities
         private void Awake()
         {
             meshRenderer = GetComponentInChildren<MeshRenderer>();
+            
             _runner = FindObjectOfType<NetworkRunner>();
         }
 
