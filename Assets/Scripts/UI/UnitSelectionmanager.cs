@@ -52,38 +52,41 @@ namespace Unit_Activities
 
         private void HandleMouseInputs()
         {
-            if (Input.GetMouseButtonDown(0))
+            switch (MouseButtonStateHelper.GetMouseButtonState(0))
             {
-                isMouseDown = true;
-                isMouseDragging = false;
-                mouseStartPosition = Input.mousePosition;
-                selectionBoxStart = mouseStartPosition;
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (isMouseDragging)
-                {
-                    var unitsInSelection = GetUnitsInSelectionBox();
-                    UpdateSelectedUnits(unitsInSelection);
-                }
-                else
-                {
-                    TrySingleUnitSelection(Input.mousePosition);
-                }
-
-                isMouseDown = false;
-                isMouseDragging = false;
-                selectionBoxVisual.gameObject.SetActive(false);
-            }
-            if (isMouseDown && !isMouseDragging)
-            {
-                if (Vector3.Distance(Input.mousePosition, mouseStartPosition) > 10f)
-                {
-                    isMouseDragging = true;
-                    selectionBoxVisual.gameObject.SetActive(true);
-                }
+                case MouseButtonState.ButtonDown:
+                    isMouseDown = true;
+                    isMouseDragging = false;
+                    mouseStartPosition = Input.mousePosition;
+                    selectionBoxStart = mouseStartPosition;
+                    break;
+                case MouseButtonState.ButtonHeld:
+                    if(isMouseDown && !isMouseDragging)
+                    {
+                        if (Vector3.Distance(Input.mousePosition, mouseStartPosition) > 10f)
+                        {
+                            isMouseDragging = true;
+                            selectionBoxVisual.gameObject.SetActive(true);
+                        }
+                    }
+                    break;
+                case MouseButtonState.ButtonUp:
+                    if (isMouseDragging)
+                    {
+                        var unitsInSelection = GetUnitsInSelectionBox();
+                        UpdateSelectedUnits(unitsInSelection);
+                    }
+                    else
+                    {
+                        TrySingleUnitSelection(Input.mousePosition);
+                    }
+                    isMouseDown = false;
+                    isMouseDragging = false;
+                    selectionBoxVisual.gameObject.SetActive(false);
+                    break;
             }
         }
+        
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -154,7 +157,10 @@ namespace Unit_Activities
         {
             foreach (var unit in selectedUnits)
             {
-                unit.SetSelected(false);
+                if (unit.OwnerPlayerRef == activePlayer)
+                {
+                    unit.SetSelected(false);
+                }
             }
             foreach (var unit in newSelection)
             {

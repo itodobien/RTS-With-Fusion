@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Unit_Activities;
 using UnityEngine;
 
 public class SelectionBoxVisualizer : MonoBehaviour

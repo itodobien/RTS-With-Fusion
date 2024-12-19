@@ -14,6 +14,7 @@ namespace Unit_Activities
         [Networked] private bool IsMoving { get; set; }
         
         private NetworkCharacterController _unitCharacterController;
+        private ChangeDetector _changeDetector;
         
         [SerializeField] private float stopDistance = 0.1f;
         [SerializeField] private Animator playerAnimator;
@@ -24,12 +25,14 @@ namespace Unit_Activities
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
             baseActionsArray = GetComponents<BaseAction>();
+            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
         }
 
         public override void Spawned()
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
+            
         }
 
         public override void FixedUpdateNetwork()
@@ -37,7 +40,7 @@ namespace Unit_Activities
             HandleMovement();
         }
         
-        public void SetSelected(bool selected)
+        public void SetSelected(bool selected) // this is not doing anything of meaning. 
         {
             if (HasStateAuthority)
             {
@@ -46,6 +49,7 @@ namespace Unit_Activities
         }
         private void HandleMovement()
         {
+            
             if (GetInput(out NetworkInputData data))
             {
                 if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
