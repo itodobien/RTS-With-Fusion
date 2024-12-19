@@ -1,5 +1,4 @@
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Unit_Activities
@@ -24,16 +23,20 @@ namespace Unit_Activities
             {
                 if (GetInput(out NetworkInputData data))
                 {
-                    if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                    if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT))
                     {
-                        var selectedUnits = UnitSelectionManager.Instance?.GetSelectedUnits();
-
-                        foreach (var unit in selectedUnits)
+                        NetworkObject unitObject = Runner.FindObject(data.selectedUnitId);
+                        if (unitObject != null && unitObject.TryGetComponent(out Unit unit))
                         {
-                            if (unit.OwnerPlayerRef == Runner.LocalPlayer)
-                            {
-                                unit.SetTargetPositionLocal(data.targetPosition);
-                            }
+                            unit.SetSelected(true);
+                        }
+                    }
+                    else if (data.selectedUnitId != default)
+                    {
+                        NetworkObject unitObject = Runner.FindObject(data.selectedUnitId);
+                        if (unitObject != null && unitObject.TryGetComponent(out Unit unit))
+                        {
+                            unit.SetSelected(false);
                         }
                     }
                 }

@@ -23,6 +23,8 @@ namespace Unit_Activities
         private Vector3 mouseStartPosition;
         private List<Unit> selectedUnits = new(); 
         private PlayerRef activePlayer; 
+        
+        private HashSet<(NetworkId unitId, bool isSelected)> pendingSelectionChanges = new HashSet<(NetworkId, bool)>();
 
         private void Awake()
         {
@@ -157,20 +159,31 @@ namespace Unit_Activities
         {
             foreach (var unit in selectedUnits)
             {
-                if (unit.OwnerPlayerRef == activePlayer)
+                if (unit.Object.HasInputAuthority)
                 {
-                    unit.SetSelected(false);
+                    pendingSelectionChanges.Add((unit.Object.Id, false));
                 }
             }
             foreach (var unit in newSelection)
             {
-                if (unit.OwnerPlayerRef == activePlayer)
+                if (unit.Object.HasInputAuthority)
                 {
-                    unit.SetSelected(true);
+                    pendingSelectionChanges.Add((unit.Object.Id, true));
                 }
             }
             selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public (NetworkId unitId, bool isSelected)? GetNextSelectionChange()
+        {
+            if (pendingSelectionChanges.Count > 0)
+            {
+                var change = pendingSelectionChanges.First();
+                pendingSelectionChanges.Remove(change);
+                return change;
+            }
+            return null;
         }
 
 

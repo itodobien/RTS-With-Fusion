@@ -109,6 +109,13 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
+            
+            var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();
+            if (selectionChange.HasValue)
+            {
+                data.buttons.Set(NetworkInputData.SELECT_UNIT, selectionChange.Value.isSelected);
+                data.selectedUnitId = selectionChange.Value.unitId;
+            }
             input.Set(data);
         }
     

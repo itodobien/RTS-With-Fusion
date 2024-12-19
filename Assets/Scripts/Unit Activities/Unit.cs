@@ -24,13 +24,13 @@ namespace Unit_Activities
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
             baseActionsArray = GetComponents<BaseAction>();
-            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
         }
 
         public override void Spawned()
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
+            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
             
         }
 
@@ -46,9 +46,30 @@ namespace Unit_Activities
                 IsSelected = selected;
             }
         }
+
+        public override void Render()
+        {
+            base.Render();
+            foreach (var change in _changeDetector.DetectChanges(this))
+            {
+                switch (change)
+                {
+                    case nameof(IsSelected):
+                        UpdateSelectionVisual(IsSelected);
+                        break;
+                }
+            }
+        }
+
+        private void UpdateSelectionVisual(bool isSelected)
+        {
+            if (TryGetComponent<MeshRenderer>(out var meshRenderer))
+            {
+                meshRenderer.enabled = isSelected;
+            }
+        }
         private void HandleMovement()
         {
-            
             if (GetInput(out NetworkInputData data))
             {
                 if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
