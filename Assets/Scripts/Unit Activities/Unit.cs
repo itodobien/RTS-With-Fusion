@@ -1,5 +1,4 @@
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Unit_Activities
@@ -87,7 +86,6 @@ namespace Unit_Activities
                     }
                 }
             }
-            
         }
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
