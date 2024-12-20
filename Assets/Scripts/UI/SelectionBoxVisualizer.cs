@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class SelectionBoxVisualizer : MonoBehaviour
 {
@@ -78,4 +78,4 @@ public class SelectionBoxVisualizer : MonoBehaviour
         Vector2 topRight = Vector2.Max(start, end);
         return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
     }
-}
+}*/

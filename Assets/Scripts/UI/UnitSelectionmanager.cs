@@ -54,15 +54,15 @@ namespace Unit_Activities
 
         private void HandleMouseInputs()
         {
-            switch (MouseButtonStateHelper.GetMouseButtonState(0))
+            switch (HandleMouseButtonState.GetMouseButtonState(0))
             {
-                case MouseButtonState.ButtonDown:
+                case HandleMouseButtonState.MouseButtonState.ButtonDown:
                     isMouseDown = true;
                     isMouseDragging = false;
                     mouseStartPosition = Input.mousePosition;
                     selectionBoxStart = mouseStartPosition;
                     break;
-                case MouseButtonState.ButtonHeld:
+                case HandleMouseButtonState.MouseButtonState.ButtonHeld:
                     if(isMouseDown && !isMouseDragging)
                     {
                         if (Vector3.Distance(Input.mousePosition, mouseStartPosition) > 10f)
@@ -72,7 +72,7 @@ namespace Unit_Activities
                         }
                     }
                     break;
-                case MouseButtonState.ButtonUp:
+                case HandleMouseButtonState.MouseButtonState.ButtonUp:
                     if (isMouseDragging)
                     {
                         var unitsInSelection = GetUnitsInSelectionBox();
