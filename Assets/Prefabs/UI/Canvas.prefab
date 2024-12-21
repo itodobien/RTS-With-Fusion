@@ -242,18 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00517d8b4578de43a979923afe10b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionCollider: {fileID: 5898041643998781521}
-  selectionRect: {fileID: 4627573691131223708}
-  team: -1
-  raycastLayerMask:
-    serializedVersion: 2
-    m_Bits: 2112
-  raycastMaxDistance: 500
-  minSelectionSize: 2
-  singleSelectionRadius: 0
-  defaultModeStartBehavior: 0
-  selecting: 0
-  multiSelecting: 0
+  selectionBoxVisual: {fileID: 4627573691131223708}
   unitLayerMask:
     serializedVersion: 2
     m_Bits: 2112
@@ -407,7 +396,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3

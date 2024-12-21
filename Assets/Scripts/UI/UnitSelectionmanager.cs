@@ -148,8 +148,8 @@ namespace Unit_Activities
 
         private Rect GetScreenRect(Vector2 start, Vector2 end)
         {
-            start.y = Screen.height - start.y; 
-            end.y = Screen.height - end.y;
+            /*start.y = Screen.height - start.y; // These 2 lines had completely broken my selection box selection accuracy. 
+            end.y = Screen.height - end.y;*/
             Vector2 bottomLeft = Vector2.Min(start, end);
             Vector2 topRight = Vector2.Max(start, end);
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
