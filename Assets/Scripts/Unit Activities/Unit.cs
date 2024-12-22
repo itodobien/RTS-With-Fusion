@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Unit_Activities
         
         private NetworkCharacterController _unitCharacterController;
         private ChangeDetector _changeDetector;
+        
+        private GridPosition gridPosition;
         
         [SerializeField] private float stopDistance = 0.1f;
         [SerializeField] private Animator playerAnimator;
@@ -33,6 +36,23 @@ namespace Unit_Activities
             _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
         }
 
+        private void Start()
+        {
+            gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+            LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+        }
+
+        private void Update()
+        {
+            GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+            if (newGridPosition != gridPosition)
+            {
+                LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+                gridPosition = newGridPosition;
+            }
+        }
+
+
         public override void FixedUpdateNetwork()
         {
             if (GetInput(out NetworkInputData data))
@@ -45,7 +65,7 @@ namespace Unit_Activities
             HandleMovement(data);
         }
         
-        public void SetSelected(bool selected) // this is not doing anything of meaning. 
+        public void SetSelected(bool selected)
         {
             if (HasStateAuthority)
             {
