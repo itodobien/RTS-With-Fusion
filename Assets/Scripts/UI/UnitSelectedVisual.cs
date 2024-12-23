@@ -1,18 +1,19 @@
 using Fusion;
+using Unit_Activities;
 using UnityEngine;
 
-namespace Unit_Activities
+namespace UI
 {
     public class UnitSelectedVisual : MonoBehaviour
     {
         [SerializeField] private Unit unit;
     
-        private MeshRenderer meshRenderer;
+        private MeshRenderer _meshRenderer;
         private NetworkRunner _runner;
 
         private void Awake()
         {
-            meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _meshRenderer = GetComponentInChildren<MeshRenderer>();
             
             _runner = FindObjectOfType<NetworkRunner>();
         }
@@ -39,7 +40,7 @@ namespace Unit_Activities
         {
             if (_runner != null)
             {
-                meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
+                _meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
             }
             
         }

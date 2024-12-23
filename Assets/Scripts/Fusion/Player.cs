@@ -11,7 +11,7 @@ namespace Fusion
         [SerializeField] private NetworkPrefabRef _prefabUnit;
         [SerializeField] private float spawnDelay = 0.5f;
         [SerializeField] private Animator playerAnimator;
-        [Networked] private TickTimer delay { get; set; }
+        [Networked] private TickTimer Delay { get; set; }
 
         private void Awake()
         {
@@ -35,11 +35,11 @@ namespace Fusion
                     playerAnimator.SetBool("IsWalking", false);
                 }
 
-                if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+                if (HasStateAuthority && Delay.ExpiredOrNotRunning(Runner))
                 {
                     if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT)) 
                     {
-                        delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
+                        Delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
 
                         if (data.spawnPosition == Vector3.zero)
                         {

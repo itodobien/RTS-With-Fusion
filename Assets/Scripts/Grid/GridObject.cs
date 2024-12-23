@@ -1,43 +1,45 @@
 using System.Collections.Generic;
 using Unit_Activities;
 
-
-public class GridObject
-
+namespace Grid
 {
-    private List<Unit> unitList;
-    private GridSystem gridSystem;
-    private GridPosition gridPosition;
+    public class GridObject
 
-    public GridObject(GridSystem gridSystem, GridPosition gridPosition)
     {
-        this.gridSystem = gridSystem;
-        this.gridPosition = gridPosition;
-        unitList = new List<Unit>();
-    }
+        private List<Unit> _unitList;
+        private GridSystem _gridSystem;
+        private GridPosition _gridPosition;
 
-    public override string ToString()
-    {
-        string unitString = "";
-        foreach (Unit unit in unitList)
+        public GridObject(GridSystem gridSystem, GridPosition gridPosition)
         {
-            unitString += unit + "\n";
+            this._gridSystem = gridSystem;
+            this._gridPosition = gridPosition;
+            _unitList = new List<Unit>();
         }
-        return gridPosition + "\n" + unitString;
-    }
 
-    public void AddUnit(Unit unit)
-    {
-        unitList.Add(unit);
-    }
+        public override string ToString()
+        {
+            string unitString = "";
+            foreach (Unit unit in _unitList)
+            {
+                unitString += unit + "\n";
+            }
+            return _gridPosition + "\n" + unitString;
+        }
 
-    public void RemoveUnit(Unit unit)
-    {
-        unitList.Remove(unit);
-    }
+        public void AddUnit(Unit unit)
+        {
+            _unitList.Add(unit);
+        }
 
-    public List<Unit> GetUnitList()
-    {
-        return unitList;
+        public void RemoveUnit(Unit unit)
+        {
+            _unitList.Remove(unit);
+        }
+
+        public List<Unit> GetUnitList()
+        {
+            return _unitList;
+        }
     }
 }

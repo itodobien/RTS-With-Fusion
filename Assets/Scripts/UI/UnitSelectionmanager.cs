@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Fusion;
+using Unit_Activities;
+using UnityEngine;
 
-namespace Unit_Activities
+namespace UI
 {
     public class UnitSelectionManager : MonoBehaviour
     {
@@ -14,17 +15,17 @@ namespace Unit_Activities
         [SerializeField] private RectTransform selectionBoxVisual;
         [SerializeField] private LayerMask unitLayerMask;
 
-        private Vector2 selectionBoxStart;
-        private Vector2 selectionBoxEnd;
+        private Vector2 _selectionBoxStart;
+        private Vector2 _selectionBoxEnd;
 
-        private bool isMouseDragging;
-        private bool isMouseDown;
+        private bool _isMouseDragging;
+        private bool _isMouseDown;
 
-        private Vector3 mouseStartPosition;
-        private List<Unit> selectedUnits = new(); 
-        private PlayerRef activePlayer; 
+        private Vector3 _mouseStartPosition;
+        private List<Unit> _selectedUnits = new(); 
+        private PlayerRef _activePlayer; 
         
-        private HashSet<(NetworkId unitId, bool isSelected)> pendingSelectionChanges = new HashSet<(NetworkId, bool)>();
+        private readonly HashSet<(NetworkId unitId, bool isSelected)> _pendingSelectionChanges = new HashSet<(NetworkId, bool)>();
 
         private void Awake()
         {
@@ -38,15 +39,15 @@ namespace Unit_Activities
 
         private void Start()
         {
-            isMouseDown = false;
-            isMouseDragging = false;
+            _isMouseDown = false;
+            _isMouseDragging = false;
             selectionBoxVisual.gameObject.SetActive(false);
         }
 
         private void Update()
         {
             HandleMouseInputs();
-            if (isMouseDragging)
+            if (_isMouseDragging)
             {
                 UpdateSelectionBoxVisual();
             }
@@ -54,26 +55,26 @@ namespace Unit_Activities
 
         private void HandleMouseInputs()
         {
-            switch (HandleMouseButtonState.GetMouseButtonState(0))
+            switch (HandleMouseButtonState.GetMouseButtonState())
             {
                 case HandleMouseButtonState.MouseButtonState.ButtonDown:
-                    isMouseDown = true;
-                    isMouseDragging = false;
-                    mouseStartPosition = Input.mousePosition;
-                    selectionBoxStart = mouseStartPosition;
+                    _isMouseDown = true;
+                    _isMouseDragging = false;
+                    _mouseStartPosition = Input.mousePosition;
+                    _selectionBoxStart = _mouseStartPosition;
                     break;
                 case HandleMouseButtonState.MouseButtonState.ButtonHeld:
-                    if(isMouseDown && !isMouseDragging)
+                    if(_isMouseDown && !_isMouseDragging)
                     {
-                        if (Vector3.Distance(Input.mousePosition, mouseStartPosition) > 10f)
+                        if (Vector3.Distance(Input.mousePosition, _mouseStartPosition) > 10f)
                         {
-                            isMouseDragging = true;
+                            _isMouseDragging = true;
                             selectionBoxVisual.gameObject.SetActive(true);
                         }
                     }
                     break;
                 case HandleMouseButtonState.MouseButtonState.ButtonUp:
-                    if (isMouseDragging)
+                    if (_isMouseDragging)
                     {
                         var unitsInSelection = GetUnitsInSelectionBox();
                         UpdateSelectedUnits(unitsInSelection);
@@ -82,8 +83,8 @@ namespace Unit_Activities
                     {
                         TrySingleUnitSelection(Input.mousePosition);
                     }
-                    isMouseDown = false;
-                    isMouseDragging = false;
+                    _isMouseDown = false;
+                    _isMouseDragging = false;
                     selectionBoxVisual.gameObject.SetActive(false);
                     break;
             }
@@ -91,31 +92,35 @@ namespace Unit_Activities
         
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
+            if (Camera.main != null)
             {
-                if (raycastHit.transform.TryGetComponent(out Unit unit))
+                Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
                 {
-                    if (unit.OwnerPlayerRef == activePlayer)
+                    if (raycastHit.transform.TryGetComponent(out Unit unit))
                     {
-                        UpdateSelectedUnits(new List<Unit> { unit }); 
+                        if (unit.OwnerPlayerRef == _activePlayer)
+                        {
+                            UpdateSelectedUnits(new List<Unit> { unit }); 
+                        }
+                        else
+                        {
+                            UpdateSelectedUnits(new List<Unit>()); // Clear selection
+                        }
+                        return;
                     }
-                    else
-                    {
-                        UpdateSelectedUnits(new List<Unit>()); // Clear selection
-                    }
-                    return;
                 }
             }
+
             UpdateSelectedUnits(new List<Unit>());
         }
         
         private void UpdateSelectionBoxVisual()
         {
-            selectionBoxEnd = Input.mousePosition;
+            _selectionBoxEnd = Input.mousePosition;
 
-            Vector2 boxStart = selectionBoxStart;
-            Vector2 boxEnd = selectionBoxEnd;
+            Vector2 boxStart = _selectionBoxStart;
+            Vector2 boxEnd = _selectionBoxEnd;
 
             Vector2 boxCenter = (boxStart + boxEnd) / 2; 
             selectionBoxVisual.position = boxCenter;     
@@ -130,16 +135,19 @@ namespace Unit_Activities
         private List<Unit> GetUnitsInSelectionBox()
         {
             List<Unit> unitsInBox = new();
-            Rect selectionRect = GetScreenRect(selectionBoxStart, selectionBoxEnd);
+            Rect selectionRect = GetScreenRect(_selectionBoxStart, _selectionBoxEnd);
 
-            foreach (var unit in FindObjectsOfType<Unit>())
+            foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                if (unit.OwnerPlayerRef == activePlayer)
+                if (unit.OwnerPlayerRef == _activePlayer)
                 {
-                    Vector3 unitScreenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
-                    if (selectionRect.Contains(unitScreenPos))
+                    if (Camera.main != null)
                     {
-                        unitsInBox.Add(unit);
+                        Vector3 unitScreenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
+                        if (selectionRect.Contains(unitScreenPos))
+                        {
+                            unitsInBox.Add(unit);
+                        }
                     }
                 }
             }
@@ -157,30 +165,30 @@ namespace Unit_Activities
 
         private void UpdateSelectedUnits(List<Unit> newSelection)
         {
-            foreach (var unit in selectedUnits)
+            foreach (var unit in _selectedUnits)
             {
                 if (unit.Object.HasInputAuthority)
                 {
-                    pendingSelectionChanges.Add((unit.Object.Id, false));
+                    _pendingSelectionChanges.Add((unit.Object.Id, false));
                 }
             }
             foreach (var unit in newSelection)
             {
                 if (unit.Object.HasInputAuthority)
                 {
-                    pendingSelectionChanges.Add((unit.Object.Id, true));
+                    _pendingSelectionChanges.Add((unit.Object.Id, true));
                 }
             }
-            selectedUnits = newSelection.ToList();
+            _selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public (NetworkId unitId, bool isSelected)? GetNextSelectionChange()
         {
-            if (pendingSelectionChanges.Count > 0)
+            if (_pendingSelectionChanges.Count > 0)
             {
-                var change = pendingSelectionChanges.First();
-                pendingSelectionChanges.Remove(change);
+                var change = _pendingSelectionChanges.First();
+                _pendingSelectionChanges.Remove(change);
                 return change;
             }
             return null;
@@ -189,12 +197,12 @@ namespace Unit_Activities
 
         public void SetActivePlayer(PlayerRef playerRef)
         {
-            activePlayer = playerRef;
+            _activePlayer = playerRef;
         }
         
         public List<Unit> GetSelectedUnits()
         {
-            return new List<Unit>(selectedUnits);
+            return new List<Unit>(_selectedUnits);
         }
     }
 }

@@ -1,14 +1,15 @@
-using System;
-using Unit_Activities;
 using UnityEngine;
 
-public class BaseAction : MonoBehaviour
+namespace Unit_Activities
 {
-    protected Unit unit;
-    protected bool isActive;
-
-    protected virtual void Awake()
+    public class BaseAction : MonoBehaviour
     {
-        unit = GetComponent<Unit>();
+        protected Unit unit;
+        protected bool isActive;
+
+        protected virtual void Awake()
+        {
+            unit = GetComponent<Unit>();
+        }
     }
 }
