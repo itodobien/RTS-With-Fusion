@@ -15,7 +15,6 @@ namespace UI
 
         void Update()
         {
-        
             Vector3 inputMoveDir = Vector3.zero;
 
             if (Input.GetKey(KeyCode.UpArrow))
