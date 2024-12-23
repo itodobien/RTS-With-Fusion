@@ -1,30 +1,17 @@
 using UnityEngine;
+using Unity.Cinemachine;
 
 namespace UI
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : MonoBehaviour // attached to Empty game Object in scene
     {
         [Header("Movement Settings")]
-        public float moveSpeed = 10f;     // Speed for arrow-key movement
-        public float panSpeed = 50f;      // Speed for middle-mouse panning
+        public float moveSpeed = 10f;     
+        public float rotationsSpeed = 100;
+        public float zoomSpeed = 10f;
+        
+        [SerializeField] private CinemachineCamera cmCamera;
 
-        [Header("Zoom Settings")]
-        public float zoomSpeed = 20f;     // How quickly to zoom using the scroll wheel
-        public float minZoom = 10f;       // Closest zoom distance
-        public float maxZoom = 100f;      // Farthest zoom distance
-    
-        [Header("Zoom Interpolation Settings")]
-        public float zoomLerpSpeed = 10f;  // Speed to smooth the zoom transition
-
-        private float _targetZoom;   
-
-        private float _currentZoom;
-
-        void Start()
-        {
-            _currentZoom = transform.position.y;
-            _targetZoom = _currentZoom;
-        }
 
         void Update()
         {
@@ -41,33 +28,28 @@ namespace UI
                 inputMoveDir += Vector3.right;
         
             Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x;
-
             transform.position += moveVector * (moveSpeed * Time.deltaTime);
 
-            // 2) Zoom with scroll wheel
-            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-            if (Mathf.Abs(scrollInput) > 0.01f)
-            {
-                // Update target zoom value
-                _targetZoom -= scrollInput * zoomSpeed;
-                _targetZoom = Mathf.Clamp(_targetZoom, minZoom, maxZoom);
-            }
-        
-            _currentZoom = Mathf.Lerp(_currentZoom, _targetZoom, zoomLerpSpeed * Time.deltaTime);
-            Vector3 newPosition = transform.position;
-            newPosition.y = _currentZoom;
-            transform.position = newPosition;
+            Vector3 rotationVector = Vector3.zero;
 
-            // 3) Middle mouse click + drag to pan
-            if (Input.GetMouseButton(2))
+            if (Input.GetKey(KeyCode.Q))
             {
-                float mouseX = Input.GetAxis("Mouse X");
-                float mouseY = Input.GetAxis("Mouse Y");
+                rotationVector.y = +1f;
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                rotationVector.y = -1f;
+            }
+            transform.eulerAngles += rotationVector * (rotationsSpeed * Time.deltaTime);
             
+            var zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
+            var offset = cmCamera.GetComponent<CinemachineFollow>().FollowOffset;
+            offset.y -= zoom;
+            offset.z += zoom;
+            offset.y = Mathf.Clamp(offset.y, 3, 11);
+            offset.z = Mathf.Clamp(offset.z, -14, -6);
+            cmCamera.GetComponent<CinemachineFollow>().FollowOffset = offset;
 
-                Vector3 panMovement = new Vector3(-mouseX, -mouseY, 0) * (panSpeed * Time.deltaTime);
-                transform.Translate(panMovement, Space.Self);
-            }
         }
     }
 }
