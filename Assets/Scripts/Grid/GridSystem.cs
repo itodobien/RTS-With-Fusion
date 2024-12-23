@@ -7,7 +7,7 @@ namespace Grid
         private int _width;
         private int _height;
         private float _cellSize;
-        private GridObject[,] gridObjectArray;
+        private GridObject[,] _gridObjectArray;
     
     
         public GridSystem(int width, int height, float cellSize)
@@ -16,14 +16,14 @@ namespace Grid
             this._height = height;
             this._cellSize = cellSize;
         
-            gridObjectArray = new GridObject[width, height];
+            _gridObjectArray = new GridObject[width, height];
 
             for (int x = 0; x < width; x++)
             {
                 for (int z = 0; z < height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    gridObjectArray[x, z] = new GridObject(this, gridPosition);
+                    _gridObjectArray[x, z] = new GridObject(this, gridPosition);
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace Grid
 
         public GridObject GetGridObject(GridPosition gridPosition)
         {
-            return gridObjectArray[gridPosition.x, gridPosition.z];
+            return _gridObjectArray[gridPosition.x, gridPosition.z];
         }
     }
 }

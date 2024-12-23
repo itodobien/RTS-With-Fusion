@@ -1,62 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actions;
 using Fusion;
-using UI;
-using Unit_Activities;
+using Units;
 using UnityEngine;
 
-public class UnitActionSystemUI : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private Transform actionButtonPrefab;
-    [SerializeField] private Transform actionButtonContainerTransform;
 
-    private List<GameObject> actionButtons = new ();
-    private NetworkRunner _runner;
 
-    private IEnumerator Start()
+    public class UnitActionSystemUI : MonoBehaviour
     {
-        yield return new WaitUntil(() => UnitSelectionManager.Instance != null);
-        UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
-        _runner = FindObjectOfType<NetworkRunner>();
-        CreateUnitActionButtons();
-    }
+        [SerializeField] private Transform actionButtonPrefab;
+        [SerializeField] private Transform actionButtonContainerTransform;
 
-    private void OnDestroy()
-    {
-        if (UnitSelectionManager.Instance != null)
+        private List<GameObject> _actionButtons = new();
+        private NetworkRunner _runner;
+
+        private IEnumerator Start()
         {
-            UnitSelectionManager.Instance.OnSelectedUnitsChanged -= UnitSelectionManager_OnSelectedUnitsChanged;
-        }
-    }
-
-    private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, System.EventArgs e)
-    {
-        CreateUnitActionButtons();
-    }
-
-    private void CreateUnitActionButtons()
-    {
-        if (UnitSelectionManager.Instance == null || actionButtonPrefab == null || actionButtonContainerTransform == null)
-        {
-            Debug.LogError("Missing references in UnitActionSystemUI");
-            return;
+            yield return new WaitUntil(() => UnitSelectionManager.Instance != null);
+            UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
+            _runner = FindObjectOfType<NetworkRunner>();
+            CreateUnitActionButtons();
         }
 
-        foreach (GameObject button in actionButtons)
+        private void OnDestroy()
         {
-            Destroy(button);
-        }
-        actionButtons.Clear();
-
-        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
-        if (selectedUnits.Count > 0)
-        {
-            Unit firstSelectedUnit = selectedUnits[0];
-
-            foreach (BaseAction baseAction in firstSelectedUnit.GetBaseActionArray())
+            if (UnitSelectionManager.Instance != null)
             {
-                GameObject actionButton = Instantiate(actionButtonPrefab.gameObject, actionButtonContainerTransform);
-                actionButtons.Add(actionButton);
+                UnitSelectionManager.Instance.OnSelectedUnitsChanged -= UnitSelectionManager_OnSelectedUnitsChanged;
+            }
+        }
+
+        private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, System.EventArgs e)
+        {
+            CreateUnitActionButtons();
+        }
+
+        private void CreateUnitActionButtons()
+        {
+            if (UnitSelectionManager.Instance == null || actionButtonPrefab == null ||
+                actionButtonContainerTransform == null)
+            {
+                Debug.LogError("Missing references in UnitActionSystemUI");
+                return;
+            }
+
+            foreach (GameObject button in _actionButtons)
+            {
+                Destroy(button);
+            }
+
+            _actionButtons.Clear();
+
+            var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
+            if (selectedUnits.Count > 0)
+            {
+                Unit firstSelectedUnit = selectedUnits[0];
+
+                foreach (BaseAction baseAction in firstSelectedUnit.GetBaseActionArray())
+                {
+                    GameObject actionButton =
+                        Instantiate(actionButtonPrefab.gameObject, actionButtonContainerTransform);
+                    _actionButtons.Add(actionButton);
+                }
             }
         }
     }

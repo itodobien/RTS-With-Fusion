@@ -1,4 +1,4 @@
-using Unit_Activities;
+using Units;
 using UnityEngine;
 
 namespace Fusion
@@ -8,7 +8,7 @@ namespace Fusion
         private NetworkCharacterController _characterController;
         private Vector3 _forward;
 
-        [SerializeField] private NetworkPrefabRef _prefabUnit;
+        [SerializeField] private NetworkPrefabRef prefabUnit;
         [SerializeField] private float spawnDelay = 0.5f;
         [SerializeField] private Animator playerAnimator;
         [Networked] private TickTimer Delay { get; set; }
@@ -51,7 +51,7 @@ namespace Fusion
                             : transform.position + _forward;
 
                         Runner.Spawn(
-                            _prefabUnit,
+                            prefabUnit,
                             spawnPos,
                             Quaternion.LookRotation(_forward),
                             Object.InputAuthority,

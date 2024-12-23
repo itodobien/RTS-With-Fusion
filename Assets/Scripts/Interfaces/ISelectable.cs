@@ -1,15 +1,18 @@
-using UnityEngine;
 using Fusion;
+using UnityEngine;
 
-public interface ISelectable
+namespace Interfaces
 {
-    int Team { get; }
+    public interface ISelectable
+    {
+        int Team { get; }
     
-    PlayerRef OwnerPlayerRef { get; }
-    NetworkBool IsSelected { get; set; }
+        PlayerRef OwnerPlayerRef { get; }
+        NetworkBool IsSelected { get; set; }
     
-    GameObject GameObject { get; }
+        GameObject GameObject { get; }
     
-    void Select();
-    void Deselect();
+        void Select();
+        void Deselect();
+    }
 }

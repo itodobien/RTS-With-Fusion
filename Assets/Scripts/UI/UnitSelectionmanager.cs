@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enums;
 using Fusion;
-using Unit_Activities;
+using Units;
 using UnityEngine;
 
 namespace UI

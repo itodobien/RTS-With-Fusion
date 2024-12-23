@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Unit_Activities
+namespace Actions
 {
     public class UnitActionSystem : NetworkBehaviour
     {

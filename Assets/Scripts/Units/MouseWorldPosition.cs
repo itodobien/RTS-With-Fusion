@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Unit_Activities
+namespace Units
 {
     public class MouseWorldPosition : MonoBehaviour
     {

@@ -1,13 +1,14 @@
-using System;
+using Actions;
 using Fusion;
 using Grid;
 using UnityEngine;
 
-namespace Unit_Activities
+namespace Units
 {
     public class Unit : NetworkBehaviour
     {
-        private BaseAction[] baseActionsArray;
+        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+        private BaseAction[] _baseActionsArray;
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] public NetworkBool IsSelected { get; set; }
@@ -17,7 +18,7 @@ namespace Unit_Activities
         private NetworkCharacterController _unitCharacterController;
         private ChangeDetector _changeDetector;
         
-        private GridPosition gridPosition;
+        private GridPosition _gridPosition;
         
         [SerializeField] private float stopDistance = 0.1f;
         [SerializeField] private Animator playerAnimator;
@@ -27,7 +28,7 @@ namespace Unit_Activities
         private void Awake()
         {
             _unitCharacterController = GetComponent<NetworkCharacterController>();
-            baseActionsArray = GetComponents<BaseAction>();
+            _baseActionsArray = GetComponents<BaseAction>();
         }
 
         public override void Spawned()
@@ -39,17 +40,17 @@ namespace Unit_Activities
 
         private void Start()
         {
-            gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-            LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+            _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+            LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
         }
 
         private void Update()
         {
             GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-            if (newGridPosition != gridPosition)
+            if (newGridPosition != _gridPosition)
             {
-                LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
-                gridPosition = newGridPosition;
+                LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
+                _gridPosition = newGridPosition;
             }
         }
 
@@ -122,7 +123,7 @@ namespace Unit_Activities
 
                     if (playerAnimator != null)
                     {
-                        playerAnimator.SetBool("IsWalking", true);
+                        playerAnimator.SetBool(IsWalking, true);
                     }
                 }
                 else
@@ -130,7 +131,7 @@ namespace Unit_Activities
                     IsMoving = false;
                     if (playerAnimator != null)
                     {
-                        playerAnimator.SetBool("IsWalking", false);
+                        playerAnimator.SetBool(IsWalking, false);
                     }
                 }
             }
@@ -138,10 +139,9 @@ namespace Unit_Activities
             {
                 if (playerAnimator != null)
                 {
-                    playerAnimator.SetBool("IsWalking", false);
+                    playerAnimator.SetBool(IsWalking, false);
                 }
             }
-            
         }
 
         public void SetTargetPositionLocal(Vector3 newTargetPosition)
@@ -155,7 +155,7 @@ namespace Unit_Activities
 
         public BaseAction[] GetBaseActionArray()
         {
-            return baseActionsArray;
+            return _baseActionsArray;
         }
     }
 }

@@ -1,6 +1,7 @@
+using Units;
 using UnityEngine;
 
-namespace Unit_Activities
+namespace Actions
 {
     public class BaseAction : MonoBehaviour
     {
