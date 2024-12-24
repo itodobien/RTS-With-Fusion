@@ -5,6 +5,7 @@ namespace Fusion
 {
     public class Player : NetworkBehaviour
     {
+        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private NetworkCharacterController _characterController;
         private Vector3 _forward;
 
@@ -28,11 +29,11 @@ namespace Fusion
                 if (data.direction.sqrMagnitude > 0)
                 {
                     _forward = data.direction;
-                    playerAnimator.SetBool("IsWalking", true);
+                    playerAnimator.SetBool(IsWalking, true);
                 }
                 else
                 {
-                    playerAnimator.SetBool("IsWalking", false);
+                    playerAnimator.SetBool(IsWalking, false);
                 }
 
                 if (HasStateAuthority && Delay.ExpiredOrNotRunning(Runner))

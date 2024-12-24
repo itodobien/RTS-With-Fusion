@@ -18,13 +18,16 @@ namespace UI
 
         private Vector2 _selectionBoxStart;
         private Vector2 _selectionBoxEnd;
-
-        private bool _isMouseDragging;
-        private bool _isMouseDown;
-
+        
         private Vector3 _mouseStartPosition;
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
+        
+        
+
+
+        private bool _isMouseDragging;
+        private bool _isMouseDown;
         
         private readonly HashSet<(NetworkId unitId, bool isSelected)> _pendingSelectionChanges = new HashSet<(NetworkId, bool)>();
 
@@ -36,6 +39,7 @@ namespace UI
                 return;
             }
             Instance = this;
+
         }
 
         private void Start()
@@ -100,7 +104,8 @@ namespace UI
                 {
                     if (raycastHit.transform.TryGetComponent(out Unit unit))
                     {
-                        if (unit.OwnerPlayerRef == _activePlayer)
+                        var moveAction = unit.GetMoveAction();
+                        if (moveAction != null && moveAction.OwnerPlayerRef == _activePlayer)
                         {
                             UpdateSelectedUnits(new List<Unit> { unit }); 
                         }
@@ -140,7 +145,8 @@ namespace UI
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                if (unit.OwnerPlayerRef == _activePlayer)
+                var _moveAction = unit.GetMoveAction();
+                if (_moveAction != null && _moveAction.OwnerPlayerRef == _activePlayer)
                 {
                     if (Camera.main != null)
                     {
@@ -157,8 +163,6 @@ namespace UI
 
         private Rect GetScreenRect(Vector2 start, Vector2 end)
         {
-            /*start.y = Screen.height - start.y; // These 2 lines had completely broken my selection box selection accuracy. 
-            end.y = Screen.height - end.y;*/
             Vector2 bottomLeft = Vector2.Min(start, end);
             Vector2 topRight = Vector2.Max(start, end);
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
@@ -168,17 +172,11 @@ namespace UI
         {
             foreach (var unit in _selectedUnits)
             {
-                if (unit.Object.HasInputAuthority)
-                {
-                    _pendingSelectionChanges.Add((unit.Object.Id, false));
-                }
+                _pendingSelectionChanges.Add((unit.Object.Id, false));
             }
             foreach (var unit in newSelection)
             {
-                if (unit.Object.HasInputAuthority)
-                {
-                    _pendingSelectionChanges.Add((unit.Object.Id, true));
-                }
+                _pendingSelectionChanges.Add((unit.Object.Id, true));
             }
             _selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
@@ -194,7 +192,6 @@ namespace UI
             }
             return null;
         }
-
 
         public void SetActivePlayer(PlayerRef playerRef)
         {

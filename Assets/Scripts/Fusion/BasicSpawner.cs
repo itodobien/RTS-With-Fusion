@@ -118,6 +118,8 @@ namespace Fusion
                 data.selectedUnitId = selectionChange.Value.unitId;
                 data.isSelected = selectionChange.Value.isSelected;                
             }
+
+            data.buttons.Set(NetworkInputData.JUMP, Input.GetKey(KeyCode.Space));
             input.Set(data);
         }
     

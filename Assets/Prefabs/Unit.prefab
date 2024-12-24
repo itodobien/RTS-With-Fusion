@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 6472570155130852145}
   - component: {fileID: 7366638985930796108}
   - component: {fileID: -2324179521120485681}
-  - component: {fileID: 1826299695959393122}
+  - component: {fileID: 2085096747064906289}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -151,13 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90997819b62aaa542b58c00b23b5b04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IsSelected:
-    _value: 0
-  team: -1
-  stopDistance: 0.5
-  playerAnimator: {fileID: 3016448950828840942}
-  moveSpeed: 4
-  rotateSpeed: 10
 --- !u!114 &7495006153523953547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +170,8 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7222754836991821725}
   - {fileID: -2324179521120485681}
+  - {fileID: 2085096747064906289}
+  ForceRemoteRenderTimeframe: 0
 --- !u!114 &6472570155130852145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,13 +222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
   gravity: -9.81
   jumpImpulse: 5
   acceleration: 10
   braking: 20
   maxSpeed: 5
   rotationSpeed: 15
---- !u!114 &1826299695959393122
+--- !u!114 &2085096747064906289
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,11 +238,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8381045223856706878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 4036f02d7f908e944aab9074eea88afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
+  stopDistance: 0.5
+  moveSpeed: 5
+  rotateSpeed: 8
+  playerAnimator: {fileID: 3016448950828840942}
+  _IsSelected:
+    _value: 0
 --- !u!1001 &2920823552252434870
 PrefabInstance:
   m_ObjectHideFlags: 0

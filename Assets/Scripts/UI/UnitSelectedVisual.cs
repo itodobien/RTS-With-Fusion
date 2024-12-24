@@ -9,19 +9,24 @@ namespace UI
         [SerializeField] private Unit unit;
     
         private MeshRenderer _meshRenderer;
-        private NetworkRunner _runner;
 
         private void Awake()
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
             
-            _runner = FindObjectOfType<NetworkRunner>();
+            if (_meshRenderer == null)
+            {
+                _meshRenderer = GetComponent<MeshRenderer>();   
+            }
         }
 
         private void Start()
         {
-            UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
-            UpdateVisual();
+            if (UnitSelectionManager.Instance != null)
+            {
+                UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
+                UpdateVisual();
+            }
         }
 
         private void OnDestroy()
@@ -38,10 +43,9 @@ namespace UI
 
         private void UpdateVisual()
         {
-            if (_runner != null)
-            {
-                _meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
-            }
+            if (_meshRenderer == null || UnitSelectionManager.Instance == null) return;
+            
+            _meshRenderer.enabled = UnitSelectionManager.Instance.GetSelectedUnits().Contains(unit);
             
         }
     }

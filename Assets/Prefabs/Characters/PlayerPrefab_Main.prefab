@@ -186,13 +186,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df454c3ffc30a145a705b41fd470992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefabUnit:
+  prefabUnit:
     RawGuidValue: 2115199b98cab0241a5d48f4479fc68f
   spawnDelay: 0.5
-  stopDistance: 0.1
   playerAnimator: {fileID: 242778183055768082}
-  moveSpeed: 4
-  rotateSpeed: 10
 --- !u!114 &7012137610215788588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +209,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8007613199436718821}
   - {fileID: 4846227252036254390}
+  ForceRemoteRenderTimeframe: 0
 --- !u!143 &4960225366003212357
 CharacterController:
   m_ObjectHideFlags: 0
@@ -249,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
   gravity: -9.81
   jumpImpulse: 8
   acceleration: 10
