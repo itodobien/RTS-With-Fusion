@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion.Sockets;
+using Grid;
 using UI;
 using Units;
 using UnityEngine;
@@ -96,6 +97,13 @@ namespace Fusion
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
+                
+                var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
+                var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
+                
+                data.targetGridX = clickedGridPosition.x;
+                data.targetGridZ = clickedGridPosition.z;
+                
                 data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
                 _mouseButton1 = false; // Reset button after it's recorded
             }

@@ -15,6 +15,9 @@ namespace Fusion
         public NetworkButtons buttons;
         public Vector3 targetPosition;
         public Vector3 spawnPosition;
+        
+        public int targetGridX;
+        public int targetGridZ;
 
         public NetworkId selectedUnitId;
         public bool isSelected;

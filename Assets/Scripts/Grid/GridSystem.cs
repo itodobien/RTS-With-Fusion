@@ -28,7 +28,7 @@ namespace Grid
             }
         }
 
-        private Vector3 GetWorldPosition(GridPosition gridPosition)
+        public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
             return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
         }
@@ -65,5 +65,9 @@ namespace Grid
                    gridPosition.z >= 0 && 
                    gridPosition.z < _height;
         }
+
+        public int GetWidth() => _width;
+        public int GetHeight() => _height;
+        
     }
 }

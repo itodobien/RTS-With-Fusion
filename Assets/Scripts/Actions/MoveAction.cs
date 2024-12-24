@@ -57,8 +57,17 @@ namespace Actions
             {
                 if (GetInput(out NetworkInputData data) && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                 {
-                    TargetPosition = data.targetPosition;
-                    IsMoving = true;
+                    GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
+                    if (IsValidActionGridPosition(clickedGridPosition))
+                    {
+                        Vector3 worldPosition = LevelGrid.Instance.GetWorldPostion(clickedGridPosition);
+                        TargetPosition = worldPosition;
+                        IsMoving = true;
+                    }
+                    else
+                    {
+                        Debug.Log("Invalid Move Target");
+                    }
                 }
             }
             if (IsMoving)
