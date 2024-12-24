@@ -4,10 +4,10 @@ namespace Grid
 {
     public class GridSystem
     {
-        private int _width;
-        private int _height;
-        private float _cellSize;
-        private GridObject[,] _gridObjectArray;
+        private readonly int _width;
+        private readonly int _height;
+        private readonly float _cellSize;
+        private readonly GridObject[,] _gridObjectArray;
     
     
         public GridSystem(int width, int height, float cellSize)
@@ -28,7 +28,7 @@ namespace Grid
             }
         }
 
-        public Vector3 GetWorldPosition(GridPosition gridPosition)
+        private Vector3 GetWorldPosition(GridPosition gridPosition)
         {
             return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
         }
@@ -45,7 +45,7 @@ namespace Grid
                 for (int z = 0; z < _height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    Transform debugTransForm = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                    Transform debugTransForm = Object.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
                     GridDebugObject gridDebugObject = debugTransForm.GetComponent<GridDebugObject>();
                     gridDebugObject.SetGridObject(GetGridObject(gridPosition));
                 
@@ -56,6 +56,14 @@ namespace Grid
         public GridObject GetGridObject(GridPosition gridPosition)
         {
             return _gridObjectArray[gridPosition.x, gridPosition.z];
+        }
+        
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            return gridPosition.x >= 0 && 
+                   gridPosition.x < _width && 
+                   gridPosition.z >= 0 && 
+                   gridPosition.z < _height;
         }
     }
 }

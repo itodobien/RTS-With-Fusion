@@ -62,6 +62,11 @@ namespace Units
             return _moveAction;
         }
         
+        public GridPosition GetGridPosition()
+        {
+            return _gridPosition;
+        }
+        
         public BaseAction[] GetBaseActionArray()
         {
             return _baseActionsArray;

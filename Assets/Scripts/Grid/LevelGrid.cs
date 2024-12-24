@@ -52,6 +52,13 @@ namespace Grid
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
+        public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
+
+        public bool HasUnitAtGridPosition(GridPosition gridPosition)
+        {
+            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+            return gridObject.HasAnyUnit();
+        }
     
     }
 }

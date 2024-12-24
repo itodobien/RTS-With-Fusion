@@ -6,9 +6,9 @@ namespace Grid
     public class GridObject
 
     {
-        private List<Unit> _unitList;
+        private readonly List<Unit> _unitList;
         private GridSystem _gridSystem;
-        private GridPosition _gridPosition;
+        private readonly GridPosition _gridPosition;
 
         public GridObject(GridSystem gridSystem, GridPosition gridPosition)
         {
@@ -40,6 +40,11 @@ namespace Grid
         public List<Unit> GetUnitList()
         {
             return _unitList;
+        }
+
+        public bool HasAnyUnit()
+        {
+            return _unitList.Count > 0;
         }
     }
 }
