@@ -22,8 +22,6 @@ namespace UI
         private Vector3 _mouseStartPosition;
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
-        
-        
 
 
         private bool _isMouseDragging;

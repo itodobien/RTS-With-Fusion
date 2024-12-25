@@ -24,15 +24,15 @@ namespace Actions
             {
                 if (data.buttons.IsSet(NetworkInputData.SPIN) && _unit.GetIsSelected())
                 {
-                    if (!moveAction.IsMoving)
-                        IsSpinning = true;
+                    if (Object.HasStateAuthority && !moveAction.IsMoving)
+                        IsSpinning = !IsSpinning;
                 }
                 else
                 {
                     IsSpinning = false;
                 }
             }
-            if (IsSpinning && !moveAction.IsMoving)
+            if (Object.HasStateAuthority && IsSpinning && !moveAction.IsMoving)
             {
                 transform.Rotate(Vector3.up, 360 * Time.deltaTime * spinRotateSpeed);
             }

@@ -22,12 +22,11 @@ namespace Actions
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
 
-        private NetworkCharacterController _unitCharacterController;
+        
         private Unit _unit;
 
         private void Awake()
         {
-            _unitCharacterController = GetComponent<NetworkCharacterController>();
             _unit = GetComponent<Unit>();
         }
 
@@ -75,7 +74,7 @@ namespace Actions
                 if (distance > stopDistance)
                 {
                     Vector3 moveDirection = toTarget.normalized;
-                    _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
+                    transform.position += moveDirection * moveSpeed * Runner.DeltaTime;
 
                     Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                     transform.rotation = Quaternion.Slerp(

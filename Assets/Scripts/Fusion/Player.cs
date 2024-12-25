@@ -5,7 +5,7 @@ namespace Fusion
 {
     public class Player : NetworkBehaviour
     {
-        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+        private static int IsWalking = Animator.StringToHash("IsWalking");
         private NetworkCharacterController _characterController;
         private Vector3 _forward;
 
