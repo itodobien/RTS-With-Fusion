@@ -18,12 +18,11 @@ namespace Actions
 
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
-        [Networked] private bool IsMoving { get; set; }
+        [Networked] public bool IsMoving { get; set; }
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
 
         private NetworkCharacterController _unitCharacterController;
-        private ChangeDetector _changeDetector;
         private Unit _unit;
 
         private void Awake()
@@ -36,7 +35,7 @@ namespace Actions
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
-            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+
         }
 
         public override void FixedUpdateNetwork()
@@ -48,28 +47,26 @@ namespace Actions
                     _unit.SetNetworkSelected(data.isSelected);
                 }
             }
+
+            if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+            {
+                GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
+                if (IsValidActionGridPosition(clickedGridPosition))
+                {
+                    Vector3 worldPosition = LevelGrid.Instance.GetWorldPostion(clickedGridPosition);
+                    TargetPosition = worldPosition;
+                    IsMoving = true;
+                }
+                else
+                {
+                    Debug.Log("Invalid Move Target");
+                }
+            }
             HandleMovement();
         }
 
         private void HandleMovement()
         {
-            if (_unit != null && _unit.GetIsSelected())
-            {
-                if (GetInput(out NetworkInputData data) && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
-                {
-                    GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
-                    if (IsValidActionGridPosition(clickedGridPosition))
-                    {
-                        Vector3 worldPosition = LevelGrid.Instance.GetWorldPostion(clickedGridPosition);
-                        TargetPosition = worldPosition;
-                        IsMoving = true;
-                    }
-                    else
-                    {
-                        Debug.Log("Invalid Move Target");
-                    }
-                }
-            }
             if (IsMoving)
             {
                 Vector3 toTarget = TargetPosition - transform.position;
@@ -82,8 +79,10 @@ namespace Actions
                     _unitCharacterController.Move(moveDirection * moveSpeed * Runner.DeltaTime);
 
                     Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                    transform.rotation =
-                        Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Runner.DeltaTime);
+                    transform.rotation = Quaternion.Slerp(
+                        transform.rotation, 
+                        targetRotation, 
+                        rotateSpeed * Runner.DeltaTime);
 
                     if (playerAnimator != null)
                     {

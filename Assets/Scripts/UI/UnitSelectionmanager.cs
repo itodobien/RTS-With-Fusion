@@ -39,7 +39,6 @@ namespace UI
                 return;
             }
             Instance = this;
-
         }
 
         private void Start()
@@ -117,7 +116,6 @@ namespace UI
                     }
                 }
             }
-
             UpdateSelectedUnits(new List<Unit>());
         }
         

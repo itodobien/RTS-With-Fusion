@@ -9,6 +9,7 @@ namespace Fusion
         public const byte MOUSEBUTTON1 = 1;
         public const byte SPAWNUNIT = 2;
         public const byte JUMP = 3;
+        public const byte SPIN = 4;
         public const byte SELECT_UNIT = 0X10;
 
         public Vector3 direction;

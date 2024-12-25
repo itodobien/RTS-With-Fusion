@@ -118,6 +118,11 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
+
+            if (Input.GetKey(KeyCode.R))
+            {
+                data.buttons.Set(NetworkInputData.SPIN, true);
+            }
             
             var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();
             if (selectionChange.HasValue)

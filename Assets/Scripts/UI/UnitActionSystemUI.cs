@@ -49,7 +49,6 @@ namespace UI
             {
                 Destroy(button);
             }
-
             _actionButtons.Clear();
 
             var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();

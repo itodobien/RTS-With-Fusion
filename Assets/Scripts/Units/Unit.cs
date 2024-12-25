@@ -12,6 +12,7 @@ namespace Units
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
+        private SpinAction _spinAction;
         
         public override void Spawned()
         {
@@ -22,6 +23,7 @@ namespace Units
         {
             _baseActionsArray = GetComponents<BaseAction>();
             _moveAction = GetComponent<MoveAction>();
+            _spinAction = GetComponent<SpinAction>();
         }
 
         private void Start()
@@ -60,6 +62,11 @@ namespace Units
         public MoveAction GetMoveAction()
         {
             return _moveAction;
+        }
+
+        public SpinAction GetSpinAction()
+        {
+            return _spinAction;
         }
         
         public GridPosition GetGridPosition()
