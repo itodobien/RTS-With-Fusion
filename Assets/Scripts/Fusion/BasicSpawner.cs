@@ -14,6 +14,7 @@ namespace Fusion
         [SerializeField] private NetworkPrefabRef playerPrefab;
         
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
+        [SerializeField] private NetworkPrefabRef[] unitPrefabs;
     
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
@@ -70,8 +71,14 @@ namespace Fusion
         {
             if (runner.IsServer)
             {
-                Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
+                Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 0, 1);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
+                 int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
+                 
+                 Player playerScript = networkPlayerObject.GetComponent<Player>();
+                 playerScript.SetUnitPrefabIndex(unitPrefabIndex);
+                 
+                 playerScript.SetUnitPrebas(unitPrefabs);
                 _spawnedCharacters.Add(player, networkPlayerObject);
             }
         }

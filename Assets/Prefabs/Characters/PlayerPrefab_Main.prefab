@@ -187,8 +187,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df454c3ffc30a145a705b41fd470992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabUnit:
-    RawGuidValue: a96c5b3ba8a09c1429bca6e94afc16c6
+  moveSpeed: 4
+  unitPrefabs:
+  - RawGuidValue: 241ae1579ee192f4ca382e97e309f6ce
+  - RawGuidValue: 475516d982a150d478d822de0ca8e611
+  - RawGuidValue: c26374f038b8a3844bef898533ca5514
+  - RawGuidValue: e3f3d99c13545f748a3a30a6a3e51018
   spawnDelay: 0.5
   playerAnimator: {fileID: 242778183055768082}
 --- !u!114 &7012137610215788588

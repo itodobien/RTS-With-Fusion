@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Actions
 {
-    public class MoveAction : NetworkBehaviour
+    public class MoveAction : BaseAction
     {
         [Header("Move Action Settings")]
         [SerializeField]private float stopDistance = 0.1f;
@@ -22,12 +22,10 @@ namespace Actions
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
 
-        
-        private Unit _unit;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _unit = GetComponent<Unit>();
+            base.Awake();
         }
 
         public override void Spawned()

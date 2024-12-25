@@ -1,16 +1,22 @@
+using Fusion;
 using Units;
-using UnityEngine;
+
 
 namespace Actions
 {
-    public class BaseAction : MonoBehaviour
+    public abstract class BaseAction : NetworkBehaviour
     {
-        protected Unit unit;
+        protected Unit _unit;
         protected bool isActive;
 
         protected virtual void Awake()
         {
-            unit = GetComponent<Unit>();
+            _unit = GetComponent<Unit>();
+        }
+
+        protected virtual void Start()
+        {
+            
         }
     }
 }
