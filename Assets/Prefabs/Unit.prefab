@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 7366638985930796108}
   - component: {fileID: -2324179521120485681}
   - component: {fileID: 2085096747064906289}
-  - component: {fileID: 4412036873741536628}
+  - component: {fileID: 7718250485578423780}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -174,7 +174,7 @@ MonoBehaviour:
   - {fileID: 7222754836991821725}
   - {fileID: -2324179521120485681}
   - {fileID: 2085096747064906289}
-  - {fileID: 4412036873741536628}
+  - {fileID: 7718250485578423780}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6472570155130852145
 MonoBehaviour:
@@ -251,7 +251,7 @@ MonoBehaviour:
   maxMoveDistance: 4
   playerAnimator: {fileID: 3016448950828840942}
   _IsMoving: 0
---- !u!114 &4412036873741536628
+--- !u!114 &7718250485578423780
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAction: {fileID: 2085096747064906289}
-  spinRotateSpeed: 1
+  spinRotateSpeed: 2
 --- !u!1001 &2920823552252434870
 PrefabInstance:
   m_ObjectHideFlags: 0

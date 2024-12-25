@@ -35,7 +35,6 @@ namespace Actions
         {
             TargetPosition = transform.position;
             OwnerPlayerRef = Object.InputAuthority;
-
         }
 
         public override void FixedUpdateNetwork()
@@ -92,17 +91,14 @@ namespace Actions
                 else
                 {
                     IsMoving = false;
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool(IsWalking, false);
-                    }
+                    
                 }
             }
             else
             {
                 if (playerAnimator != null)
                 {
-                    playerAnimator.SetBool(IsWalking, false);
+                    playerAnimator.SetBool(IsWalking, IsMoving);
                 }
             }
         }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1723728885402116599}
   - component: {fileID: 53016846679471290}
   - component: {fileID: 4720333709497141537}
-  - component: {fileID: 3849294951765542510}
+  - component: {fileID: 5840219406433041022}
   m_Layer: 6
   m_Name: UnitB
   m_TagString: Untagged
@@ -74,7 +74,7 @@ MonoBehaviour:
   - {fileID: 3858875986982922863}
   - {fileID: 53016846679471290}
   - {fileID: 4720333709497141537}
-  - {fileID: 3849294951765542510}
+  - {fileID: 5840219406433041022}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &3948877217808485324
 MonoBehaviour:
@@ -147,11 +147,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stopDistance: 0.5
   moveSpeed: 5
-  rotateSpeed: 5
+  rotateSpeed: 8
   maxMoveDistance: 4
   playerAnimator: {fileID: 8691627956552242014}
   _IsMoving: 0
---- !u!114 &3849294951765542510
+--- !u!114 &5840219406433041022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAction: {fileID: 4720333709497141537}
-  spinRotateSpeed: 3
+  spinRotateSpeed: 2
 --- !u!1 &3224889345692126088
 GameObject:
   m_ObjectHideFlags: 0
