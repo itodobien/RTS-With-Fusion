@@ -123,7 +123,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
-      "depth": 3,
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -209,11 +209,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.splines": {
-      "version": "2.6.1",
+      "version": "2.7.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.ugui": "1.0.0",
         "com.unity.mathematics": "1.2.1",
         "com.unity.settings-manager": "1.0.3"
       },

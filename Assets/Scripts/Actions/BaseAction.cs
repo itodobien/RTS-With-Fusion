@@ -14,9 +14,6 @@ namespace Actions
             _unit = GetComponent<Unit>();
         }
 
-        protected virtual void Start()
-        {
-            
-        }
+        public abstract string GetActionName();
     }
 }

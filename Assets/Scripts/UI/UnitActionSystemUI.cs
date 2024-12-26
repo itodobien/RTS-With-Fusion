@@ -38,8 +38,8 @@ namespace UI
 
         private void CreateUnitActionButtons()
         {
-            if (UnitSelectionManager.Instance == null || actionButtonPrefab == null ||
-                actionButtonContainerTransform == null)
+            if (UnitSelectionManager.Instance is null || actionButtonPrefab is null ||
+                actionButtonContainerTransform is null)
             {
                 Debug.LogError("Missing references in UnitActionSystemUI");
                 return;
@@ -58,8 +58,9 @@ namespace UI
 
                 foreach (BaseAction baseAction in firstSelectedUnit.GetBaseActionArray())
                 {
-                    GameObject actionButton =
-                        Instantiate(actionButtonPrefab.gameObject, actionButtonContainerTransform);
+                    GameObject actionButton = Instantiate(actionButtonPrefab.gameObject, actionButtonContainerTransform);
+                    ActionButtonUI actionButtonUI = actionButton.GetComponent<ActionButtonUI>();
+                    actionButtonUI.SetBaseAction(baseAction);
                     _actionButtons.Add(actionButton);
                 }
             }

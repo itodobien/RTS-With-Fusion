@@ -1,12 +1,11 @@
 using Units;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Fusion
 {
     public class Player : NetworkBehaviour
     {
-        private static int IsWalking = Animator.StringToHash("IsWalking");
+        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private NetworkCharacterController _characterController;
         private Vector3 _forward;
         
@@ -16,7 +15,7 @@ namespace Fusion
         [SerializeField] private float spawnDelay = 0.5f;
         [SerializeField] private Animator playerAnimator;
         [Networked] private TickTimer Delay { get; set; }
-        [Networked] private int unitPrefabIndex { get; set; }
+        [Networked] private int UnitPrefabIndex { get; set; }
 
         private void Awake()
         {
@@ -26,7 +25,7 @@ namespace Fusion
 
         public void SetUnitPrefabIndex(int index)
         {
-            unitPrefabIndex = index;
+            UnitPrefabIndex = index;
         }
 
         public void SetUnitPrebas(NetworkPrefabRef[] prefabs)
@@ -60,7 +59,7 @@ namespace Fusion
                             ? data.spawnPosition
                             : transform.position + _forward;
                         
-                        NetworkPrefabRef chosenUnitPrefab = unitPrefabs[unitPrefabIndex];
+                        NetworkPrefabRef chosenUnitPrefab = unitPrefabs[UnitPrefabIndex];
 
                         Runner.Spawn(
                             chosenUnitPrefab,

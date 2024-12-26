@@ -16,7 +16,12 @@ namespace Actions
             base.Awake();
             moveAction = GetComponent<MoveAction>();
         }
-    
+
+        public override string GetActionName()
+        {
+            return "Spin";
+        }
+
         public override void FixedUpdateNetwork()
         {
             if (GetInput(out NetworkInputData data))

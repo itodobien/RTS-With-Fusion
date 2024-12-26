@@ -28,6 +28,11 @@ namespace Actions
             base.Awake();
         }
 
+        public override string GetActionName()
+        {
+            return "Move";
+        }
+
         public override void Spawned()
         {
             TargetPosition = transform.position;
