@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Actions;
 using Fusion;
+using JetBrains.Annotations;
 using Units;
 using UnityEngine;
 
@@ -12,8 +13,8 @@ namespace UI
         [SerializeField] private Transform actionButtonPrefab;
         [SerializeField] private Transform actionButtonContainerTransform;
 
-        private List<GameObject> _actionButtons = new();
-        private NetworkRunner _runner;
+        private readonly List<GameObject> _actionButtons = new();
+        [UsedImplicitly] private NetworkRunner _runner;
 
         private IEnumerator Start()
         {
@@ -61,8 +62,7 @@ namespace UI
                     GameObject actionButton = Instantiate(actionButtonPrefab.gameObject, actionButtonContainerTransform);
                     ActionButtonUI actionButtonUI = actionButton.GetComponent<ActionButtonUI>();
                     actionButtonUI.SetBaseAction(baseAction);
-                    _actionButtons.Add(actionButton);
-
+                    
                     bool canPerformThisAction = !firstSelectedUnit.IsBusy;
                     actionButtonUI.SetInteractable(canPerformThisAction);
                     _actionButtons.Add(actionButton);

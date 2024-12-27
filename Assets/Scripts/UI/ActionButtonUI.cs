@@ -8,11 +8,13 @@ public class ActionButtonUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
     [SerializeField] private Button button;
     
-    private BaseAction _baseAction;
 
     public void SetBaseAction(BaseAction _baseAction)
     {
-        this._baseAction = _baseAction;
+        button.onClick.AddListener(() =>
+        {
+            UnitActionSystem.Instance.SetSelectedAction(_baseAction);
+        });
         textMeshProUGUI.text = _baseAction.GetActionName().ToUpper();
     }
     

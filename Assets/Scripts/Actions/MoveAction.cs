@@ -29,7 +29,6 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
-            
             if(_unit.IsBusy && !IsMoving) return;    
             if (GetInput(out NetworkInputData data))
             {
@@ -56,9 +55,8 @@ namespace Actions
             MoveUnit();
         }
 
-        private void MoveUnit()
+        public void MoveUnit()
         {
-            
             if (IsMoving)
             {
                 Vector3 toTarget = TargetPosition - transform.position;

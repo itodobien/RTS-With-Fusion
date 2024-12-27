@@ -36,16 +36,20 @@ namespace Actions
 
             if (Object.HasStateAuthority && IsSpinning)
             {
-                _spinTimer -= Runner.DeltaTime;
-                transform.Rotate(Vector3.up, 360f * spinRotateSpeed * Runner.DeltaTime);
-                
-                if (_spinTimer <= 0)
-                {
-                    IsSpinning = false;
-                    ActionComplete();  // sets IsBusy = false
-                }
+                SpinUnit();
             }
-            
+        }
+        
+        public void SpinUnit()
+        {
+            _spinTimer -= Runner.DeltaTime;
+            transform.Rotate(Vector3.up, 360f * spinRotateSpeed * Runner.DeltaTime);
+                
+            if (_spinTimer <= 0)
+            {
+                IsSpinning = false;
+                ActionComplete();  // sets IsBusy = false
+            }
         }
     }
 }
