@@ -5,6 +5,7 @@ using Enums;
 using Fusion;
 using Units;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -57,6 +58,10 @@ namespace UI
 
         private void HandleMouseInputs()
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             switch (HandleMouseButtonState.GetMouseButtonState())
             {
                 case HandleMouseButtonState.MouseButtonState.ButtonDown:
@@ -94,6 +99,7 @@ namespace UI
         
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
+            
             if (Camera.main != null)
             {
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -141,8 +147,8 @@ namespace UI
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                var _moveAction = unit.GetMoveAction();
-                if (_moveAction != null && _moveAction.OwnerPlayerRef == _activePlayer)
+                var moveAction = unit.GetMoveAction();
+                if (moveAction != null && moveAction.OwnerPlayerRef == _activePlayer)
                 {
                     if (Camera.main != null)
                     {

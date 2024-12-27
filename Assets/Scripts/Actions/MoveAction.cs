@@ -97,7 +97,6 @@ namespace Actions
                     playerAnimator.SetBool(IsWalking, IsMoving);
                 }
             }
-            Debug.Log(_unit.IsBusy);
         }
 
         public bool IsValidActionGridPosition(GridPosition gridPosition)

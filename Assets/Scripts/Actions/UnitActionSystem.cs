@@ -15,10 +15,15 @@ namespace Actions
 
         private void Awake()
         {
+            Debug.Log($"UnitActionSystem Awake on {gameObject.name}");
             if (Instance != null && Instance != this)
             {
                 Debug.LogError("Multiple UAS instances detected. Destroying the new one.");
+                Destroy(gameObject);
+                return;
             }
+            Instance = this;
+            Debug.Log("UnitActionSystem: Instance has been set.");
         }
 
         private void Start()
