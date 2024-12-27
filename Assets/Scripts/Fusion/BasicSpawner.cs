@@ -13,8 +13,9 @@ namespace Fusion
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
         
-        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
         [SerializeField] private NetworkPrefabRef[] unitPrefabs;
+        
+        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;

@@ -62,6 +62,10 @@ namespace UI
                     ActionButtonUI actionButtonUI = actionButton.GetComponent<ActionButtonUI>();
                     actionButtonUI.SetBaseAction(baseAction);
                     _actionButtons.Add(actionButton);
+
+                    bool canPerformThisAction = !firstSelectedUnit.IsBusy;
+                    actionButtonUI.SetInteractable(canPerformThisAction);
+                    _actionButtons.Add(actionButton);
                 }
             }
         }

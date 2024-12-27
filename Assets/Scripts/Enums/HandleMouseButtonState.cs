@@ -4,7 +4,6 @@ namespace Enums
 {
     public static class HandleMouseButtonState
     {
-    
         public enum MouseButtonState
         {
             ButtonDown,

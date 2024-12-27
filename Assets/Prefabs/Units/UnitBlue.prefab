@@ -55,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _IsSelected:
     _value: 0
+  _IsBusy: 0
 --- !u!114 &3948877217808485324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAction: {fileID: 4720333709497141537}
-  spinRotateSpeed: 15
+  spinRotateSpeed: 1
 --- !u!114 &4809513960178436825
 MonoBehaviour:
   m_ObjectHideFlags: 0

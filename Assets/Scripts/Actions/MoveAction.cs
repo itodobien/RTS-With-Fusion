@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
 using Grid;
-using Units;
 using UnityEngine;
 
 namespace Actions
@@ -13,7 +12,6 @@ namespace Actions
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
         [SerializeField] private int maxMoveDistance = 4;
-
         [SerializeField] private Animator playerAnimator;
 
         [Networked] private Vector3 TargetPosition { get; set; }
@@ -21,17 +19,7 @@ namespace Actions
         [Networked] public bool IsMoving { get; set; }
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
-
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
-        public override string GetActionName()
-        {
-            return "Move";
-        }
+        public override string GetActionName() => "Move";
 
         public override void Spawned()
         {
@@ -41,6 +29,8 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
+            
+            if(_unit.IsBusy && !IsMoving) return;    
             if (GetInput(out NetworkInputData data))
             {
                 if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT) && data.selectedUnitId == Object.Id)
@@ -48,7 +38,6 @@ namespace Actions
                     _unit.SetNetworkSelected(data.isSelected);
                 }
             }
-
             if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
             {
                 GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
@@ -57,17 +46,19 @@ namespace Actions
                     Vector3 worldPosition = LevelGrid.Instance.GetWorldPostion(clickedGridPosition);
                     TargetPosition = worldPosition;
                     IsMoving = true;
+                    StartAction();
                 }
                 else
                 {
                     Debug.Log("Invalid Move Target");
                 }
             }
-            HandleMovement();
+            MoveUnit();
         }
 
-        private void HandleMovement()
+        private void MoveUnit()
         {
+            
             if (IsMoving)
             {
                 Vector3 toTarget = TargetPosition - transform.position;
@@ -93,6 +84,11 @@ namespace Actions
                 else
                 {
                     IsMoving = false;
+                    if (playerAnimator != null)
+                    {
+                        playerAnimator.SetBool(IsWalking, IsMoving);
+                    }
+                    ActionComplete();
                     
                 }
             }
@@ -103,6 +99,7 @@ namespace Actions
                     playerAnimator.SetBool(IsWalking, IsMoving);
                 }
             }
+            Debug.Log(_unit.IsBusy);
         }
 
         public bool IsValidActionGridPosition(GridPosition gridPosition)

@@ -8,11 +8,14 @@ namespace Units
     public class Unit : NetworkBehaviour
     {
         [Networked] public NetworkBool IsSelected { get; set; }
+        [Networked] public bool IsBusy { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
+        
+        
         
         public override void Spawned()
         {
@@ -51,6 +54,18 @@ namespace Units
             else
             {
                 Debug.LogWarning($"Attempted to set IsSelected on Unit {Object.Id} without state authority");
+            }
+        }
+
+        public void SetIsBusy(bool isBusy)
+        {
+            if (HasStateAuthority)
+            {
+                IsBusy = isBusy;
+            }
+            else
+            {
+                Debug.LogWarning($"Attempted to set IsBusy on Unit {Object.Id} without state authority");
             }
         }
 
