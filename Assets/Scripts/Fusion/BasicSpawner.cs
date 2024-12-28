@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Actions;
 using Fusion.Sockets;
 using Grid;
 using UI;
@@ -20,7 +21,8 @@ namespace Fusion
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
         
-        private bool _mouseButton1;
+        private bool _mouseButton0; // I don't know why these are greyed out
+        private bool _mouseButton1; // I use them in OnInput. 
         
         private void Awake()
         {
@@ -44,6 +46,7 @@ namespace Fusion
 
         private void Update()
         {
+            _mouseButton0 = Input.GetMouseButton(0);
             _mouseButton1 = Input.GetMouseButton(1);
         }
         async void StartGame(GameMode mode)
@@ -94,6 +97,12 @@ namespace Fusion
         {
             var data = new NetworkInputData();
 
+            if (Input.GetMouseButton(0))
+            {
+                data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
+                _mouseButton0 = false; // Reset button after it's recorded here as well
+            }
+            
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
@@ -118,10 +127,11 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
-            if (Input.GetKey(KeyCode.R))
+
+            /*if (Input.GetKey(KeyCode.R))
             {
                 data.buttons.Set(NetworkInputData.SPIN, true);
-            }
+            }*/
             
             var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();
             if (selectionChange.HasValue)
@@ -129,6 +139,14 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SELECT_UNIT, true);
                 data.selectedUnitId = selectionChange.Value.unitId;
                 data.isSelected = selectionChange.Value.isSelected;                
+            }
+
+            if (UnitActionSystem.Instance != null)
+            {
+                if (UnitActionSystem.Instance.GetSpinRequested())
+                {
+                    data.buttons.Set(NetworkInputData.SPIN, true);
+                }
             }
 
             data.buttons.Set(NetworkInputData.JUMP, Input.GetKey(KeyCode.Space));

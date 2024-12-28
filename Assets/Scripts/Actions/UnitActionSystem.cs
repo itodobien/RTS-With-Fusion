@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Fusion;
 using UI;
 using UnityEngine;
-using Unit = Units.Unit;
+using Units;
+
 
 namespace Actions
 {
@@ -14,6 +15,8 @@ namespace Actions
         
         private BaseAction selectedAction;
         private Unit selectedUnit;
+        
+        private bool spinRequested = false;
 
         private void Awake()
         {
@@ -76,7 +79,20 @@ namespace Actions
             return selectedAction;
         }
 
-        private void HandleSelectedAction()
+        public void RequestSpin()
+        {
+            spinRequested = true;
+        }
+
+        public bool GetSpinRequested()
+        {
+            bool wasSpinRequested = spinRequested;
+            spinRequested = false;
+            return wasSpinRequested;
+        }
+        
+
+        /*private void HandleSelectedAction()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -94,6 +110,6 @@ namespace Actions
         public override void FixedUpdateNetwork()
         {
             HandleSelectedAction();
-        }
+        }*/
     }
 }

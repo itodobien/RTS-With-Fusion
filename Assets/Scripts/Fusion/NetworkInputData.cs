@@ -4,11 +4,12 @@ namespace Fusion
 {
     public struct NetworkInputData : INetworkInput
     {
+        public const byte MOUSEBUTTON0 = 0;
         public const byte MOUSEBUTTON1 = 1;
         public const byte SPAWNUNIT = 2;
         public const byte JUMP = 3;
         public const byte SPIN = 4;
-        public const byte SELECT_UNIT = 0X10;
+        public const byte SELECT_UNIT = 5;
 
         public Vector3 direction;
         public NetworkButtons buttons;

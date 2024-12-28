@@ -51,10 +51,6 @@ namespace Units
             {
                 IsSelected = selected;
             }
-            else
-            {
-                Debug.LogWarning($"Attempted to set IsSelected on Unit {Object.Id} without state authority");
-            }
         }
 
         public void SetIsBusy(bool isBusy)
@@ -62,10 +58,6 @@ namespace Units
             if (HasStateAuthority)
             {
                 IsBusy = isBusy;
-            }
-            else
-            {
-                Debug.LogWarning($"Attempted to set IsBusy on Unit {Object.Id} without state authority");
             }
         }
 

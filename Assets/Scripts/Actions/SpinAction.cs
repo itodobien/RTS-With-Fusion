@@ -23,14 +23,25 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
-            if (!IsSpinning) return;
-            
-            _spinTimer -= Runner.DeltaTime;
-            transform.Rotate(Vector3.up, 360f * spinRotateSpeed * Runner.DeltaTime);
-            if (_spinTimer <= 0)
+            if (!IsSpinning)
             {
-                IsSpinning = false;
-                ActionComplete();
+                if (GetInput(out NetworkInputData data))
+                {
+                    if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.SPIN))
+                    {
+                        SpinUnit();
+                    }
+                }
+            }
+            if (IsSpinning)
+            {
+                _spinTimer -= Runner.DeltaTime;
+                transform.Rotate(Vector3.up, 360f * spinRotateSpeed * Runner.DeltaTime);
+                if (_spinTimer <= 0)
+                {
+                    IsSpinning = false;
+                    ActionComplete();
+                }
             }
         }
         
@@ -41,7 +52,6 @@ namespace Actions
             StartAction();
             IsSpinning = true;
             _spinTimer = _spinTime;
-            
         }
     }
 }

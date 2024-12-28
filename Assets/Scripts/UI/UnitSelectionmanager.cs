@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fusion; 
+using Enums;
+using Fusion;
 using Units;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -22,6 +23,7 @@ namespace UI
         private Vector3 _mouseStartPosition;
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
+
 
         private bool _isMouseDragging;
         private bool _isMouseDown;
@@ -135,7 +137,6 @@ namespace UI
             List<Unit> unitsInBox = new();
             Rect selectionRect = GetScreenRect(_selectionBoxStart, _selectionBoxEnd);
 
-            // find all units in the scene
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
                 var moveAction = unit.GetMoveAction();
@@ -157,7 +158,7 @@ namespace UI
         private Rect GetScreenRect(Vector2 start, Vector2 end)
         {
             Vector2 bottomLeft = Vector2.Min(start, end);
-            Vector2 topRight   = Vector2.Max(start, end);
+            Vector2 topRight = Vector2.Max(start, end);
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         }
 
@@ -171,7 +172,6 @@ namespace UI
             {
                 _pendingSelectionChanges.Add((unit.Object.Id, true));
             }
-
             _selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
         }

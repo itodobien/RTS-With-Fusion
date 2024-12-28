@@ -12,15 +12,19 @@ public class ActionButtonUI : MonoBehaviour
     private BaseAction _baseAction;
 
 
-    public void SetBaseAction(BaseAction _baseAction)
+    public void SetBaseAction(BaseAction baseAction)
     {
-        this._baseAction = _baseAction;
+        _baseAction = baseAction;
         button.onClick.AddListener(() =>
         {
             UnitActionSystem.Instance?.SetSelectedAction(_baseAction);
+
+            if (baseAction is SpinAction)
+            {
+                UnitActionSystem.Instance?.RequestSpin();
+            }
         });
         textMeshProUGUI.text = _baseAction.GetActionName().ToUpper();
-        
     }
     public void SetInteractable(bool isInteractable)
     {
