@@ -29,7 +29,6 @@ namespace Units
             {
                 return Vector3.zero;
             }
-            
         }
     }
 }

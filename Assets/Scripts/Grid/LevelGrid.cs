@@ -39,7 +39,7 @@ namespace Grid
             return gridObject.GetUnitList();
         }
 
-        public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
+        private void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             gridObject.RemoveUnit(unit);
@@ -52,7 +52,7 @@ namespace Grid
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
-        public Vector3 GetWorldPostion(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
+        public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
         public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
         
         public int GetWidth() => _gridSystem.GetWidth();

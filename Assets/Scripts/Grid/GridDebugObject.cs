@@ -10,7 +10,7 @@ namespace Grid
 
         public void SetGridObject(GridObject gridObject)
         {
-            this._gridObject = gridObject;
+            _gridObject = gridObject;
         }
 
         private void Update()

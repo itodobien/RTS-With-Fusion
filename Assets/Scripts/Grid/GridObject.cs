@@ -7,13 +7,11 @@ namespace Grid
 
     {
         private readonly List<Unit> _unitList;
-        private GridSystem _gridSystem;
         private readonly GridPosition _gridPosition;
 
         public GridObject(GridSystem gridSystem, GridPosition gridPosition)
         {
-            this._gridSystem = gridSystem;
-            this._gridPosition = gridPosition;
+            _gridPosition = gridPosition;
             _unitList = new List<Unit>();
         }
 

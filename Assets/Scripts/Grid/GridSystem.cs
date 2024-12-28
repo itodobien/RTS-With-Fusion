@@ -12,9 +12,9 @@ namespace Grid
     
         public GridSystem(int width, int height, float cellSize)
         {
-            this._width = width;
-            this._height = height;
-            this._cellSize = cellSize;
+            _width = width;
+            _height = height;
+            _cellSize = cellSize;
         
             _gridObjectArray = new GridObject[width, height];
 

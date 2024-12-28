@@ -68,7 +68,7 @@ namespace UI
 
             foreach (GameObject button in _actionButtons)
             {
-                Destroy(button);
+                Destroy(button); 
             }
             _actionButtons.Clear();
 

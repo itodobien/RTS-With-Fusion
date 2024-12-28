@@ -1,5 +1,4 @@
 using Fusion;
-using Units;
 using UnityEngine;
 
 namespace Actions
@@ -10,7 +9,7 @@ namespace Actions
         [Networked] private bool IsSpinning{ get; set;}
         
         [SerializeField] private float spinRotateSpeed = 1f;
-        private float _spinTime = 1f;
+        private readonly float _spinTime = 1f;
         private float _spinTimer;
         
         public override string GetActionName() => "Spin";
@@ -44,8 +43,8 @@ namespace Actions
                 }
             }
         }
-        
-        public void SpinUnit()
+
+        private void SpinUnit()
         {
             if (!Object.HasStateAuthority) return;
             if (_unit.IsBusy || IsSpinning ) return;

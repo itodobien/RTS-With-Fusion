@@ -17,7 +17,7 @@ namespace Actions
             _unit = GetComponent<Unit>();
         }
 
-        public void StartAction(Action onActionComplete = null)
+        protected void StartAction(Action onActionComplete = null)
         {
             if (_unit == null) return;
             
@@ -32,7 +32,5 @@ namespace Actions
             _unit.SetIsBusy(false);
             _onActionComplete?.Invoke();
         }
-
-        
     }
 }

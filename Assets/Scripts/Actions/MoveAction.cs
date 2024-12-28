@@ -16,7 +16,7 @@ namespace Actions
 
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
-        [Networked] public bool IsMoving { get; set; }
+        [Networked] private bool IsMoving { get; set; }
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         public override string GetActionName() => "Move";
@@ -42,7 +42,7 @@ namespace Actions
                 GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
                 if (IsValidActionGridPosition(clickedGridPosition))
                 {
-                    Vector3 worldPosition = LevelGrid.Instance.GetWorldPostion(clickedGridPosition);
+                    Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(clickedGridPosition);
                     TargetPosition = worldPosition;
                     IsMoving = true;
                     StartAction();
@@ -55,7 +55,7 @@ namespace Actions
             MoveUnit();
         }
 
-        public void MoveUnit()
+        private void MoveUnit()
         {
             if (IsMoving)
             {
@@ -99,7 +99,7 @@ namespace Actions
             }
         }
 
-        public bool IsValidActionGridPosition(GridPosition gridPosition)
+        private bool IsValidActionGridPosition(GridPosition gridPosition)
         {
             List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
             return validGridPositionList.Contains(gridPosition);

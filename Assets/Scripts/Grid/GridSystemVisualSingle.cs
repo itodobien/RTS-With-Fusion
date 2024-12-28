@@ -1,17 +1,19 @@
-using Grid;
 using UnityEngine;
 
-public class GridSystemVisualSingle : MonoBehaviour
+namespace Grid
 {
-    [SerializeField] private MeshRenderer meshRenderer;
+    public class GridSystemVisualSingle : MonoBehaviour
+    {
+        [SerializeField] private MeshRenderer meshRenderer;
 
-    public void Show()
-    {
-        meshRenderer.enabled = true;
-    }
+        public void Show()
+        {
+            meshRenderer.enabled = true;
+        }
     
-    public void Hide()
-    {
-        meshRenderer.enabled = false;
+        public void Hide()
+        {
+            meshRenderer.enabled = false;
+        }
     }
 }

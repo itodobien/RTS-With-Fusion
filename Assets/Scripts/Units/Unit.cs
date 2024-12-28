@@ -1,26 +1,18 @@
 using Actions;
 using Fusion;
 using Grid;
-using UnityEngine;
 
 namespace Units
 {
     public class Unit : NetworkBehaviour
     {
-        [Networked] public NetworkBool IsSelected { get; set; }
+        [Networked] private NetworkBool IsSelected { get; set; }
         [Networked] public bool IsBusy { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
-        
-        
-        
-        public override void Spawned()
-        {
-            //
-        }
 
         private void Awake()
         {
@@ -61,29 +53,11 @@ namespace Units
             }
         }
 
-        public bool GetIsSelected()
-        {
-            return IsSelected;
-        }
-
-        public MoveAction GetMoveAction()
-        {
-            return _moveAction;
-        }
-
-        public SpinAction GetSpinAction()
-        {
-            return _spinAction;
-        }
+        public bool GetIsSelected() => IsSelected;
+        public MoveAction GetMoveAction() => _moveAction;
+        public SpinAction GetSpinAction() => _spinAction;
+        public GridPosition GetGridPosition() => _gridPosition;
+        public BaseAction[] GetBaseActionArray() => _baseActionsArray;
         
-        public GridPosition GetGridPosition()
-        {
-            return _gridPosition;
-        }
-        
-        public BaseAction[] GetBaseActionArray()
-        {
-            return _baseActionsArray;
-        }
     }
 }

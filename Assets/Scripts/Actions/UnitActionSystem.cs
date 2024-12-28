@@ -13,10 +13,9 @@ namespace Actions
         public static UnitActionSystem Instance { get; private set; }
         public event EventHandler OnSelectedActionChanged;
         
-        private BaseAction selectedAction;
-        private Unit selectedUnit;
-        
-        private bool spinRequested = false;
+        private BaseAction _selectedAction;
+
+        private bool _spinRequested;
 
         private void Awake()
         {
@@ -57,37 +56,35 @@ namespace Actions
 
         private void SetSelectedUnit(Unit unit)
         {
-            selectedUnit = unit;
             BaseAction defaultAction = unit.GetMoveAction();
             SetSelectedAction(defaultAction);
         }
 
         private void ClearSelectedUnit()
         {
-            selectedUnit = null;
-            selectedAction = null;
+            _selectedAction = null;
         }
 
         public void SetSelectedAction(BaseAction baseAction)
         {
-            selectedAction = baseAction;
+            _selectedAction = baseAction;
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public BaseAction GetSelectedAction()
         {
-            return selectedAction;
+            return _selectedAction;
         }
 
         public void RequestSpin()
         {
-            spinRequested = true;
+            _spinRequested = true;
         }
 
         public bool GetSpinRequested()
         {
-            bool wasSpinRequested = spinRequested;
-            spinRequested = false;
+            bool wasSpinRequested = _spinRequested;
+            _spinRequested = false;
             return wasSpinRequested;
         }
         
