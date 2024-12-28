@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Enums;
-using Fusion;
+using Fusion; 
 using Units;
 using UnityEngine;
-using UnityEngine.EventSystems;
+
 
 namespace UI
 {
@@ -24,11 +23,10 @@ namespace UI
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
 
-
         private bool _isMouseDragging;
         private bool _isMouseDown;
         
-        private readonly HashSet<(NetworkId unitId, bool isSelected)> _pendingSelectionChanges = new HashSet<(NetworkId, bool)>();
+        private readonly HashSet<(NetworkId unitId, bool isSelected)> _pendingSelectionChanges = new ();
 
         private void Awake()
         {
@@ -49,57 +47,49 @@ namespace UI
 
         private void Update()
         {
-            HandleMouseInputs();
-            if (_isMouseDragging)
+            if (Input.GetMouseButtonDown(0)) 
+            {
+                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+                _isMouseDown = true;
+                _isMouseDragging = false;
+                _mouseStartPosition = Input.mousePosition;
+                _selectionBoxStart = _mouseStartPosition;
+            }
+            else if (_isMouseDown && Input.GetMouseButton(0)) 
+            {
+                if (!_isMouseDragging) 
+                {
+                    if (Vector3.Distance(Input.mousePosition, _mouseStartPosition) > 10f) 
+                    { _isMouseDragging = true;
+                        selectionBoxVisual.gameObject.SetActive(true);
+                    }
+                }
+            }
+            else if (_isMouseDown && Input.GetMouseButtonUp(0)) 
+            {
+
+                if (_isMouseDragging) 
+                {
+                    var unitsInSelection = GetUnitsInSelectionBox();
+                    UpdateSelectedUnits(unitsInSelection);
+                }
+                else 
+                {
+                    TrySingleUnitSelection(Input.mousePosition);
+                }
+
+                _isMouseDown = false;
+                _isMouseDragging = false;
+                selectionBoxVisual.gameObject.SetActive(false);
+            }
+            if (_isMouseDragging) 
             {
                 UpdateSelectionBoxVisual();
-            }
-        }
-
-        private void HandleMouseInputs()
-        {
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
-            switch (HandleMouseButtonState.GetMouseButtonState())
-            {
-                case HandleMouseButtonState.MouseButtonState.ButtonDown:
-                    _isMouseDown = true;
-                    _isMouseDragging = false;
-                    _mouseStartPosition = Input.mousePosition;
-                    _selectionBoxStart = _mouseStartPosition;
-                    break;
-                case HandleMouseButtonState.MouseButtonState.ButtonHeld:
-                    if(_isMouseDown && !_isMouseDragging)
-                    {
-                        if (Vector3.Distance(Input.mousePosition, _mouseStartPosition) > 10f)
-                        {
-                            _isMouseDragging = true;
-                            selectionBoxVisual.gameObject.SetActive(true);
-                        }
-                    }
-                    break;
-                case HandleMouseButtonState.MouseButtonState.ButtonUp:
-                    if (_isMouseDragging)
-                    {
-                        var unitsInSelection = GetUnitsInSelectionBox();
-                        UpdateSelectedUnits(unitsInSelection);
-                    }
-                    else
-                    {
-                        TrySingleUnitSelection(Input.mousePosition);
-                    }
-                    _isMouseDown = false;
-                    _isMouseDragging = false;
-                    selectionBoxVisual.gameObject.SetActive(false);
-                    break;
             }
         }
         
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
-            
             if (Camera.main != null)
             {
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -114,7 +104,7 @@ namespace UI
                         }
                         else
                         {
-                            UpdateSelectedUnits(new List<Unit>()); // Clear selection
+                            UpdateSelectedUnits(new List<Unit>());
                         }
                         return;
                     }
@@ -130,7 +120,7 @@ namespace UI
             Vector2 boxStart = _selectionBoxStart;
             Vector2 boxEnd = _selectionBoxEnd;
 
-            Vector2 boxCenter = (boxStart + boxEnd) / 2; 
+            Vector2 boxCenter = (boxStart + boxEnd) * 0.5f; 
             selectionBoxVisual.position = boxCenter;     
 
             Vector2 boxSize = new Vector2(
@@ -145,6 +135,7 @@ namespace UI
             List<Unit> unitsInBox = new();
             Rect selectionRect = GetScreenRect(_selectionBoxStart, _selectionBoxEnd);
 
+            // find all units in the scene
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
                 var moveAction = unit.GetMoveAction();
@@ -166,7 +157,7 @@ namespace UI
         private Rect GetScreenRect(Vector2 start, Vector2 end)
         {
             Vector2 bottomLeft = Vector2.Min(start, end);
-            Vector2 topRight = Vector2.Max(start, end);
+            Vector2 topRight   = Vector2.Max(start, end);
             return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         }
 
@@ -180,10 +171,10 @@ namespace UI
             {
                 _pendingSelectionChanges.Add((unit.Object.Id, true));
             }
+
             _selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
         }
-
         public (NetworkId unitId, bool isSelected)? GetNextSelectionChange()
         {
             if (_pendingSelectionChanges.Count > 0)

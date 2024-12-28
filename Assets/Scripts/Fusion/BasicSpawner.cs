@@ -20,8 +20,7 @@ namespace Fusion
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
         
-        private bool _mouseButton0; // I don't know why these are greyed out
-        private bool _mouseButton1; // I use them in OnInput. 
+        private bool _mouseButton1;
         
         private void Awake()
         {
@@ -45,7 +44,6 @@ namespace Fusion
 
         private void Update()
         {
-            _mouseButton0 = Input.GetMouseButton(0);
             _mouseButton1 = Input.GetMouseButton(1);
         }
         async void StartGame(GameMode mode)
@@ -79,7 +77,7 @@ namespace Fusion
                  Player playerScript = networkPlayerObject.GetComponent<Player>();
                  playerScript.SetUnitPrefabIndex(unitPrefabIndex);
                  
-                 playerScript.SetUnitPrebas(unitPrefabs);
+                 playerScript.SetUnitPrefabs(unitPrefabs);
                 _spawnedCharacters.Add(player, networkPlayerObject);
             }
         }
@@ -96,12 +94,6 @@ namespace Fusion
         {
             var data = new NetworkInputData();
 
-            if (Input.GetMouseButton(0))
-            {
-                data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
-                _mouseButton0 = false; // Reset button after it's recorded here as well
-            }
-            
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
@@ -126,7 +118,6 @@ namespace Fusion
                 data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
                 data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
-
             if (Input.GetKey(KeyCode.R))
             {
                 data.buttons.Set(NetworkInputData.SPIN, true);

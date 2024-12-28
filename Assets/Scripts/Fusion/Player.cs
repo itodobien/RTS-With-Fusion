@@ -28,7 +28,7 @@ namespace Fusion
             UnitPrefabIndex = index;
         }
 
-        public void SetUnitPrebas(NetworkPrefabRef[] prefabs)
+        public void SetUnitPrefabs(NetworkPrefabRef[] prefabs)
         {
             unitPrefabs = prefabs;
         }

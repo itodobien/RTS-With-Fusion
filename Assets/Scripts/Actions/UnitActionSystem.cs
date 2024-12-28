@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using UI;
@@ -9,13 +10,13 @@ namespace Actions
     public class UnitActionSystem : NetworkBehaviour
     {
         public static UnitActionSystem Instance { get; private set; }
+        public event EventHandler OnSelectedActionChanged;
         
         private BaseAction selectedAction;
         private Unit selectedUnit;
 
         private void Awake()
         {
-            Debug.Log($"UnitActionSystem Awake on {gameObject.name}");
             if (Instance != null && Instance != this)
             {
                 Debug.LogError("Multiple UAS instances detected. Destroying the new one.");
@@ -23,12 +24,10 @@ namespace Actions
                 return;
             }
             Instance = this;
-            Debug.Log("UnitActionSystem: Instance has been set.");
         }
 
         private void Start()
         {
-            SetSelectedUnit(selectedUnit);
             UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
         }
 
@@ -40,7 +39,7 @@ namespace Actions
             }
         }
         
-        private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, System.EventArgs e)
+        private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, EventArgs e)
         {
             List<Unit> selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
             if (selectedUnits.Count > 0)
@@ -69,7 +68,7 @@ namespace Actions
         public void SetSelectedAction(BaseAction baseAction)
         {
             selectedAction = baseAction;
-            Debug.Log($"Selected Action: {selectedAction.GetActionName()}");
+            OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public BaseAction GetSelectedAction()

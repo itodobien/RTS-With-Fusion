@@ -7,26 +7,29 @@ public class ActionButtonUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
     [SerializeField] private Button button;
+    [SerializeField] private GameObject selectedGameObject;
+    
+    private BaseAction _baseAction;
 
 
     public void SetBaseAction(BaseAction _baseAction)
     {
+        this._baseAction = _baseAction;
         button.onClick.AddListener(() =>
         {
-            if (_baseAction is SpinAction spinAction)
-            {
-                spinAction.SpinUnit();
-                Debug.Log("Spinning");
-            }
-            else
-            {
-                UnitActionSystem.Instance?.SetSelectedAction(_baseAction);
-            }
+            UnitActionSystem.Instance?.SetSelectedAction(_baseAction);
         });
         textMeshProUGUI.text = _baseAction.GetActionName().ToUpper();
+        
     }
     public void SetInteractable(bool isInteractable)
     {
         button.interactable = isInteractable;
+    }
+
+    public void UpdateSelectedVisual()
+    {
+        BaseAction selectedBaseAction = UnitActionSystem.Instance.GetSelectedAction();
+        selectedGameObject.SetActive(selectedBaseAction == _baseAction);
     }
 }
