@@ -97,8 +97,7 @@ namespace UI
                 {
                     if (raycastHit.transform.TryGetComponent(out Unit unit))
                     {
-                        var moveAction = unit.GetMoveAction();
-                        if (moveAction != null && moveAction.OwnerPlayerRef == _activePlayer)
+                        if (!unit.IsEnemy && unit.OwnerPlayerRef == _activePlayer)
                         {
                             UpdateSelectedUnits(new List<Unit> { unit }); 
                         }

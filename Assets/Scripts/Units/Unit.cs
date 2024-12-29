@@ -1,6 +1,7 @@
 using Actions;
 using Fusion;
 using Grid;
+using UnityEngine;
 
 namespace Units
 {
@@ -8,11 +9,14 @@ namespace Units
     {
         [Networked] private NetworkBool IsSelected { get; set; }
         [Networked] public bool IsBusy { get; set; }
+        [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
+
+        [SerializeField] private bool _isEnemy;
 
         private void Awake()
         {
@@ -58,6 +62,7 @@ namespace Units
         public SpinAction GetSpinAction() => _spinAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
-        
+        public bool IsEnemy => _isEnemy;
+
     }
 }

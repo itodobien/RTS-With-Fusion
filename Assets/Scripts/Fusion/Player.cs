@@ -66,9 +66,13 @@ namespace Fusion
                             spawnPos,
                             Quaternion.LookRotation(_forward),
                             Object.InputAuthority,
-                            (runner, o) =>
+                            (runner, spawnObject) =>
                             {
-                                o.GetComponent<Unit>();
+                                var spawnedUnit = spawnObject.GetComponent<Unit>();
+                                if (spawnedUnit != null)
+                                {
+                                    spawnedUnit.OwnerPlayerRef = Object.InputAuthority;
+                                }
                             }
                         );
                     }

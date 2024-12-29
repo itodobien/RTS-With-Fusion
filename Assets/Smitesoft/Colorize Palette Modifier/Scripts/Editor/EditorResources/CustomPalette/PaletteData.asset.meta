@@ -6,10 +6,3 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 235861
-  packageName: Colorize Pro (Texture Color Palette Modifier)
-  packageVersion: 4.3.0
-  assetPath: Assets/Smitesoft/Colorize Palette Modifier/Scripts/Editor/EditorResources/CustomPalette/PaletteData.asset
-  uploadId: 710859

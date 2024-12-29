@@ -1,0 +1,1282 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1758391886174935319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7632130911328924184}
+  - component: {fileID: 3012561680410679980}
+  - component: {fileID: -2708787534177044598}
+  m_Layer: 0
+  m_Name: Colorize Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7632130911328924184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758391886174935319}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.113062955, y: 1.5723951, z: -0.29547766}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3012561680410679980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758391886174935319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2108585221, guid: 13a46e7a410388541aa497f73fb913ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderPipeline: 0
+  multiObjectReference: {fileID: 0}
+  objectReference: {fileID: 0}
+  errorWrongRP: 0
+  showTexturePreview: 0
+  showEmissionTexturePreview: 0
+  showMetallicTexturePreview: 0
+  textureRef: {fileID: 0}
+  textureRefOriginal: {fileID: 0}
+  meshFilterRef: {fileID: 0}
+  skinnedMeshRendererRef: {fileID: 0}
+  materialsNumber: 0
+  isSolidPalette: 1
+  wasSetUpToContainPureSolid: 0
+  notPureSolidPalette: 0
+  isPatternedPalette: 0
+  wasSetUpToContainsPatterns: 0
+  isGradientPalette: 0
+  wasSetupToContainGradients: 0
+  isNonPaletteTexture: 0
+  wasSetupToAsNonPaletteTexture: 0
+  isSpriteTexture: 0
+  wasSetupAsSpriteTexture: 0
+  spriteAlphaCutout: 0.9
+  spriteGameObjectRef: {fileID: 0}
+  quadSpriteHolder: {fileID: 0}
+  uvPointsRef: []
+  trianglesRef: 
+  preFilteredColors: []
+  filteredColors: []
+  colorsIncludedInPatterns: []
+  isPrefabUnpacked: 1
+  showColorMerging: 0
+  HLColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  enableCopyPasteFunctions: 0
+  ignoreMaxColorPerPatternRestriction: 0
+  maxColorsPerPatternRegion: 100
+  numberOfReferences: 0
+  multiObjectReferencingList: []
+  multiObjectsManualReferencingList: []
+  multiObjectsManualReferencingListRefined: []
+  multiObjectsManualListOfMaterials: []
+  autoCleanMode: 0
+  gradientFiltering: 0
+  autoCleanPatterns: 1
+  autoCleanSensitivity: 5
+  autoCleanSensitivityMultiplier: 1
+  mergeSimilarColors: 1
+  groupingTolerance: 0
+  groupSimilarColors: 1
+  materialReferenceMode: 0
+  specifyMaterialOfInterest: {fileID: 0}
+  currentObjectMaterial: {fileID: 0}
+  previousObjectMaterial: {fileID: 0}
+  individualModeColorLimit: 500
+  numberOfColorsInPatternedRegion: 0
+  targetMetallic: 0
+  targetEmissive: 0
+  objectsThatShareMaterial: []
+  selectedMultiMaterialObject: {fileID: 0}
+  lastMaterialOfInterestIndex: 0
+  enableOrderingByColorField: 0
+  orderByThisColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  diffusionStrength: 0
+  colorDifferentiationStrength: 10
+  saveDiffusionIteration: 1
+  autoApplyDiffusion: 1
+  applicationFrequency: 10
+  diffusionSubMode: 0
+  diffusionTechnology: 0
+  inversePixelColorFrequency: 0
+  diffusionGroupColorField: {r: 1, g: 1, b: 1, a: 1}
+  diffusionMode: 0
+  retainColorsRelationshipsIntegrity: 1
+  countingApplicationValve: 0
+  autoCleanTechnology: 0
+  searchDepth: 3
+  autoMergeGroupColors: 1
+  pixelParentingTechnology: 1
+  maxVariation: 300
+  disconnectedRegions: 0
+  nonPaletteMode: 1
+  numberOfSteps: 1
+  segmentationAndCoagulationMode: 0
+  gridTextureRef: {fileID: 0}
+  gridTextureGridSize: 16
+  coagulationMaxCutOff: 80
+  coagulationMinCutOff: 20
+  coagulationSteps: 10
+  coagulationGridSize: 16
+  gridSize: 16
+  percentageCutOff: 1.5
+  originalMaterialRef: {fileID: 0}
+  originalMaterialRefForInjection: {fileID: 0}
+  materialToCopyFrom: {fileID: 0}
+  setupMetallicSmoothness: 0
+  wasMetallicSmoothnessSetup: 0
+  overrideMetallicTexture: 0
+  metallicTextureRef: {fileID: 0}
+  universalMetallicStrength: 0
+  universalSmoothnessStrength: 0
+  metallicAndSmoothnessGradientMode: 0
+  metallicAndSmoothnessMode: 0
+  emissionTextureColorMode: 0
+  emissionManualTextureColor: {r: 0, g: 0, b: 0, a: 0}
+  emissionHDROverlayColor: {r: 0, g: 0, b: 0, a: 0}
+  setupEmissions: 0
+  wasEmissionsSetup: 0
+  overrideEmissionsTexture: 0
+  emissionTextureRef: {fileID: 0}
+  advancedOptionType: 0
+  colorTintingValue: 0
+  colorForColorTinting1: {r: 1, g: 1, b: 1, a: 1}
+  colorForColorTinting2: {r: 1, g: 1, b: 1, a: 1}
+  colorForColorTinting3: {r: 1, g: 1, b: 1, a: 1}
+  colorForColorTinting4: {r: 1, g: 1, b: 1, a: 1}
+  colorForColorTinting5: {r: 1, g: 1, b: 1, a: 1}
+  colorForColorTinting6: {r: 1, g: 1, b: 1, a: 1}
+  covertToSolidMode: 0
+  randomPatternType: 0
+  textureInjectionMode: 0
+  GeneratedRandomPatternTexture: {fileID: 0}
+  perlinNoiseMultiplier: 0
+  stripeFrequencyMultiplier: 0
+  stripeOffset: 0
+  cellularAutomataRule: 1
+  voronoiCoagulationStrength: 1
+  checkerBoardNoiseMultiplier: 0
+  checkersColorOne: {r: 0, g: 0, b: 0, a: 0}
+  checkersColorTwo: {r: 0, g: 0, b: 0, a: 0}
+  voronoiShader: {fileID: 0}
+  gradientPatternColor:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  brickWidth: 40
+  brickHeight: 10
+  brickOffsetX: 2
+  brickOffsetY: 2
+  brickVariationA: 0.5
+  initialGrainMaxChance: 0
+  ringsScale: 1
+  ringsAge: 1
+  woodIntensity: 1
+  brickType: 0
+  borderColor: {r: 0, g: 0, b: 0, a: 0}
+  borderWidth: 1
+  listOfRandomColors: []
+  mergeSelectionArea: 0
+  gradientColor:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  gradientDirectionOffset: 0
+  gradientEmissionColor:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  emissionGradientDirectionOffset: 0
+  gradientMetallicColor:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  gradientReflectionColor:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  gradientMetallicAndReflectionCombinedColor:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  metallicAndReflectionGradientDirectionOffset: 0
+  gradientPaintMode: 0
+  gradientEmissionPaintMode: 0
+  gradientMetallicReflectionPaintMode: 0
+  textureForGradientInjectionPainting: {fileID: 0}
+  xTextureOffset: 0
+  yTextureOffset: 0
+  xTilling: 10
+  yTilling: 10
+  tillingSensitivity: 200
+  offsetSensitivity: 1
+  inverseX: 0
+  inverseY: 0
+  switchXY: 0
+  linkTiling: 1
+  textureSize: 0
+  _injectionTextureDimension: 8
+  useAdvanceGradientSpecificAlgorithms: 0
+  gradientAdvanceOptionType: 0
+  paintMode: 0
+  groupsList: 
+  groupAssignmentsValue: 0
+  isOriginallySolidConvertingToGradient: 0
+  wasSetupAsGradientAndOriginallySolid: 0
+  groupByValueIgnoreSameColorPreventionID: 0
+  gradientDetectionSensitivity: 0
+  gradientDetectionSensitivityBuffer: 3
+  mergeToNewGroup: 0
+  mergeToNewColor: {r: 0, g: 0, b: 0, a: 1}
+  propertyWindowTypeID: 0
+  _directory: Assets/Smitesoft/Colorize Palette Modifier/Scripts/Editor/EditorResources
+  openSettings: 0
+  disableHelpBoxes: 0
+  enableSleepMode: 1
+  numberOfFieldsToActivateSleep: 100
+  advancePaintingWindowIsActive: 0
+  highLightTechIndividual: 0
+  highLightTechGroup: 0
+  copiedColor: {r: 0, g: 0, b: 0, a: 1}
+  hexColor: 
+  enableGroupNamesOnIndividualTab: 1
+  mergeGroupNameWithPartitionDividers: 1
+  useRecommendedPartitionSettings: 1
+  enableGroupDividers: 1
+  highlightColor: 0
+  useShiftForHighLight: 0
+  includeInactiveMaterialsAndTextures: 0
+  multiObjectsParents: []
+  lastIndexHighlighted: -1
+  lastGroupIndexHighlighted: -1
+  unFocusedCounter: 0
+  highLighting: 0
+  enableFrozenIndividualModeHighlighting: 0
+  enableFrozenGroupHighlighting: 1
+  enableRecommendedHighlightingSettings: 1
+  lastHighlightType: 0
+  xMinRevert: 0
+  yMinRevert: 0
+  widthRevert: 0
+  heightRevert: 0
+  overClockHighLight: 1
+  overClockHighLightGroup: 1
+  overClockMultiplier: 1
+  outlierCutoffMultiplierA: 1.45
+  indexOfLastClickedIndividualRegion: -1
+  indexOfLastClickedGroup: -1
+  paintBuildAssignMode: 0
+  preventExactColorsFromMerging: 0
+  folderNaming: 0
+  suffix: 
+  didWeBuildLastSession: 0
+  didWeOverrideLastSession: 0
+  injectionMode: 0
+  manualInjectionType: 0
+  objectsReference: []
+  materialToMassAssign: {fileID: 0}
+  sceneSearchMode: 0
+  numberOfObjectsThatUseOriginalMaterial: 0
+  allObjectsUsingOriginalMaterial: []
+  filterBasedOnNameSimilarity: 0
+  similarityPercentage: 90
+  referenceObjectToExtractName: {fileID: 0}
+  referenceObjectName: 
+  allFilteredObjectsUsingOriginalMaterial: []
+  numberOfObjectsInfiltratedList: 0
+  finalListWithAllObjectsOfInterest: []
+  originalMaterialsMapCount: 0
+  customPaletteMode: 0
+  paletteName: 
+  includeDupes: 0
+  customPaletteDatabaseRef: {fileID: 0}
+  loadedCustomPalette: []
+  currentCustomPaletteIndex: 0
+  tempListOfNewCustomColorsForSaving: []
+  currentCustomPaletteIndexForPaletteEditing: 0
+  loadedForEditingCustomPalette: []
+  saveThisPalette_Generated: 0
+  includeColorTheoryColors_Generated: 0
+  includeOnlySelectedColors_Generated: 0
+  loadedCustomColorPalette:
+    colorSelectionsX: 
+    colorsX: []
+  colorPaletteTheme: 0
+  anatomyColorPalette: 0
+  skinTonesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  hairColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  eyeColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  boneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  muscleTonesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  natureAndEcologyColorPalette: 0
+  generalNatureColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticForestColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  tropicalParadiseColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  jungleColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  savannahColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  desertColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  desertSandColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  desertOasisColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  saharaDesertColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  barrenDesertColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  barrenLandColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  barrenWastelandColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  tundraColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  swampColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mistySwampColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mossyGroveColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mistyMarshColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  oceanColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  oceanDepthsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  deepSeaColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  coralReefColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  arcticTundraColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  frozenTundraColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rockyMountainsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  volcanicAshColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lavaColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  skyAndWeatherColorPalette: 0
+  rainyDayColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  thunderstormColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  silverLiningColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  hazyHorizonColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  eveningSkyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  morningSkyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  clearBlueSkyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  sunsetColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  duskAndDawnColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  chillWinterColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  twilightColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  auroraBorealisColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  seasonalColorPalette: 0
+  christmasColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  halloweenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  newYearsEveColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  candyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  teaColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  metallicElementsColorPalette: 0
+  steelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ironColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  copperColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  silverColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  goldColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  bronzeColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  titaniumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  platinumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mercuryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  aluminumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  zincColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  leadColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  nickelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  silverAlloyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  palladiumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cobaltColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  tungstenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rhodiumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  zirconiumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lithiumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  magnesiumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  calciumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  berylliumColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rustedCobaltColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rustedTungstenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rustedNickelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rustedIronColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gemStonesColorPalette: 0
+  diamondColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rubyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  sapphireColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  emeraldColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  amethystColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  aquamarineColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  garnetColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  opalColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pearlColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  topazColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  citrineColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  peridotColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  tourmalineColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  zirconColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  magicalElementsColorPalette: 0
+  darkMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  holyMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  frostMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  fireMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  natureMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  bloodMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  arcaneMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lightMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  stormMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  earthMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  celestialMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  shadowMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lightningMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  chaosMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  timeMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  voidMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  alchemyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  outerSpaceColorPalette: 0
+  cosmicDustColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  nebulaBurstColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  celestialGlowColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  galacticDawnColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  interstellarJourneyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cosmicRadianceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  stellarEssenceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  galacticAuroraColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  fantasyKingdomColorPalette: 0
+  enchantedRealmColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mythicalCitadelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  majesticCourtColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  magicalDominionColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  realmOfLegendsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  etherealPalaceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  kingdomOfWondersColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  celestialEmpireColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedCitadelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mythicalDominionColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  regalDynastyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  eternalCitadelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  majesticKingdomColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  royalEnclaveColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  imperialRealmColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedGardensColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  majesticThronesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  whimsicalCourtColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  nobleCrestColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  royalEnchantmentColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  castleStoneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientRuinsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mythicalCreaturesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedGardenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  kingsCourtColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  legendaryTalesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticalScrollsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  etherealCastleColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  legendaryHeroesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  realmOfMagicColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientRuinsColorPalette: 0
+  weatheredStoneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientRelicsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mossyRuinsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  forgottenTreasuresColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientGlyphsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  crumbledStoneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  agedRelicsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  overgrownRuinsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientGoldColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  shadowedRuinsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  weatheredSandstoneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedRuinsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticGlyphsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  timelessEleganceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lostCivilizationColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  agedStoneColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticalRelicsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  antiqueArtifactsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedRelicsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  ancientRuinsSunsetColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticRelicsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  crumblingArchitectureColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  lostDynastyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cyberpunkColorPalette: 0
+  neonNightsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  dataMatrixColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  techNoirColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cyberCityColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  synthWaveDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  technoVibeColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  digitalMatrixColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cyberFusionColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  neonPulseColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  hackersDenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cyberStormColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  tronLegacyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cyberNeonColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  digitalDreamColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  synthWaveRetroColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  steampunkColorPalette: 0
+  rustyGearsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  clockworkDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  brassMachineryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  victorianEleganceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  industrialRevolutionColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gildedMachineryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  vintageMachineryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cogwheelDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gearsAndSteamColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mechanicalSymphonyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  steamWorkTalesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  clockworkChroniclesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  brassConvergenceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  steamCraftAdventuresColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  bronzeContraptionsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  cogsAndGearsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rusticSteamworksColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gildedMechanismsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  industrialEnigmaColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  clockworkSymphonyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  steamPoweredDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mechanicalMarvelsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enchantedSteamworksColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticalMachineryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gildedGearWorksColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  rustyAutomatonsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  copperCogsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  antiqueMechanismsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  steelyContrivancesColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  vintageGadgetsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicColorPalette: 0
+  eternalDarknessColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicRomanceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gloomyNightColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  etherealNightsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysteriousShadowsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicNoirColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  enigmaticShadowsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicEleganceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicGardenColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  mysticShadowsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicRosewoodColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicMoonlightColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicSerenityColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  darkEleganceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicRoseColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicNightfallColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicGoldColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicOrchidColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicForestColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicCrimsonColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicSteelColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicVioletColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicIvoryColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicMidnightColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicEmeraldColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  gothicAshColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelColorPalette: 0
+  pastelDreamsColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelParadiseColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelPopColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelEleganceColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelHarmonyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelSerenityColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelDelightColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelBlissColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelTranquilityColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelDreamColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelSerenadeColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  pastelFantasyColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  onlyGenerateColorTheoryColors: 0
+  skipGeneratingColorTheoryColors: 0
+  colorTheory: 0
+  useColorTheory: 0
+  colorTheoryGeneratedPalette:
+    colorSelectionsX: 
+    colorsX: []
+  processingRequest: 0
+  openAIRequestFormatError: 0
+  openAIkey: 
+  maxUserRequestCharacterLimit: 70
+  userRequest: 
+  preUserRequest: 'I would like an rgb color color palette with the following themes: '
+  postUserRequest: '. Please ignore any formatting instructions I may have asked
+    for before and use this format instead: {"colors": [ { "RGB": [190, 192, 196]
+    },{"RGB": [180, 182, 186]}]}, dont say or add any other responses as I need to
+    parse this information and any other information aside from providing the colors
+    as it would make it difficult, dont add comments including the use of // and
+    dont add any TODO'
+  openAIGeneratedColorsPalette:
+    colorSelectionsX: 
+    colorsX: []
+  softPaletteStyle: 0
+  textureSizeAI: 0
+  generatedTextureQuality: 0
+  generatedTextureStyle: 0
+  maxUserPromptCharacterLimit: 140
+  userPrompt: 
+  textureSource: 0
+  generatedAITexture: {fileID: 0}
+  textureName_AI: 
+  alwaysSaveTexture: 1
+--- !u!114 &-2708787534177044598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758391886174935319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e0c362213693c4390271deb9b4bb75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
