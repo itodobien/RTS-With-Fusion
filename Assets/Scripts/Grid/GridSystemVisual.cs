@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Actions;
 using Units;
 using UnityEngine;
 
@@ -67,16 +68,15 @@ namespace Grid
             HideAllGridPositions();
         
             List<Unit> selectedUnits = UI.UnitSelectionManager.Instance.GetSelectedUnits();
-
-            foreach (var unit in selectedUnits)
-            {
-                var moveAction = unit.GetMoveAction();
-                if (moveAction != null)
-                {
-                    List<GridPosition> validMoves = moveAction.GetValidActionGridPositionList();
-                    ShowGridPositionList(validMoves);
-                }
-            }
+            if (selectedUnits.Count == 0) return;
+            
+            BaseAction seelectedAction = UnitActionSystem.Instance.GetSelectedAction();
+            if (seelectedAction == null) return;
+            
+            List<GridPosition> validPosiitons = seelectedAction.GetValidActionGridPositionList();
+            ShowGridPositionList(validPosiitons);
+                
+            
         }
     }
 }

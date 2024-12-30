@@ -17,7 +17,7 @@ namespace Units
         private MoveAction _moveAction;
         private SpinAction _spinAction;
 
-        //[SerializeField] private bool _isEnemy;
+        
 
         private void Awake()
         {
@@ -68,6 +68,11 @@ namespace Units
         {
             return _teamID;
         }
+        public bool IsEnemy (Unit otherUnit)
+        {
+            return GetTeamID() != otherUnit.GetTeamID();
+        }
+
 
         public bool GetIsSelected() => IsSelected;
         public MoveAction GetMoveAction() => _moveAction;

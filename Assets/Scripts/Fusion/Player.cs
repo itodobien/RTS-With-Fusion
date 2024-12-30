@@ -88,7 +88,6 @@ namespace Fusion
                                     spawnedUnit.OwnerPlayerRef = Object.InputAuthority;
                                     spawnedUnit.SetTeamID(TeamID);
                                 }
-                                Debug.Log("Spawned Unit with team ID: " + TeamID);
                             }
                         );
                     }

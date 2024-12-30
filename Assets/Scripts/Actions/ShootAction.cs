@@ -23,24 +23,23 @@ public class ShootAction : BaseAction
 
                 if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) continue;
                 if (!LevelGrid.Instance.HasUnitAtGridPosition(testGridPosition)) continue;
-
-                int attackerTeam = _unit.GetTeamID();
                 
                 List<Unit> targetUnits = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
                 
-                bool hasEnemy = false;
-
                 foreach (Unit targetUnit in targetUnits)
                 {
-                    if (targetUnit.GetTeamID() != attackerTeam)
+                    if (targetUnit.IsEnemy(_unit))
                     {
-                        hasEnemy = true;
-                        break;
+                        Debug.Log($"[ShootAction] {name} (Team: {_unit.GetTeamID()}) " +
+                                  $"detected enemy {targetUnit.name} (Team: {targetUnit.GetTeamID()}) " +
+                                  $"at grid {testGridPosition}. " +
+                                  $"HasStateAuthority={Object.HasStateAuthority}, " +
+                                  $"HasInputAuthority={Object.HasInputAuthority}");
+                        
+                        validGridPositionList.Add(testGridPosition);
+                        break; // only add the cell once regardless of how many enemies are in the cell.
                     }
                 }
-                if (!hasEnemy) continue;
-                
-                validGridPositionList.Add(testGridPosition);
             }
         }
         return validGridPositionList;
