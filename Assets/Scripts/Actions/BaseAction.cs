@@ -1,6 +1,8 @@
 using Fusion;
 using Units;
 using System;
+using System.Collections.Generic;
+using Grid;
 
 
 namespace Actions
@@ -32,5 +34,8 @@ namespace Actions
             _unit.SetIsBusy(false);
             _onActionComplete?.Invoke();
         }
+
+        public abstract List<GridPosition> GetValidActionGridPositionList();
+
     }
 }

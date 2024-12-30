@@ -10,13 +10,14 @@ namespace Units
         [Networked] private NetworkBool IsSelected { get; set; }
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
+        [Networked] private int _teamID { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
 
-        [SerializeField] private bool _isEnemy;
+        //[SerializeField] private bool _isEnemy;
 
         private void Awake()
         {
@@ -56,13 +57,24 @@ namespace Units
                 IsBusy = isBusy;
             }
         }
+        public void SetTeamID(int newTeamID)
+        {
+            if (HasStateAuthority)
+            {
+                _teamID = newTeamID;
+            }
+        }
+        public int GetTeamID()
+        {
+            return _teamID;
+        }
 
         public bool GetIsSelected() => IsSelected;
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
-        public bool IsEnemy => _isEnemy;
+        /*public bool IsEnemy => _isEnemy;*/
 
     }
 }

@@ -16,6 +16,7 @@ namespace Fusion
         [SerializeField] private Animator playerAnimator;
         [Networked] private TickTimer Delay { get; set; }
         [Networked] private int UnitPrefabIndex { get; set; }
+        [Networked] private int TeamID { get; set; }
 
         private void Awake()
         {
@@ -26,6 +27,19 @@ namespace Fusion
         public void SetUnitPrefabIndex(int index)
         {
             UnitPrefabIndex = index;
+        }
+
+        public void SetTeamID(int teamID)
+        {
+            if (Object.HasStateAuthority)
+            {
+                TeamID = teamID;
+            }
+        }
+
+        public int GetTeamID()
+        {
+            return TeamID;
         }
 
         public void SetUnitPrefabs(NetworkPrefabRef[] prefabs)
@@ -72,7 +86,9 @@ namespace Fusion
                                 if (spawnedUnit != null)
                                 {
                                     spawnedUnit.OwnerPlayerRef = Object.InputAuthority;
+                                    spawnedUnit.SetTeamID(TeamID);
                                 }
+                                Debug.Log("Spawned Unit with team ID: " + TeamID);
                             }
                         );
                     }

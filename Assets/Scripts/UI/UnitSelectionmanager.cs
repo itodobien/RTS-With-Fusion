@@ -21,7 +21,8 @@ namespace UI
         private Vector3 _mouseStartPosition;
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
-
+        private Player _localPlayer;
+        
 
         private bool _isMouseDragging;
         private bool _isMouseDown;
@@ -47,6 +48,7 @@ namespace UI
 
         private void Update()
         {
+            if (_localPlayer == null) return;
             if (Input.GetMouseButtonDown(0)) 
             {
                 if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
@@ -67,7 +69,6 @@ namespace UI
             }
             else if (_isMouseDown && Input.GetMouseButtonUp(0)) 
             {
-
                 if (_isMouseDragging) 
                 {
                     var unitsInSelection = GetUnitsInSelectionBox();
@@ -77,7 +78,6 @@ namespace UI
                 {
                     TrySingleUnitSelection(Input.mousePosition);
                 }
-
                 _isMouseDown = false;
                 _isMouseDragging = false;
                 selectionBoxVisual.gameObject.SetActive(false);
@@ -86,6 +86,11 @@ namespace UI
             {
                 UpdateSelectionBoxVisual();
             }
+        }
+
+        public void SetLocalPlayer(Player player)
+        {
+            _localPlayer = player;
         }
         
         private void TrySingleUnitSelection(Vector3 mousePosition)
@@ -97,7 +102,13 @@ namespace UI
                 {
                     if (raycastHit.transform.TryGetComponent(out Unit unit))
                     {
-                        if (!unit.IsEnemy && unit.OwnerPlayerRef == _activePlayer)
+                        if (_localPlayer == null)
+                        {
+                            UpdateSelectedUnits(new List<Unit>());
+                            return;
+                        }
+
+                        if (unit.GetTeamID() ==  _localPlayer.GetTeamID() && unit.OwnerPlayerRef == _activePlayer)
                         {
                             UpdateSelectedUnits(new List<Unit> { unit }); 
                         }
@@ -131,13 +142,20 @@ namespace UI
 
         private List<Unit> GetUnitsInSelectionBox()
         {
+            if (_localPlayer == null)
+            {
+                return new List<Unit>();
+            }
+            
             List<Unit> unitsInBox = new();
             Rect selectionRect = GetScreenRect(_selectionBoxStart, _selectionBoxEnd);
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                var moveAction = unit.GetMoveAction();
-                if (moveAction != null && moveAction.OwnerPlayerRef == _activePlayer)
+                
+                int localPlayerTeam = _localPlayer.GetTeamID();
+                        
+                if (unit.GetTeamID() ==  localPlayerTeam && unit.OwnerPlayerRef == _activePlayer)
                 {
                     if (Camera.main != null)
                     {

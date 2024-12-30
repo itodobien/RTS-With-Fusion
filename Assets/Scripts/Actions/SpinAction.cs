@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Fusion;
+using Grid;
 using UnityEngine;
 
 namespace Actions
@@ -18,6 +20,16 @@ namespace Actions
         {
             base.Awake();
             moveAction = GetComponent<MoveAction>();
+        }
+
+        public override List<GridPosition> GetValidActionGridPositionList()
+        {
+            GridPosition unitGridPosition = _unit.GetGridPosition();
+
+            return new List<GridPosition>
+            {
+                unitGridPosition
+            };
         }
 
         public override void FixedUpdateNetwork()

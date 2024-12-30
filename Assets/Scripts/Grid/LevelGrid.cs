@@ -33,11 +33,7 @@ namespace Grid
             gridObject.AddUnit(unit);
         }
 
-        public List<Unit> GetUnitAtGridPosition(GridPosition gridPosition)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.GetUnitList();
-        }
+        
 
         private void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
@@ -62,6 +58,11 @@ namespace Grid
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             return gridObject.HasAnyUnit();
+        }
+        public List<Unit> GetUnitAtGridPosition(GridPosition gridPosition)
+        {
+            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+            return gridObject.GetUnitList();
         }
     
     }

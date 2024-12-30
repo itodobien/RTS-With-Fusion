@@ -105,7 +105,7 @@ namespace Actions
             return validGridPositionList.Contains(gridPosition);
         }
 
-        public List<GridPosition> GetValidActionGridPositionList()
+        public override List<GridPosition> GetValidActionGridPositionList()
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
             GridPosition unitGridPosition = _unit.GetGridPosition();

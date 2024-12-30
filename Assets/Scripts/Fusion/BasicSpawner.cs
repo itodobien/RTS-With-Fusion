@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Actions;
 using Fusion.Sockets;
@@ -20,6 +21,7 @@ namespace Fusion
     
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
+        private static int nextTeamId;
 
         private void Awake()
         {
@@ -70,16 +72,53 @@ namespace Fusion
         {
             if (runner.IsServer)
             {
-                Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 0, 1);
+                Vector3 spawnPosition = new Vector3(player.RawEncoded % runner.Config.Simulation.PlayerCount * 3, 0, 1);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
-                 int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
-                 
+                runner.SetPlayerObject(player, networkPlayerObject);
+                
                  Player playerScript = networkPlayerObject.GetComponent<Player>();
-                 playerScript.SetUnitPrefabIndex(unitPrefabIndex);
                  
+                 int assignedTeamId = nextTeamId;
+                 playerScript.SetTeamID(assignedTeamId);
+                 nextTeamId++;
+                 
+                 int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
+                 playerScript.SetUnitPrefabIndex(unitPrefabIndex);
                  playerScript.SetUnitPrefabs(unitPrefabs);
                 _spawnedCharacters.Add(player, networkPlayerObject);
             }
+
+            if (player == runner.LocalPlayer)
+            {
+                SetUpLocalPlayer(runner, player);
+            }
+        }
+
+        private void SetUpLocalPlayer(NetworkRunner runner, PlayerRef playerRef)
+        {
+            if (!runner.TryGetPlayerObject(playerRef, out var localPlayerObj))
+            {
+                StartCoroutine(WaitForLocalPlayer(runner, playerRef));
+                return;
+            }
+            
+            var localPlayerScript = localPlayerObj.GetComponent<Player>();
+            if (localPlayerScript != null)
+            {
+                UnitSelectionManager.Instance.SetLocalPlayer(localPlayerScript);
+                UnitSelectionManager.Instance.SetActivePlayer(localPlayerScript.Object.InputAuthority); 
+            }
+        }
+        private IEnumerator WaitForLocalPlayer(NetworkRunner runner, PlayerRef playerRef)
+        {
+            NetworkObject localPlayerObj;
+            while (!runner.TryGetPlayerObject(playerRef, out localPlayerObj))
+            {
+                yield return null;
+            }
+            var localPlayerScript = localPlayerObj.GetComponent<Player>();
+            UnitSelectionManager.Instance.SetLocalPlayer(localPlayerScript);
+            UnitSelectionManager.Instance.SetActivePlayer(localPlayerScript.Object.InputAuthority); 
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

@@ -1908,6 +1908,7 @@ GameObject:
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 3433552081052675248}
   - component: {fileID: -8727792154856042969}
+  - component: {fileID: 5990219014067611979}
   - component: {fileID: 2148023841894036030}
   m_Layer: 6
   m_Name: UnitWhite
@@ -2017,6 +2018,7 @@ MonoBehaviour:
   - {fileID: 3633962395186661532}
   - {fileID: 2439858525930125371}
   - {fileID: -8727792154856042969}
+  - {fileID: 5990219014067611979}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-8727792154856042969
 MonoBehaviour:
@@ -2035,6 +2037,19 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &5990219014067611979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a40a13ee4026043a0bcc811fb521a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShootDistance: 7
 --- !u!136 &2148023841894036030
 CapsuleCollider:
   m_ObjectHideFlags: 0
