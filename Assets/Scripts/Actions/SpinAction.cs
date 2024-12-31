@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using Grid;
@@ -19,31 +20,38 @@ namespace Actions
         protected override void Awake()
         {
             base.Awake();
-            moveAction = GetComponent<MoveAction>();
+        }
+
+        public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
+        {
+            if (!Object.HasStateAuthority)
+            {
+                onActionComplete?.Invoke();
+                return;
+            }
+            
+            if (_unit.IsBusy || IsSpinning)
+            {
+                onActionComplete?.Invoke();
+                return;
+            }
+            
+            StartAction(onActionComplete);
+            IsSpinning = true;
+            _spinTimer = _spinTime;
         }
 
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            var gridPosition = _unit.GetGridPosition();
 
-            return new List<GridPosition>
-            {
-                unitGridPosition
-            };
+            return new List<GridPosition> {gridPosition};
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (!IsSpinning)
-            {
-                if (GetInput(out NetworkInputData data))
-                {
-                    if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.SPIN))
-                    {
-                        SpinUnit();
-                    }
-                }
-            }
+            if (_unit.IsBusy && !IsSpinning) return;
+            
             if (IsSpinning)
             {
                 _spinTimer -= Runner.DeltaTime;
@@ -54,15 +62,6 @@ namespace Actions
                     ActionComplete();
                 }
             }
-        }
-
-        private void SpinUnit()
-        {
-            if (!Object.HasStateAuthority) return;
-            if (_unit.IsBusy || IsSpinning ) return;
-            StartAction();
-            IsSpinning = true;
-            _spinTimer = _spinTime;
         }
     }
 }

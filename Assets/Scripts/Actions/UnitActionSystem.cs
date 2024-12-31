@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using Grid;
 using UI;
 using UnityEngine;
 using Units;
+using UnityEngine.EventSystems;
 
 
 namespace Actions
@@ -89,24 +91,58 @@ namespace Actions
         }
         
 
-        /*private void HandleSelectedAction()
+        private void HandleSelectedAction()
         {
+            if (_selectedAction == null) return;
+            
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             if (Input.GetMouseButtonDown(0))
             {
-                switch (selectedAction)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
                 {
-                    case MoveAction moveAction:
-                        moveAction.MoveUnit();
-                        break;
-                    case SpinAction spinAction:
-                        spinAction.SpinUnit();
-                        break;
+                    Vector3 hitWorldPos = hitInfo.point;
+                    GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(hitWorldPos);
+
+                    if (_selectedAction is MoveAction moveAction)
+                    {
+                        moveAction.TakeAction(gridPosition, () =>
+                        {
+                            Debug.Log("moving complete");
+                        });
+                    }
+                    else if (_selectedAction is SpinAction spinAction)
+                    {
+                        spinAction.TakeAction(gridPosition, () => Debug.Log("spinning complete"));
+                    }
+                    else if (_selectedAction is ShootAction shootAction)
+                    {
+                        if (shootAction.GetValidActionGridPositionList().Contains(gridPosition))
+                        {
+                            shootAction.TakeAction(gridPosition, () =>
+                            {
+                                Debug.Log("shooting complete");
+                            });
+                        }
+                        else
+                        {
+                            Debug.Log("invalid shoot target");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Selected actions is not shoot agion, ignoring left-click");
+                    }
                 }
             }
         }
         public override void FixedUpdateNetwork()
         {
             HandleSelectedAction();
-        }*/
+        }
     }
 }

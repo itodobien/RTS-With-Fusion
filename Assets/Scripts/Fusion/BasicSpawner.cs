@@ -7,6 +7,7 @@ using Grid;
 using UI;
 using Units;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Fusion
@@ -132,13 +133,27 @@ namespace Fusion
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
             var data = new NetworkInputData();
+            
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                input.Set(data);
+                return;
+            }
 
             if (Input.GetMouseButton(0))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
+                
+                var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
+                var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
+                
+                data.targetGridX = clickedGridPosition.x;
+                data.targetGridZ = clickedGridPosition.z;
+                
+                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
             
-            if (Input.GetMouseButton(1))
+            /*if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
                 
@@ -149,7 +164,7 @@ namespace Fusion
                 data.targetGridZ = clickedGridPosition.z;
                 
                 data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
-            }
+            }*/
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
             if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;

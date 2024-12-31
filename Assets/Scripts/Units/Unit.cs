@@ -16,6 +16,7 @@ namespace Units
         private BaseAction[] _baseActionsArray;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
+        private ShootAction _shootAction;
 
         
 
@@ -24,6 +25,7 @@ namespace Units
             _baseActionsArray = GetComponents<BaseAction>();
             _moveAction = GetComponent<MoveAction>();
             _spinAction = GetComponent<SpinAction>();
+            _shootAction = GetComponent<ShootAction>();
         }
 
         private void Start()

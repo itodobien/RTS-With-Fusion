@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using Grid;
@@ -32,24 +33,24 @@ namespace Actions
             if(_unit.IsBusy && !IsMoving) return;    
             if (GetInput(out NetworkInputData data))
             {
-                if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT) && data.selectedUnitId == Object.Id)
+                if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON0))
                 {
-                    _unit.SetNetworkSelected(data.isSelected);
-                }
-            }
-            if (_unit.GetIsSelected() && data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
-            {
-                GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
-                if (IsValidActionGridPosition(clickedGridPosition))
-                {
-                    Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(clickedGridPosition);
-                    TargetPosition = worldPosition;
-                    IsMoving = true;
-                    StartAction();
-                }
-                else
-                {
-                    Debug.Log("Invalid Move Target");
+                    if (UnitActionSystem.Instance != null && UnitActionSystem.Instance.GetSelectedAction() == this)
+                    {
+                        GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
+
+                        if (IsValidActionGridPosition(clickedGridPosition))
+                        {
+                            Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(clickedGridPosition);
+                            TargetPosition = worldPosition;
+                            IsMoving = true;
+                            StartAction();
+                        }
+                        else
+                        {
+                            Debug.Log("Invalid Move Target");
+                        }
+                    }
                 }
             }
             MoveUnit();
@@ -57,45 +58,34 @@ namespace Actions
 
         private void MoveUnit()
         {
-            if (IsMoving)
+            Vector3 toTarget = TargetPosition - transform.position;
+            toTarget.y = 0f;
+            float distance = toTarget.magnitude;
+
+            if (distance > stopDistance)
             {
-                Vector3 toTarget = TargetPosition - transform.position;
-                toTarget.y = 0f;
-                float distance = toTarget.magnitude;
+                Vector3 moveDirection = toTarget.normalized;
+                transform.position += moveDirection * moveSpeed * Runner.DeltaTime;
 
-                if (distance > stopDistance)
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation, 
+                    targetRotation, 
+                    rotateSpeed * Runner.DeltaTime);
+
+                if (playerAnimator != null)
                 {
-                    Vector3 moveDirection = toTarget.normalized;
-                    transform.position += moveDirection * moveSpeed * Runner.DeltaTime;
-
-                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                    transform.rotation = Quaternion.Slerp(
-                        transform.rotation, 
-                        targetRotation, 
-                        rotateSpeed * Runner.DeltaTime);
-
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool(IsWalking, true);
-                    }
-                }
-                else
-                {
-                    IsMoving = false;
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool(IsWalking, IsMoving);
-                    }
-                    ActionComplete();
-                    
+                    playerAnimator.SetBool(IsWalking, true);
                 }
             }
             else
             {
+                IsMoving = false;
                 if (playerAnimator != null)
                 {
                     playerAnimator.SetBool(IsWalking, IsMoving);
                 }
+                ActionComplete();
             }
         }
 
@@ -103,6 +93,21 @@ namespace Actions
         {
             List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
             return validGridPositionList.Contains(gridPosition);
+        }
+
+        public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
+        {
+            if (!IsValidActionGridPosition(gridPosition))
+            {
+                onActionComplete?.Invoke();
+                return;
+            }
+            
+            StartAction(onActionComplete);
+            
+            Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+            TargetPosition = worldPosition;
+            IsMoving = true;
         }
 
         public override List<GridPosition> GetValidActionGridPositionList()

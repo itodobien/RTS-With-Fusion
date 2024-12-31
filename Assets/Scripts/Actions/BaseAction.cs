@@ -34,6 +34,7 @@ namespace Actions
             _unit.SetIsBusy(false);
             _onActionComplete?.Invoke();
         }
+        public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete = null);
 
         public abstract List<GridPosition> GetValidActionGridPositionList();
 
