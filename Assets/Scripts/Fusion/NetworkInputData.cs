@@ -2,6 +2,14 @@ using UnityEngine;
 
 namespace Fusion
 {
+    
+    public enum ActionType
+    {
+        None = 0,
+        Move = 1,
+        Spin = 2,
+        Shoot = 3,
+    }
     public struct NetworkInputData : INetworkInput
     {
         public const byte MOUSEBUTTON0 = 0;
@@ -10,7 +18,7 @@ namespace Fusion
         public const byte JUMP = 3;
         public const byte SPIN = 4;
         public const byte SELECT_UNIT = 5;
-
+        
         public Vector3 direction;
         public NetworkButtons buttons;
         public Vector3 targetPosition;
@@ -18,9 +26,11 @@ namespace Fusion
         
         public int targetGridX;
         public int targetGridZ;
-
+        
         public NetworkId selectedUnitId;
         public bool isSelected;
         
+        public ActionType actionType;
     }
+    
 }

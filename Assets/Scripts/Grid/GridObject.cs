@@ -4,7 +4,6 @@ using Units;
 namespace Grid
 {
     public class GridObject
-
     {
         private readonly List<Unit> _unitList;
         private readonly GridPosition _gridPosition;

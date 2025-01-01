@@ -7,7 +7,6 @@ using Grid;
 using UI;
 using Units;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Fusion
@@ -22,7 +21,7 @@ namespace Fusion
     
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
-        private static int nextTeamId;
+        private static int _nextTeamId;
 
         private void Awake()
         {
@@ -71,29 +70,42 @@ namespace Fusion
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            Debug.Log($"[BasicSpawner] OnPlayerJoined: {player}. IsServer={runner.IsServer}, LocalPlayer={runner.LocalPlayer}");
+    
             if (runner.IsServer)
             {
                 Vector3 spawnPosition = new Vector3(player.RawEncoded % runner.Config.Simulation.PlayerCount * 3, 0, 1);
                 NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
                 runner.SetPlayerObject(player, networkPlayerObject);
-                
-                 Player playerScript = networkPlayerObject.GetComponent<Player>();
-                 
-                 int assignedTeamId = nextTeamId;
-                 playerScript.SetTeamID(assignedTeamId);
-                 nextTeamId++;
-                 
-                 int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
-                 playerScript.SetUnitPrefabIndex(unitPrefabIndex);
-                 playerScript.SetUnitPrefabs(unitPrefabs);
-                _spawnedCharacters.Add(player, networkPlayerObject);
-            }
 
+                Player playerScript = networkPlayerObject.GetComponent<Player>();
+        
+                int assignedTeamId = _nextTeamId;
+                playerScript.SetTeamID(assignedTeamId);
+                _nextTeamId++;
+        
+                int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
+                playerScript.SetUnitPrefabIndex(unitPrefabIndex);
+                playerScript.SetUnitPrefabs(unitPrefabs);
+        
+                _spawnedCharacters.Add(player, networkPlayerObject);
+
+                if (player == runner.LocalPlayer)
+                {
+                    if (UnitActionSystem.Instance != null &&
+                        UnitActionSystem.Instance.Object.InputAuthority == PlayerRef.None)
+                    {
+                        UnitActionSystem.Instance.Object.AssignInputAuthority(player);
+                    }
+                }
+            }
             if (player == runner.LocalPlayer)
             {
+                Debug.Log($"[BasicSpawner] Found local player: {player}");
                 SetUpLocalPlayer(runner, player);
             }
         }
+
 
         private void SetUpLocalPlayer(NetworkRunner runner, PlayerRef playerRef)
         {
@@ -110,6 +122,7 @@ namespace Fusion
                 UnitSelectionManager.Instance.SetActivePlayer(localPlayerScript.Object.InputAuthority); 
             }
         }
+        
         private IEnumerator WaitForLocalPlayer(NetworkRunner runner, PlayerRef playerRef)
         {
             NetworkObject localPlayerObj;
@@ -133,28 +146,15 @@ namespace Fusion
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
             var data = new NetworkInputData();
-            
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            {
-                input.Set(data);
-                return;
-            }
 
             if (Input.GetMouseButton(0))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
-                
-                var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
-                var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
-                
-                data.targetGridX = clickedGridPosition.x;
-                data.targetGridZ = clickedGridPosition.z;
-                
-                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
             
-            /*if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1))
             {
+                Debug.Log("[BasicSpawner.OnInput] Right-click detected, setting MOUSEBUTTON1 at: " + MouseWorldPosition.GetMouseWorldPosition());
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
                 
                 var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
@@ -164,7 +164,7 @@ namespace Fusion
                 data.targetGridZ = clickedGridPosition.z;
                 
                 data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
-            }*/
+            }
 
             if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
             if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;
@@ -184,14 +184,10 @@ namespace Fusion
                 data.selectedUnitId = selectionChange.Value.unitId;
                 data.isSelected = selectionChange.Value.isSelected;                
             }
-
-            if (UnitActionSystem.Instance != null)
-            {
-                if (UnitActionSystem.Instance.GetSpinRequested())
-                {
-                    data.buttons.Set(NetworkInputData.SPIN, true);
-                }
-            }
+            
+            
+            ActionType localAction = UnitActionSystem.Instance.GetLocalSelectedAction();
+            data.actionType = localAction;
 
             data.buttons.Set(NetworkInputData.JUMP, Input.GetKey(KeyCode.Space));
             input.Set(data);

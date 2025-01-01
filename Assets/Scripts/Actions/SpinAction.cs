@@ -20,6 +20,17 @@ namespace Actions
         protected override void Awake()
         {
             base.Awake();
+            moveAction = GetComponent<MoveAction>();
+        }
+
+        public override List<GridPosition> GetValidActionGridPositionList()
+        {
+            GridPosition unitGridPosition = _unit.GetGridPosition();
+
+            return new List<GridPosition>
+            {
+                unitGridPosition
+            };
         }
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
@@ -33,25 +44,16 @@ namespace Actions
             if (_unit.IsBusy || IsSpinning)
             {
                 onActionComplete?.Invoke();
-                return;
             }
             
             StartAction(onActionComplete);
+            
             IsSpinning = true;
             _spinTimer = _spinTime;
         }
 
-        public override List<GridPosition> GetValidActionGridPositionList()
-        {
-            var gridPosition = _unit.GetGridPosition();
-
-            return new List<GridPosition> {gridPosition};
-        }
-
         public override void FixedUpdateNetwork()
         {
-            if (_unit.IsBusy && !IsSpinning) return;
-            
             if (IsSpinning)
             {
                 _spinTimer -= Runner.DeltaTime;

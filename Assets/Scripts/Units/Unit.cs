@@ -18,8 +18,6 @@ namespace Units
         private SpinAction _spinAction;
         private ShootAction _shootAction;
 
-        
-
         private void Awake()
         {
             _baseActionsArray = GetComponents<BaseAction>();
@@ -70,18 +68,14 @@ namespace Units
         {
             return _teamID;
         }
-        public bool IsEnemy (Unit otherUnit)
-        {
-            return GetTeamID() != otherUnit.GetTeamID();
-        }
-
 
         public bool GetIsSelected() => IsSelected;
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
+
+        public ShootAction GetShootAction() => _shootAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
-        /*public bool IsEnemy => _isEnemy;*/
 
     }
 }

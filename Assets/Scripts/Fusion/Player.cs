@@ -62,7 +62,6 @@ namespace Fusion
                 {
                     playerAnimator.SetBool(IsWalking, false);
                 }
-
                 if (HasStateAuthority && Delay.ExpiredOrNotRunning(Runner))
                 {
                     if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT)) 
@@ -88,6 +87,7 @@ namespace Fusion
                                     spawnedUnit.OwnerPlayerRef = Object.InputAuthority;
                                     spawnedUnit.SetTeamID(TeamID);
                                 }
+                                Debug.Log("Spawned Unit with team ID: " + TeamID);
                             }
                         );
                     }

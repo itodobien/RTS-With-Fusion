@@ -5,20 +5,19 @@ using Grid;
 using UI;
 using UnityEngine;
 using Units;
-using UnityEngine.EventSystems;
-
 
 namespace Actions
 {
+    [RequireComponent(typeof(NetworkBehaviour))]
     public class UnitActionSystem : NetworkBehaviour
     {
+        private ActionType _localSelectedAction = ActionType.Move;
         public static UnitActionSystem Instance { get; private set; }
         public event EventHandler OnSelectedActionChanged;
         
         private BaseAction _selectedAction;
-
-        private bool _spinRequested;
-
+        private Dictionary<PlayerRef, Unit> selectedUnitDict = new();
+        
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -48,101 +47,117 @@ namespace Actions
             List<Unit> selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
             if (selectedUnits.Count > 0)
             {
-                SetSelectedUnit(selectedUnits[0]);
+                SetLocalSelectedUnit(selectedUnits[0]);
             }
             else
             {
                 ClearSelectedUnit();
             }
         }
-
-        private void SetSelectedUnit(Unit unit)
+        private void SetLocalSelectedUnit(Unit unit)
         {
             BaseAction defaultAction = unit.GetMoveAction();
-            SetSelectedAction(defaultAction);
+            _selectedAction = defaultAction; 
+            OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetLocalSelectedAction(ActionType newAction)
+        {
+            _localSelectedAction = newAction;
+            Debug.Log($"[UnitActionSystem] Local selected action set to: {_localSelectedAction}");
+        }
+        
+        public ActionType GetLocalSelectedAction() => _localSelectedAction;
+
+        public void SetSelectedUnitForPlayer(PlayerRef player, Unit unit)
+        {
+            selectedUnitDict[player] = unit;
+        }
+
+        public Unit GetSelectedUnitForPlayer(PlayerRef player)
+        {
+            selectedUnitDict.TryGetValue(player, out var found);
+            return found;
         }
 
         private void ClearSelectedUnit()
         {
             _selectedAction = null;
+            OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetSelectedAction(BaseAction baseAction)
         {
             _selectedAction = baseAction;
+            Debug.Log($"[UnitActionSystem] Selected Action set to: {_selectedAction?.GetActionName()}");
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public BaseAction GetSelectedAction()
-        {
-            return _selectedAction;
-        }
+        public BaseAction GetSelectedAction() => _selectedAction;
 
-        public void RequestSpin()
+        private void HandleSelectedAction(PlayerRef playerRef, ActionType actionType, GridPosition gridPosition)
         {
-            _spinRequested = true;
-        }
-
-        public bool GetSpinRequested()
-        {
-            bool wasSpinRequested = _spinRequested;
-            _spinRequested = false;
-            return wasSpinRequested;
-        }
-        
-
-        private void HandleSelectedAction()
-        {
-            if (_selectedAction == null) return;
-            
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            Unit selectedUnit = GetSelectedUnitForPlayer(playerRef);
+            if (selectedUnit == null)
             {
+                Debug.LogWarning($"Player {playerRef} tried to do {actionType}, but has no selected unit");
                 return;
             }
-            
-            if (Input.GetMouseButtonDown(0))
+            switch (actionType)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
-                {
-                    Vector3 hitWorldPos = hitInfo.point;
-                    GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(hitWorldPos);
+                case ActionType.Move:
+                    selectedUnit.GetMoveAction().TakeAction(gridPosition, () => Debug.Log("Move complete"));
+                    break;
 
-                    if (_selectedAction is MoveAction moveAction)
+                case ActionType.Spin:
+                    selectedUnit.GetSpinAction().TakeAction(gridPosition, () => Debug.Log("Spin complete"));
+                    break;
+
+                case ActionType.Shoot:
+                    selectedUnit.GetShootAction().TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
+                    break;
+
+                default:
+                    Debug.LogWarning($"Unknown action type: {actionType}");
+                    break;
+            }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (!Object.HasStateAuthority) return;
+
+            foreach (var playerRef in Runner.ActivePlayers)
+            {
+                NetworkInputData? maybeData = Runner.GetInputForPlayer<NetworkInputData>(playerRef);
+                if (maybeData.HasValue)
+                {
+                    NetworkInputData data = maybeData.Value;
+                    Debug.Log($"[UnitActionSystem] Found input data for player {playerRef}");
+
+                    if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT))
                     {
-                        moveAction.TakeAction(gridPosition, () =>
+                        NetworkObject changeObj = Runner.FindObject(data.selectedUnitId);
+                        if (changeObj != null && changeObj.TryGetComponent<Unit>(out var changedUnit))
                         {
-                            Debug.Log("moving complete");
-                        });
-                    }
-                    else if (_selectedAction is SpinAction spinAction)
-                    {
-                        spinAction.TakeAction(gridPosition, () => Debug.Log("spinning complete"));
-                    }
-                    else if (_selectedAction is ShootAction shootAction)
-                    {
-                        if (shootAction.GetValidActionGridPositionList().Contains(gridPosition))
-                        {
-                            shootAction.TakeAction(gridPosition, () =>
+                            if (data.isSelected)
                             {
-                                Debug.Log("shooting complete");
-                            });
-                        }
-                        else
-                        {
-                            Debug.Log("invalid shoot target");
+                                SetSelectedUnitForPlayer(playerRef, changedUnit);
+                            }
+                            else
+                            {
+                                SetSelectedUnitForPlayer(playerRef, null);
+                            }
                         }
                     }
-                    else
+                    if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                     {
-                        Debug.Log("Selected actions is not shoot agion, ignoring left-click");
+                        GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
+
+                        HandleSelectedAction(playerRef, data.actionType, clickedGridPosition);
                     }
                 }
             }
-        }
-        public override void FixedUpdateNetwork()
-        {
-            HandleSelectedAction();
         }
     }
 }

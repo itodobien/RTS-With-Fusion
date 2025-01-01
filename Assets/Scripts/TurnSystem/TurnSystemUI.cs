@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,4 +31,4 @@ namespace TurnSystem
             _turnNumberText.text = "TURN " + TurnSystem.Instance.GetTurnNumber();
         }
     }
-}
+}*/

@@ -7,14 +7,13 @@ namespace Grid
     public class LevelGrid : MonoBehaviour
     {
         public static LevelGrid Instance {get; private set;}
-    
-    
+        
         [SerializeField] private Transform gridDebugObjectPrefab;
     
         private GridSystem _gridSystem;
+        
         private void Awake()
         {
-        
             if (Instance != null)
             {
                 Debug.LogError("More than one LevelGrid in scene");
@@ -24,7 +23,6 @@ namespace Grid
             Instance = this;
             _gridSystem = new GridSystem(10, 10, 2f);
             _gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
-        
         }
 
         public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
@@ -32,8 +30,6 @@ namespace Grid
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             gridObject.AddUnit(unit);
         }
-
-        
 
         private void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
