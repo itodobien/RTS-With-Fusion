@@ -8,6 +8,10 @@ namespace Actions
 {
     public class SpinAction : BaseAction
     {
+        
+        public event EventHandler OnStartSpinning;
+        public event EventHandler OnStopSpinning;
+        
         [SerializeField] private MoveAction moveAction;
         [Networked] private bool IsSpinning{ get; set;}
         

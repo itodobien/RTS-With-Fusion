@@ -1910,6 +1910,7 @@ GameObject:
   - component: {fileID: 2699177952912815779}
   - component: {fileID: -3982687064086801559}
   - component: {fileID: 2148023841894036030}
+  - component: {fileID: 302747443033000789}
   m_Layer: 6
   m_Name: UnitBlue
   m_TagString: Untagged
@@ -1963,7 +1964,6 @@ MonoBehaviour:
   moveSpeed: 5
   rotateSpeed: 8
   maxMoveDistance: 4
-  playerAnimator: {fileID: 2016504890143318460}
 --- !u!114 &3633962395186661532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2075,6 +2075,19 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &302747443033000789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb466ffc8b943374abe0e6b34ce7e27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2016504890143318460}
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

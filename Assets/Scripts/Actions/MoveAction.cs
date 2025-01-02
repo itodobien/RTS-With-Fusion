@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using Fusion;
@@ -8,18 +9,20 @@ namespace Actions
 {
     public class MoveAction : BaseAction
     {
+        public event EventHandler OnStartMoving;
+        public event EventHandler OnStopMoving;
+        
         [Header("Move Action Settings")]
         [SerializeField]private float stopDistance = 0.1f;
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
         [SerializeField] private int maxMoveDistance = 4;
-        [SerializeField] private Animator playerAnimator;
-
+        
         [Networked] private Vector3 TargetPosition { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] private bool IsMoving { get; set; }
-    
-        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+        public bool GetIsMoving() => IsMoving;
+        
         public override string GetActionName() => "Move";
 
         public override void Spawned()
@@ -50,31 +53,13 @@ namespace Actions
 
                     Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                     transform.rotation = Quaternion.Slerp(
-                        transform.rotation, 
-                        targetRotation, 
-                        rotateSpeed * Runner.DeltaTime);
-
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool(IsWalking, true);
-                    }
+                        transform.rotation, targetRotation,  rotateSpeed * Runner.DeltaTime);
                 }
                 else
                 {
                     IsMoving = false;
-                    if (playerAnimator != null)
-                    {
-                        playerAnimator.SetBool(IsWalking, IsMoving);
-                    }
                     ActionComplete();
-                    
-                }
-            }
-            else
-            {
-                if (playerAnimator != null)
-                {
-                    playerAnimator.SetBool(IsWalking, IsMoving);
+                    OnStopMoving?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -120,6 +105,7 @@ namespace Actions
                 return;
             }
             StartAction(onActionComplete);
+            OnStartMoving?.Invoke(this, EventArgs.Empty);
             
             Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
             TargetPosition = worldPosition;
