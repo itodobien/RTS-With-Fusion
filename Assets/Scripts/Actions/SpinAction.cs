@@ -11,8 +11,6 @@ namespace Actions
         
         public event EventHandler OnStartSpinning;
         public event EventHandler OnStopSpinning;
-        
-        [SerializeField] private MoveAction moveAction;
         [Networked] private bool IsSpinning{ get; set;}
         
         [SerializeField] private float spinRotateSpeed = 1f;
@@ -21,12 +19,6 @@ namespace Actions
         
         public override string GetActionName() => "Spin";
         
-        protected override void Awake()
-        {
-            base.Awake();
-            moveAction = GetComponent<MoveAction>();
-        }
-
         public override List<GridPosition> GetValidActionGridPositionList()
         {
             GridPosition unitGridPosition = _unit.GetGridPosition();
