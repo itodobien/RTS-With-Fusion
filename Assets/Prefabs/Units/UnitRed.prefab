@@ -1905,10 +1905,10 @@ GameObject:
   - component: {fileID: 6264426077827160205}
   - component: {fileID: 2513909572344953795}
   - component: {fileID: 3633962395186661532}
+  - component: {fileID: 1790406560519158544}
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 7088812926517333020}
   - component: {fileID: 724400808356085265}
-  - component: {fileID: 1790406560519158544}
   - component: {fileID: 2148023841894036030}
   m_Layer: 6
   m_Name: UnitRed
@@ -1978,6 +1978,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAction: {fileID: 2513909572344953795}
   spinRotateSpeed: 1
+--- !u!114 &1790406560519158544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a40a13ee4026043a0bcc811fb521a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShootDistance: 7
+  aimRotationSpeed: 360
+  aimingTime: 1
 --- !u!114 &2439858525930125371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2033,23 +2048,10 @@ MonoBehaviour:
   - {fileID: 6264426077827160205}
   - {fileID: 2513909572344953795}
   - {fileID: 3633962395186661532}
+  - {fileID: 1790406560519158544}
   - {fileID: 2439858525930125371}
   - {fileID: 7088812926517333020}
-  - {fileID: 1790406560519158544}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &1790406560519158544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a40a13ee4026043a0bcc811fb521a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxShootDistance: 7
 --- !u!136 &2148023841894036030
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -64,7 +64,6 @@ namespace Actions
         public void SetLocalSelectedAction(ActionType newAction)
         {
             _localSelectedAction = newAction;
-            Debug.Log($"[UnitActionSystem] Local selected action set to: {_localSelectedAction}");
         }
         
         public ActionType GetLocalSelectedAction() => _localSelectedAction;
@@ -89,7 +88,6 @@ namespace Actions
         public void SetSelectedAction(BaseAction baseAction)
         {
             _selectedAction = baseAction;
-            Debug.Log($"[UnitActionSystem] Selected Action set to: {_selectedAction?.GetActionName()}");
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -133,7 +131,6 @@ namespace Actions
                 if (maybeData.HasValue)
                 {
                     NetworkInputData data = maybeData.Value;
-                    Debug.Log($"[UnitActionSystem] Found input data for player {playerRef}");
 
                     if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT))
                     {

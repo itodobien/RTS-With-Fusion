@@ -69,6 +69,12 @@ namespace Units
             return _teamID;
         }
 
+        public void Damage()
+        {
+            Debug.Log(transform + "Damage");
+        }
+        
+
         public bool GetIsSelected() => IsSelected;
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
@@ -76,6 +82,8 @@ namespace Units
         public ShootAction GetShootAction() => _shootAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
+        
+        public Vector3 GetWorldPosition() => transform.position;
 
     }
 }

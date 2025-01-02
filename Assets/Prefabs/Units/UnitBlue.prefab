@@ -1905,11 +1905,11 @@ GameObject:
   - component: {fileID: 6264426077827160205}
   - component: {fileID: 2513909572344953795}
   - component: {fileID: 3633962395186661532}
+  - component: {fileID: -3677547835509593020}
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 2699177952912815779}
   - component: {fileID: -3982687064086801559}
   - component: {fileID: 2148023841894036030}
-  - component: {fileID: -3677547835509593020}
   m_Layer: 6
   m_Name: UnitBlue
   m_TagString: Untagged
@@ -1947,7 +1947,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _IsBusy: 0
-  _isEnemy: 0
 --- !u!114 &2513909572344953795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1979,6 +1978,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAction: {fileID: 2513909572344953795}
   spinRotateSpeed: 1
+--- !u!114 &-3677547835509593020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a40a13ee4026043a0bcc811fb521a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShootDistance: 7
+  aimRotationSpeed: 360
+  aimingTime: 1
 --- !u!114 &2439858525930125371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2017,9 +2031,9 @@ MonoBehaviour:
   - {fileID: 6264426077827160205}
   - {fileID: 2513909572344953795}
   - {fileID: 3633962395186661532}
+  - {fileID: -3677547835509593020}
   - {fileID: 2439858525930125371}
   - {fileID: -3982687064086801559}
-  - {fileID: -3677547835509593020}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3982687064086801559
 MonoBehaviour:
@@ -2061,18 +2075,6 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &-3677547835509593020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a40a13ee4026043a0bcc811fb521a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

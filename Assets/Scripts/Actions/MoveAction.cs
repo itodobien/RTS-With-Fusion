@@ -37,10 +37,8 @@ namespace Actions
 
         private void MoveUnit()
         {
-            Debug.Log("Move Unit called");
             if (IsMoving)
             {
-                Debug.Log("Is Moving = true");
                 Vector3 toTarget = TargetPosition - transform.position;
                 toTarget.y = 0f;
                 float distance = toTarget.magnitude;
@@ -60,7 +58,6 @@ namespace Actions
                     {
                         playerAnimator.SetBool(IsWalking, true);
                     }
-                    Debug.Log("Player is walking: " + IsWalking);
                 }
                 else
                 {
@@ -112,7 +109,6 @@ namespace Actions
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
         {
-            Debug.Log($"[MoveAction] TakeAction called on {name}, HasStateAuthority={Object.HasStateAuthority}, gridPos=({gridPosition.x},{gridPosition.z})");
             if (!Object.HasStateAuthority)
             {
                 onActionComplete?.Invoke();
@@ -120,7 +116,6 @@ namespace Actions
             }
             if (!IsValidActionGridPosition(gridPosition))
             {
-                Debug.LogWarning("Invalid Action Grid Position");
                 onActionComplete?.Invoke();
                 return;
             }

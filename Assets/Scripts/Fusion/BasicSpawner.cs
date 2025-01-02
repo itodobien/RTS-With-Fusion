@@ -70,8 +70,6 @@ namespace Fusion
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            Debug.Log($"[BasicSpawner] OnPlayerJoined: {player}. IsServer={runner.IsServer}, LocalPlayer={runner.LocalPlayer}");
-    
             if (runner.IsServer)
             {
                 Vector3 spawnPosition = new Vector3(player.RawEncoded % runner.Config.Simulation.PlayerCount * 3, 0, 1);
@@ -101,7 +99,6 @@ namespace Fusion
             }
             if (player == runner.LocalPlayer)
             {
-                Debug.Log($"[BasicSpawner] Found local player: {player}");
                 SetUpLocalPlayer(runner, player);
             }
         }
@@ -154,7 +151,6 @@ namespace Fusion
             
             if (Input.GetMouseButton(1))
             {
-                Debug.Log("[BasicSpawner.OnInput] Right-click detected, setting MOUSEBUTTON1 at: " + MouseWorldPosition.GetMouseWorldPosition());
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
                 
                 var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
