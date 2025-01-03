@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace Units
 {
-    public class UnitAnimator : MonoBehaviour
+    public class UnitAnimator : NetworkBehaviour
     {
         [SerializeField] private Animator animator;
         [SerializeField] private NetworkMecanimAnimator networkMecanimAnimator;
+        
         private MoveAction _moveAction;
         private ShootAction _shootAction;
     
@@ -17,6 +18,7 @@ namespace Units
 
         private void Awake()
         {
+            
             var actions = GetComponents<BaseAction>();
             foreach (var action in actions)
             {
@@ -29,8 +31,8 @@ namespace Units
                 else if (action is ShootAction shootAction)
                 {
                     _shootAction = shootAction;
-                    shootAction.OnStartShooting += StartShootingActionOnStartShooting;
-                    shootAction.OnStopShooting += ShootAction_OnStophooting;
+                    shootAction.OnStartShooting += ShootAction_OnStartShooting;
+                    shootAction.OnStopShooting += ShootAction_OnStopShooting;
                 }
             }
         }
@@ -47,8 +49,8 @@ namespace Units
                 }
                 else if (action is ShootAction shootAction)
                 {
-                    shootAction.OnStartShooting -= StartShootingActionOnStartShooting;
-                    shootAction.OnStopShooting -= ShootAction_OnStophooting;
+                    shootAction.OnStartShooting -= ShootAction_OnStartShooting;
+                    shootAction.OnStopShooting -= ShootAction_OnStopShooting;
                 }
             }
         }
@@ -82,14 +84,15 @@ namespace Units
             animator.SetBool(IsWalking, false);
         }
 
-        private void StartShootingActionOnStartShooting(object sender, EventArgs e)
+        private void ShootAction_OnStartShooting(object sender, EventArgs e)
         {
             animator.SetBool(Shoot, true);
+            
         }
         
-        private void ShootAction_OnStophooting(object sender, EventArgs e)
+        private void ShootAction_OnStopShooting(object sender, EventArgs e)
         {
-            animator.SetBool(Shoot, true);
+            animator.SetBool(Shoot, false);
         }
     }
 }

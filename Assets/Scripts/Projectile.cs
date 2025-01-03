@@ -1,39 +1,30 @@
-/*using UnityEngine;
-using Units; // Assuming your Unit class is in this namespace
+using Fusion;
+using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
-    private Unit _target;
-    private float _speed;
-    private int _damage;
-    private bool _initialized = false;
+    
+    [SerializeField] private float speed = 20f;
+    private Vector3 _direction;
 
-    public void Initialize(Unit target, float speed, int damage)
+    public void ShootAtTarget(Vector3 shootDirection)
     {
-        _target = target;
-        _speed = speed;
-        _damage = damage;
-        _initialized = true;
+        _direction = shootDirection;
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
-        if (!_initialized || _target == null)
+        if (Object.HasStateAuthority)
         {
-            Destroy(gameObject);
-            return;
-        }
-        
-        Vector3 direction = (_target.transform.position - transform.position).normalized;
-        
-        transform.position += direction * _speed * Time.deltaTime;
-        transform.forward = direction;
-        
-        float distanceToTarget = Vector3.Distance(transform.position, _target.transform.position);
-        if (distanceToTarget < 0.5f) 
-        {
-            _target.TakeDamage(_damage);
-            Destroy(gameObject);
+            transform.position += _direction * speed * Runner.DeltaTime;
         }
     }
-}*/
+    
+    private void OnCollisionEnter(Collision other)
+    {
+        if (Object.HasStateAuthority)
+        {
+            Runner.Despawn(Object);
+        }
+    }
+}

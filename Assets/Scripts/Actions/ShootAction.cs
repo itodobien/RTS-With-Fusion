@@ -16,17 +16,19 @@ namespace Actions
         [SerializeField] private float aimRotationSpeed = 360f;
         [SerializeField] private float aimingTime = 1f;
         [SerializeField] private float firingDuration = 0.3f; 
+        [SerializeField] private Projectile bulletPrefab;
+        [SerializeField] private Transform bulletSpawnPoint; 
+
         
         [Networked] private float CurrentAimingTime { get; set; }
         [Networked] private bool IsAiming { get; set; }
         [Networked] private bool IsFiring { get; set; }
         [Networked] private float FiringTimer { get; set; }
-
-        private bool canShootBullet;
         private GridPosition targetPosition;
         private Unit _targetUnit;
         
         public bool GetIsFiring() => IsFiring;
+        public Unit GetTargetUnit() => _targetUnit;
         
         public override string GetActionName() => "Shoot";
    
@@ -85,7 +87,6 @@ namespace Actions
             CurrentAimingTime = aimingTime;
             IsAiming = true;
             targetPosition = gridPosition;
-            canShootBullet = true;
         }
         
         public override void FixedUpdateNetwork()
@@ -138,6 +139,23 @@ namespace Actions
                 return;
             }
             OnStartShooting?.Invoke(this, EventArgs.Empty);
+            Vector3 shootDirection = (_targetUnit.GetWorldPosition() - bulletSpawnPoint.position).normalized;
+            
+            Runner.Spawn(
+                bulletPrefab,
+                bulletSpawnPoint.position,
+                Quaternion.LookRotation(shootDirection),
+                Object.InputAuthority,
+                (runner, spawnedBullet) =>
+                {
+                    spawnedBullet.GetComponent<Projectile>().ShootAtTarget(shootDirection);
+                }
+            );
+            
+            
+            
+            
+            
             _targetUnit.Damage();
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = true;
