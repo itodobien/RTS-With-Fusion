@@ -1992,6 +1992,7 @@ MonoBehaviour:
   maxShootDistance: 7
   aimRotationSpeed: 360
   aimingTime: 1
+  firingDuration: 0.3
 --- !u!114 &2439858525930125371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2008,7 +2009,7 @@ MonoBehaviour:
   ApplyTiming: 0
   SyncSettings: 79
   StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
-  TriggerHashes: 00000000bad385b1
+  TriggerHashes: 
   TotalWords: 1
 --- !u!114 &3433552081052675248
 MonoBehaviour:

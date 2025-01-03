@@ -29,7 +29,8 @@ namespace Units
                 else if (action is ShootAction shootAction)
                 {
                     _shootAction = shootAction;
-                    shootAction.OnShoot += ShootAction_OnShoot;
+                    shootAction.OnStartShooting += StartShootingActionOnStartShooting;
+                    shootAction.OnStopShooting += ShootAction_OnStophooting;
                 }
             }
         }
@@ -46,17 +47,29 @@ namespace Units
                 }
                 else if (action is ShootAction shootAction)
                 {
-                    shootAction.OnShoot -= ShootAction_OnShoot;
+                    shootAction.OnStartShooting -= StartShootingActionOnStartShooting;
+                    shootAction.OnStopShooting -= ShootAction_OnStophooting;
                 }
             }
         }
 
         private void Update()
         {
-            if (_moveAction == null) return;
-            bool isCurrentlyMoving = _moveAction.GetIsMoving();
-        
-            animator.SetBool(IsWalking, isCurrentlyMoving);
+            if (_moveAction == null)
+            {
+                return;
+            }
+            if (_moveAction != null)
+            {
+                bool isCurrentlyMoving = _moveAction.GetIsMoving();
+                animator.SetBool(IsWalking, isCurrentlyMoving);
+            }
+            if (_shootAction == null) return;
+            if (_shootAction != null)
+            {
+                bool isCurrentlyShooting = _shootAction.GetIsFiring(); 
+                animator.SetBool(Shoot, isCurrentlyShooting);
+            }
         }
 
         private void MoveAction_OnStartMoving(object sender, EventArgs e)
@@ -69,9 +82,14 @@ namespace Units
             animator.SetBool(IsWalking, false);
         }
 
-        private void ShootAction_OnShoot(object sender, EventArgs e)
+        private void StartShootingActionOnStartShooting(object sender, EventArgs e)
         {
-            networkMecanimAnimator.SetTrigger(Shoot, false);
+            animator.SetBool(Shoot, true);
+        }
+        
+        private void ShootAction_OnStophooting(object sender, EventArgs e)
+        {
+            animator.SetBool(Shoot, true);
         }
     }
 }

@@ -9,21 +9,24 @@ namespace Actions
 {
     public class ShootAction : BaseAction
     {
-        public event EventHandler OnShoot;
+        public event EventHandler OnStartShooting;
+        public event EventHandler OnStopShooting;
         
         [SerializeField] private int maxShootDistance = 7;
         [SerializeField] private float aimRotationSpeed = 360f;
         [SerializeField] private float aimingTime = 1f;
+        [SerializeField] private float firingDuration = 0.3f; 
         
-        [Networked] private float currentAimingTime { get; set; }
+        [Networked] private float CurrentAimingTime { get; set; }
         [Networked] private bool IsAiming { get; set; }
-        [Networked]private bool IsFiring { get; set; }
-        public bool GetIsFiring() => IsFiring;
+        [Networked] private bool IsFiring { get; set; }
+        [Networked] private float FiringTimer { get; set; }
 
         private bool canShootBullet;
-        
         private GridPosition targetPosition;
         private Unit _targetUnit;
+        
+        public bool GetIsFiring() => IsFiring;
         
         public override string GetActionName() => "Shoot";
    
@@ -78,9 +81,8 @@ namespace Actions
                 onActionComplete?.Invoke();
                 return;
             }
-            
             StartAction(onActionComplete);
-            currentAimingTime = aimingTime;
+            CurrentAimingTime = aimingTime;
             IsAiming = true;
             targetPosition = gridPosition;
             canShootBullet = true;
@@ -96,7 +98,12 @@ namespace Actions
             }
             else if (IsFiring)
             {
-                HandleFiring();
+                FiringTimer -= Runner.DeltaTime;
+                if (FiringTimer <= 0f)
+                {
+                    IsFiring = false;
+                    ActionComplete();
+                }
             }
         }
         private void HandleAiming()
@@ -113,11 +120,11 @@ namespace Actions
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, aimRotationSpeed * Runner.DeltaTime);
 
-            currentAimingTime -= Runner.DeltaTime;
-            if (currentAimingTime <= 0f && Quaternion.Angle(transform.rotation, targetRotation) < 1f) 
+            CurrentAimingTime -= Runner.DeltaTime;
+            if (CurrentAimingTime <= 0f && Quaternion.Angle(transform.rotation, targetRotation) < 1f) 
             {
                 IsAiming = false;
-                IsFiring = true;
+                HandleFiring();
                 Debug.Log("Aiming complete. Transitioning to firing...");
             }
         }
@@ -130,14 +137,11 @@ namespace Actions
                 ActionComplete();
                 return;
             }
-            OnShoot?.Invoke(this, EventArgs.Empty);
+            OnStartShooting?.Invoke(this, EventArgs.Empty);
             _targetUnit.Damage();
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
-            IsFiring = false;
-
-            ActionComplete();
+            IsFiring = true;
+            FiringTimer = firingDuration;
         }
-        
-        
     }
 }
