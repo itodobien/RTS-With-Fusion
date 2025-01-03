@@ -1,5 +1,6 @@
 using System;
 using Actions;
+using Fusion;
 using UnityEngine;
 
 namespace Units
@@ -7,10 +8,12 @@ namespace Units
     public class UnitAnimator : MonoBehaviour
     {
         [SerializeField] private Animator animator;
+        [SerializeField] private NetworkMecanimAnimator networkMecanimAnimator;
         private MoveAction _moveAction;
-        private SpinAction _spinAction;
+        private ShootAction _shootAction;
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+        private static readonly int Shoot = Animator.StringToHash("Shoot");
 
         private void Awake()
         {
@@ -23,10 +26,10 @@ namespace Units
                     moveAction.OnStartMoving += MoveAction_OnStartMoving;
                     moveAction.OnStopMoving  += MoveAction_OnStopMoving;
                 }
-                else if (action is SpinAction spinAction)
+                else if (action is ShootAction shootAction)
                 {
-                    spinAction.OnStartSpinning += SpinAction_OnStartSpinning;
-                    spinAction.OnStopSpinning += SpinAction_OnStopSpinning;
+                    _shootAction = shootAction;
+                    shootAction.OnShoot += ShootAction_OnShoot;
                 }
             }
         }
@@ -41,10 +44,9 @@ namespace Units
                     moveAction.OnStartMoving -= MoveAction_OnStartMoving;
                     moveAction.OnStopMoving  -= MoveAction_OnStopMoving;
                 }
-                else if (action is SpinAction spinAction)
+                else if (action is ShootAction shootAction)
                 {
-                    spinAction.OnStartSpinning -= SpinAction_OnStartSpinning;
-                    spinAction.OnStopSpinning  -= SpinAction_OnStopSpinning;
+                    shootAction.OnShoot -= ShootAction_OnShoot;
                 }
             }
         }
@@ -67,13 +69,9 @@ namespace Units
             animator.SetBool(IsWalking, false);
         }
 
-        private void SpinAction_OnStartSpinning(object sender, EventArgs e)
+        private void ShootAction_OnShoot(object sender, EventArgs e)
         {
-            //
-        }
-        private void SpinAction_OnStopSpinning(object sender, EventArgs e)
-        {
-            //
+            networkMecanimAnimator.SetTrigger(Shoot, false);
         }
     }
 }

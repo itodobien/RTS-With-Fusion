@@ -1909,8 +1909,8 @@ GameObject:
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 3433552081052675248}
   - component: {fileID: -8727792154856042969}
-  - component: {fileID: 2148023841894036030}
   - component: {fileID: 8455642825607193898}
+  - component: {fileID: 2148023841894036030}
   m_Layer: 6
   m_Name: UnitWhite
   m_TagString: Untagged
@@ -1976,7 +1976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c786baa778b208f45b8e8cba161e6f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAction: {fileID: 2513909572344953795}
   spinRotateSpeed: 1
 --- !u!114 &5990219014067611979
 MonoBehaviour:
@@ -2006,10 +2005,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 2016504890143318460}
-  ApplyTiming: 2
+  ApplyTiming: 0
   SyncSettings: 79
-  StateHashes: 00000000331bc665dd790e10011cc384eadf4b79
-  TriggerHashes: 00000000
+  StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
+  TriggerHashes: 00000000bad385b1
   TotalWords: 1
 --- !u!114 &3433552081052675248
 MonoBehaviour:
@@ -2052,6 +2051,20 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &8455642825607193898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb466ffc8b943374abe0e6b34ce7e27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2016504890143318460}
+  networkMecanimAnimator: {fileID: 2439858525930125371}
 --- !u!136 &2148023841894036030
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2075,19 +2088,6 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &8455642825607193898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb466ffc8b943374abe0e6b34ce7e27d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2016504890143318460}
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

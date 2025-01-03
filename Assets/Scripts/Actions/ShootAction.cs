@@ -9,13 +9,16 @@ namespace Actions
 {
     public class ShootAction : BaseAction
     {
+        public event EventHandler OnShoot;
+        
         [SerializeField] private int maxShootDistance = 7;
         [SerializeField] private float aimRotationSpeed = 360f;
         [SerializeField] private float aimingTime = 1f;
         
         [Networked] private float currentAimingTime { get; set; }
         [Networked] private bool IsAiming { get; set; }
-        [Networked] private bool IsFiring { get; set; }
+        [Networked]private bool IsFiring { get; set; }
+        public bool GetIsFiring() => IsFiring;
 
         private bool canShootBullet;
         
@@ -23,11 +26,6 @@ namespace Actions
         private Unit _targetUnit;
         
         public override string GetActionName() => "Shoot";
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
    
         public override List<GridPosition> GetValidActionGridPositionList()
         {
@@ -132,12 +130,14 @@ namespace Actions
                 ActionComplete();
                 return;
             }
+            OnShoot?.Invoke(this, EventArgs.Empty);
             _targetUnit.Damage();
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = false;
 
             ActionComplete();
         }
+        
         
     }
 }

@@ -1911,6 +1911,7 @@ GameObject:
   - component: {fileID: -3982687064086801559}
   - component: {fileID: 2148023841894036030}
   - component: {fileID: 302747443033000789}
+  - component: {fileID: -6267336700408065696}
   m_Layer: 6
   m_Name: UnitBlue
   m_TagString: Untagged
@@ -1976,7 +1977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c786baa778b208f45b8e8cba161e6f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAction: {fileID: 2513909572344953795}
   spinRotateSpeed: 1
 --- !u!114 &-3677547835509593020
 MonoBehaviour:
@@ -2006,10 +2006,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 2016504890143318460}
-  ApplyTiming: 2
+  ApplyTiming: 0
   SyncSettings: 79
-  StateHashes: 00000000331bc665dd790e10011cc384eadf4b79
-  TriggerHashes: 00000000
+  StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
+  TriggerHashes: 00000000bad385b1
   TotalWords: 1
 --- !u!114 &2699177952912815779
 MonoBehaviour:
@@ -2088,6 +2088,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2016504890143318460}
+  networkMecanimAnimator: {fileID: 2439858525930125371}
+--- !u!114 &-6267336700408065696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guid:
+    RawGuidValue: 609bc84fb650faf42a7ade3ca7491ae6
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,9 +8,6 @@ namespace Actions
 {
     public class SpinAction : BaseAction
     {
-        
-        public event EventHandler OnStartSpinning;
-        public event EventHandler OnStopSpinning;
         [Networked] private bool IsSpinning{ get; set;}
         
         [SerializeField] private float spinRotateSpeed = 1f;

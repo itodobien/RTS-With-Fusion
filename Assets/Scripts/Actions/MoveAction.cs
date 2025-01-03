@@ -12,7 +12,7 @@ namespace Actions
         public event EventHandler OnStopMoving;
         
         [Header("Move Action Settings")]
-        [SerializeField]private float stopDistance = 0.1f;
+        [SerializeField] private float stopDistance = 0.1f;
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private float rotateSpeed = 10f;
         [SerializeField] private int maxMoveDistance = 4;
