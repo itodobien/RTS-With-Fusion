@@ -7,6 +7,8 @@ namespace Units
 {
     public class Unit : NetworkBehaviour
     {
+        [SerializeField] private Transform aimTransform;
+        
         [Networked] private NetworkBool IsSelected { get; set; }
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
@@ -40,6 +42,11 @@ namespace Units
                 LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
                 _gridPosition = newGridPosition;
             }
+        }
+        
+        public Vector3 GetAimPosition()
+        {
+            return aimTransform.position;
         }
 
         public void SetNetworkSelected(bool selected)

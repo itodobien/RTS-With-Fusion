@@ -139,7 +139,8 @@ namespace Actions
                 return;
             }
             OnStartShooting?.Invoke(this, EventArgs.Empty);
-            Vector3 shootDirection = (_targetUnit.GetWorldPosition() - bulletSpawnPoint.position).normalized;
+            Vector3 targetPosition = _targetUnit.GetAimPosition();
+            Vector3 shootDirection = (targetPosition - bulletSpawnPoint.position).normalized;
             
             Runner.Spawn(
                 bulletPrefab,
@@ -151,10 +152,6 @@ namespace Actions
                     spawnedBullet.GetComponent<Projectile>().ShootAtTarget(shootDirection);
                 }
             );
-            
-            
-            
-            
             
             _targetUnit.Damage();
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");

@@ -245,8 +245,8 @@ GameObject:
   - component: {fileID: 905843678208275563}
   - component: {fileID: -7962226692007311978}
   - component: {fileID: 160577859601858438}
-  - component: {fileID: -1463825481093713494}
   - component: {fileID: 7168756369807925437}
+  - component: {fileID: 5959424986439051897}
   - component: {fileID: -6693699190409150122}
   m_Layer: 0
   m_Name: BulletProjectile
@@ -284,6 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb6ad3a59461654885bc87fc1726443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 20
 --- !u!114 &160577859601858438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,25 +303,8 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: -7962226692007311978}
-  - {fileID: -1463825481093713494}
+  - {fileID: 5959424986439051897}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-1463825481093713494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5686123572252632153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!136 &7168756369807925437
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -344,6 +328,23 @@ CapsuleCollider:
   m_Height: 0.02
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5959424986439051897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5686123572252632153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!114 &-6693699190409150122
 MonoBehaviour:
   m_ObjectHideFlags: 0
