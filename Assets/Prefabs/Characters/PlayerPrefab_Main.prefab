@@ -190,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   unitPrefabs:
+  - RawGuidValue: 51524ca01c9e28548a706f6ac9e1ab03
   - RawGuidValue: 609bc84fb650faf42a7ade3ca7491ae6
   - RawGuidValue: 12aeaa5f4a3ce914eb74bc9a1fb86dc4
   - RawGuidValue: c26374f038b8a3844bef898533ca5514
@@ -276,7 +277,7 @@ MonoBehaviour:
   Animator: {fileID: 242778183055768082}
   ApplyTiming: 2
   SyncSettings: 79
-  StateHashes: 00000000331bc665dd790e10011cc384eadf4b79
+  StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
   TriggerHashes: 00000000
   TotalWords: 1
 --- !u!114 &-4873622648544212070

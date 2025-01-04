@@ -149,7 +149,7 @@ namespace Actions
                 Object.InputAuthority,
                 (runner, spawnedBullet) =>
                 {
-                    spawnedBullet.GetComponent<Projectile>().ShootAtTarget(shootDirection);
+                    spawnedBullet.GetComponent<Projectile>().ShootAtTarget(shootDirection, targetPosition);
                 }
             );
             
