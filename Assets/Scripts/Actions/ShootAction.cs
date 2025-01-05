@@ -17,7 +17,8 @@ namespace Actions
         [SerializeField] private float aimingTime = 1f;
         [SerializeField] private float firingDuration = 0.3f; 
         [SerializeField] private Projectile bulletPrefab;
-        [SerializeField] private Transform bulletSpawnPoint; 
+        [SerializeField] private Transform bulletSpawnPoint;
+        [SerializeField] private int shotDamageAmount = 40;
 
         
         [Networked] private float CurrentAimingTime { get; set; }
@@ -153,7 +154,7 @@ namespace Actions
                 }
             );
             
-            _targetUnit.Damage();
+            _targetUnit.Damage(shotDamageAmount);
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = true;
             FiringTimer = firingDuration;

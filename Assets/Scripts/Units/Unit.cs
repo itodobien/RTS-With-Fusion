@@ -19,6 +19,7 @@ namespace Units
         private MoveAction _moveAction;
         private SpinAction _spinAction;
         private ShootAction _shootAction;
+        private HealthSystem _healthSystem;
 
         private void Awake()
         {
@@ -26,12 +27,15 @@ namespace Units
             _moveAction = GetComponent<MoveAction>();
             _spinAction = GetComponent<SpinAction>();
             _shootAction = GetComponent<ShootAction>();
+            _healthSystem = GetComponent<HealthSystem>();
         }
 
         private void Start()
         {
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
+
+            _healthSystem.onDeath += HealthSystem_OnDead;
         }
 
         private void Update()
@@ -76,11 +80,30 @@ namespace Units
             return _teamID;
         }
 
-        public void Damage()
+        public void Damage(int damageAmount)
         {
-            Debug.Log(transform + "Damage");
+            _healthSystem.TakeDamage(damageAmount);
         }
-        
+
+        private void HealthSystem_OnDead(object sender, System.EventArgs e)
+        {
+            LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+            
+            if (HasStateAuthority)
+            {
+                Runner.Despawn(Object);
+            }
+        }
+
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            if (_gridPosition != null)
+            {
+                LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+            }
+            base.Despawned(runner, hasState);
+        }
+
 
         public bool GetIsSelected() => IsSelected;
         public MoveAction GetMoveAction() => _moveAction;

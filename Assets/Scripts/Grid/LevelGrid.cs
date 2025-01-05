@@ -31,7 +31,7 @@ namespace Grid
             gridObject.AddUnit(unit);
         }
 
-        private void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
+        internal void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             gridObject.RemoveUnit(unit);

@@ -1,3 +1,4 @@
+using System.Collections;
 using Fusion;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class Projectile : NetworkBehaviour
     [SerializeField] private float stopDistance = 0.1f;
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private ParticleSystem bulletImpactPrefab;
+    private bool _hasImpacted;
     
     private Vector3 _direction;
     private Vector3 _targetPosition;
@@ -20,23 +22,42 @@ public class Projectile : NetworkBehaviour
     
     public override void FixedUpdateNetwork()
     {
+        if (!Object.HasStateAuthority) return;
+        if (_hasImpacted) return;
+        
         if (Object.HasStateAuthority)
         {
+            
             float distanceBeforeShooting = Vector3.Distance(transform.position, _targetPosition);
-            
             transform.position += _direction * speed * Runner.DeltaTime;
-            
             float distanceAfterShooting = Vector3.Distance(transform.position, _targetPosition);
+            
             if (distanceBeforeShooting < distanceAfterShooting)
             {
+                _hasImpacted = true;
                 transform.position = _targetPosition;
-                trailRenderer.transform.parent = null;
-                bulletImpactPrefab.transform.parent = null;
-                bulletImpactPrefab.Play();
+
+                if (trailRenderer != null)
+                {
+                    trailRenderer.transform.SetParent(null, true);
+                    RPC_PlayImpactEffect(transform.position);
+                    
+                }
+                StartCoroutine(DespawnAfterDelay(0.2f));
                 
-                
-                Runner.Despawn(Object);
             }
         }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayImpactEffect(Vector3 impactPosition)
+    {
+        var impactInstance = Instantiate(bulletImpactPrefab, impactPosition, Quaternion.identity);
+        impactInstance.Play();
+    }
+    private IEnumerator DespawnAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Runner.Despawn(Object); // or any other cleanup if needed
     }
 }
