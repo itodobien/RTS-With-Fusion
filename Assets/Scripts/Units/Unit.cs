@@ -10,7 +10,7 @@ namespace Units
     public class Unit : NetworkBehaviour
     {
         [SerializeField] private Transform aimTransform;
-        [SerializeField] private float deathForce = 10f;
+        [SerializeField] private float deathForce = 1f;
         [SerializeField] private float delayTimer = .2f;
         
         [Networked] public bool IsBusy { get; set; }
@@ -40,7 +40,7 @@ namespace Units
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
 
-            _healthSystem.onDeath += HealthSystem_OnDead;
+            _healthSystem.OnDeath += HealthSystem_OnDead;
         }
 
         private void Update()
@@ -95,37 +95,32 @@ namespace Units
 
         private void HealthSystem_OnDead(object sender, System.EventArgs e)
         {
-
             if (HasStateAuthority && !IsDead)
             {
                 IsDead = true;
                 RPC_HandleUnitDeath();
             }
-            
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_HandleUnitDeath()
         {
-            if (HasStateAuthority)
-            {
-                Debug.Log($"Handling death for unit {gameObject.name}");
-                
-                RPC_ForceDeselectUnit(Object.Id, OwnerPlayerRef);
-                UnitSelectionManager.Instance.ForceDeselectUnit(this);
-                UnitSelectionManager.Instance.CleanupDestroyedUnits();
-                LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+            Debug.Log($"Handling death for unit {gameObject.name}");
+            
+            RPC_ForceDeselectUnit(Object.Id, OwnerPlayerRef);
+            UnitSelectionManager.Instance.ForceDeselectUnit(this);
+            UnitSelectionManager.Instance.CleanupDestroyedUnits();
+            LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
 
-                var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
-                GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
-                
-                Rigidbody[] rigidbodies = ragdoll.GetComponentsInChildren<Rigidbody>();
-                foreach (Rigidbody rb in rigidbodies)
-                {
-                    rb.AddForce(Vector3.down * deathForce, ForceMode.Impulse);
-                }
-                StartCoroutine(DestroyAfterDelay(delayTimer));
+            var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
+            GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
+            
+            Rigidbody[] rigidbodies = ragdoll.GetComponentsInChildren<Rigidbody>();
+            foreach (Rigidbody rb in rigidbodies)
+            {
+                rb.AddForce(Vector3.down * deathForce, ForceMode.Impulse);
             }
+            StartCoroutine(DestroyAfterDelay(delayTimer));
         }
         private IEnumerator DestroyAfterDelay(float delay)
         {
@@ -158,7 +153,6 @@ namespace Units
                 }
             }
             Debug.Log($"[RPC_ForceDeselectUnit] Removing Unit: {deadUnitId}");
-
         }
         
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -178,15 +172,11 @@ namespace Units
             base.Despawned(runner, hasState);
         }
         
-        
-        
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
-
         public ShootAction GetShootAction() => _shootAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
-        
         public Vector3 GetWorldPosition() => transform.position;
     }
 }

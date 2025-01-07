@@ -1,28 +1,31 @@
 using System;
 using UnityEngine;
 
-public class HealthSystem : MonoBehaviour
+namespace Units
 {
-    public event EventHandler onDeath;
-    private int health = 100;
+    public class HealthSystem : MonoBehaviour
+    {
+        public event EventHandler OnDeath;
+        private int _health = 100;
     
-    public void TakeDamage(int damageAmount)
-    {
-        health -= damageAmount;
-
-        if (health < 0)
+        public void TakeDamage(int damageAmount)
         {
-            health = 0;
+            _health -= damageAmount;
+
+            if (_health < 0)
+            {
+                _health = 0;
+            }
+
+            if (_health == 0)
+            {
+                Die();
+            }
         }
 
-        if (health == 0)
+        private void Die()
         {
-            Die();
+            OnDeath?.Invoke(this, EventArgs.Empty);
         }
-    }
-
-    private void Die()
-    {
-        onDeath?.Invoke(this, EventArgs.Empty);
     }
 }

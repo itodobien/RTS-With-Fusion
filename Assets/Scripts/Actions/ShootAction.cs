@@ -26,7 +26,7 @@ namespace Actions
         [Networked] private bool IsFiring { get; set; }
         [Networked] private float FiringTimer { get; set; }
         [Networked] private NetworkId TargetUnitId { get; set; }
-        private GridPosition targetPosition;
+        private GridPosition _targetPosition;
         private Unit _targetUnit;
         
         public bool GetIsFiring() => IsFiring;
@@ -94,7 +94,7 @@ namespace Actions
             StartAction(onActionComplete);
             CurrentAimingTime = aimingTime;
             IsAiming = true;
-            targetPosition = gridPosition;
+            _targetPosition = gridPosition;
         }
         
         public override void FixedUpdateNetwork()

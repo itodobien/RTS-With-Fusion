@@ -16,7 +16,7 @@ namespace Actions
         public event EventHandler OnSelectedActionChanged;
         
         private BaseAction _selectedAction;
-        private Dictionary<PlayerRef, Unit> selectedUnitDict = new();
+        private Dictionary<PlayerRef, Unit> _selectedUnitDict = new();
         
         private void Awake()
         {
@@ -70,12 +70,12 @@ namespace Actions
 
         public void SetSelectedUnitForPlayer(PlayerRef player, Unit unit)
         {
-            selectedUnitDict[player] = unit;
+            _selectedUnitDict[player] = unit;
         }
 
         public Unit GetSelectedUnitForPlayer(PlayerRef player)
         {
-            selectedUnitDict.TryGetValue(player, out var found);
+            _selectedUnitDict.TryGetValue(player, out var found);
             return found;
         }
 

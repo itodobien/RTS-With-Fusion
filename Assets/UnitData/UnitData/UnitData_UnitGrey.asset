@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   liveUnitPrefab:
     RawGuidValue: 12aeaa5f4a3ce914eb74bc9a1fb86dc4
-  ragdollPrefab: {fileID: 8894382734379626466, guid: 7a89862f8a70053428dc69db2b400edf, type: 3}
+  ragdollPrefab: {fileID: 8894382734379626466, guid: f0786da97acf66440816927aa6f4c0bc, type: 3}
   unitName: 
   icon: {fileID: 0}
   teamColorOverride: {r: 0, g: 0, b: 0, a: 0}
