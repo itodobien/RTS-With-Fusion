@@ -1,3 +1,4 @@
+using System.Collections;
 using Actions;
 using Fusion;
 using Grid;
@@ -9,11 +10,14 @@ namespace Units
     public class Unit : NetworkBehaviour
     {
         [SerializeField] private Transform aimTransform;
+        [SerializeField] private float deathForce = 10f;
+        [SerializeField] private float delayTimer = .2f;
         
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
-        [Networked] private int _teamID { get; set; }
-        [Networked] private int _prefabIndex { get; set; }
+        [Networked] private int TeamID { get; set; }
+        [Networked] private int PrefabIndex { get; set; }
+        [Networked] private bool IsDead { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
@@ -52,12 +56,12 @@ namespace Units
         {
             if (HasStateAuthority)
             {
-                _prefabIndex = index;
+                PrefabIndex = index;
             }
         }
         public int GetPrefabIndex()
         {
-            return _prefabIndex;
+            return PrefabIndex;
         }
         
         public Vector3 GetAimPosition()
@@ -76,12 +80,12 @@ namespace Units
         {
             if (HasStateAuthority)
             {
-                _teamID = newTeamID;
+                TeamID = newTeamID;
             }
         }
         public int GetTeamID()
         {
-            return _teamID;
+            return TeamID;
         }
 
         public void Damage(int damageAmount)
@@ -91,16 +95,43 @@ namespace Units
 
         private void HealthSystem_OnDead(object sender, System.EventArgs e)
         {
+
+            if (HasStateAuthority && !IsDead)
+            {
+                IsDead = true;
+                RPC_HandleUnitDeath();
+            }
+            
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_HandleUnitDeath()
+        {
             if (HasStateAuthority)
             {
+                Debug.Log($"Handling death for unit {gameObject.name}");
+                
                 RPC_ForceDeselectUnit(Object.Id, OwnerPlayerRef);
                 UnitSelectionManager.Instance.ForceDeselectUnit(this);
                 UnitSelectionManager.Instance.CleanupDestroyedUnits();
                 LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
 
-                var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[_prefabIndex];
-                RPC_SpawnLocalRagdoll(transform.position, transform.rotation, _prefabIndex);
-
+                var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
+                GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
+                
+                Rigidbody[] rigidbodies = ragdoll.GetComponentsInChildren<Rigidbody>();
+                foreach (Rigidbody rb in rigidbodies)
+                {
+                    rb.AddForce(Vector3.down * deathForce, ForceMode.Impulse);
+                }
+                StartCoroutine(DestroyAfterDelay(delayTimer));
+            }
+        }
+        private IEnumerator DestroyAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (HasStateAuthority)
+            {
                 Runner.Despawn(Object);
             }
         }
