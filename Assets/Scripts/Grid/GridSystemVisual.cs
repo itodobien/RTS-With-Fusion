@@ -70,13 +70,11 @@ namespace Grid
             List<Unit> selectedUnits = UI.UnitSelectionManager.Instance.GetSelectedUnits();
             if (selectedUnits.Count == 0) return;
             
-            BaseAction seelectedAction = UnitActionSystem.Instance.GetSelectedAction();
-            if (seelectedAction == null) return;
+            BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+            if (selectedAction == null) return;
             
-            List<GridPosition> validPosiitons = seelectedAction.GetValidActionGridPositionList();
-            ShowGridPositionList(validPosiitons);
-                
-            
+            List<GridPosition> validPosition = selectedAction.GetValidActionGridPositionList();
+            ShowGridPositionList(validPosition);
         }
     }
 }

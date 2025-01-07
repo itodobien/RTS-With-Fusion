@@ -57,22 +57,27 @@ namespace Units
 
         private void Update()
         {
-            if (_moveAction == null)
-            {
-                return;
-            }
             if (_moveAction != null)
             {
                 bool isCurrentlyMoving = _moveAction.GetIsMoving();
                 animator.SetBool(IsWalking, isCurrentlyMoving);
             }
-            if (_shootAction == null) return;
+            else
+            {
+                animator.SetBool(IsWalking, false);
+            }
+
             if (_shootAction != null)
             {
                 bool isCurrentlyShooting = _shootAction.GetIsFiring(); 
                 animator.SetBool(Shoot, isCurrentlyShooting);
             }
+            else
+            {
+                animator.SetBool(Shoot, false);
+            }
         }
+
 
         private void MoveAction_OnStartMoving(object sender, EventArgs e)
         {

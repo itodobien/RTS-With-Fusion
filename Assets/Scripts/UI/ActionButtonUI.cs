@@ -19,6 +19,7 @@ namespace UI
             _baseAction = baseAction;
             button.onClick.AddListener(() =>
             {
+                UnitSelectionManager.Instance?.ForceClearSelectionBox();
                 UnitActionSystem.Instance.SetSelectedAction(_baseAction);
 
                 if (_baseAction is MoveAction) {

@@ -15,7 +15,10 @@ namespace Fusion
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
         
-        [SerializeField] private NetworkPrefabRef[] unitPrefabs;
+        /*[SerializeField] private NetworkPrefabRef[] unitPrefabs;*/
+        
+        public static BasicSpawner Instance { get; private set; }
+        [SerializeField] public UnitDatabase unitDatabase;
         
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
@@ -26,6 +29,13 @@ namespace Fusion
         private void Awake()
         {
             _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+            if (Instance != null && Instance != this)
+            {
+                Debug.LogError("Multiple BasicSpawner instances detected. Destroying the new one.");
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
         }
         
         private void OnGUI()
@@ -82,9 +92,9 @@ namespace Fusion
                 playerScript.SetTeamID(assignedTeamId);
                 _nextTeamId++;
         
-                int unitPrefabIndex = player.RawEncoded % unitPrefabs.Length;
-                playerScript.SetUnitPrefabIndex(unitPrefabIndex);
-                playerScript.SetUnitPrefabs(unitPrefabs);
+                int unitIndex = player.RawEncoded % unitDatabase.unitDataList.Length;
+                playerScript.SetUnitPrefabIndex(unitIndex);
+                /*playerScript.SetUnitPrefabs(unitPrefabs);*/
         
                 _spawnedCharacters.Add(player, networkPlayerObject);
 

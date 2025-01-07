@@ -53,12 +53,30 @@ namespace Grid
         public bool HasUnitAtGridPosition(GridPosition gridPosition)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.HasAnyUnit();
+
+            foreach (Unit unit in gridObject.GetUnitList())
+            {
+                if (unit != null && unit.Object && unit.Object.IsInSimulation)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public List<Unit> GetUnitAtGridPosition(GridPosition gridPosition)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.GetUnitList();
+            List<Unit> rawList = gridObject.GetUnitList();
+            
+            List<Unit> validUnits = new List<Unit>();
+            foreach (Unit unit in rawList)
+            {
+                if (unit != null && unit.Object && unit.Object.IsInSimulation)
+                {
+                    validUnits.Add(unit);
+                }
+            }
+            return validUnits;
         }
     
     }

@@ -27,12 +27,11 @@ public class Projectile : NetworkBehaviour
         
         if (Object.HasStateAuthority)
         {
-            
             float distanceBeforeShooting = Vector3.Distance(transform.position, _targetPosition);
             transform.position += _direction * speed * Runner.DeltaTime;
             float distanceAfterShooting = Vector3.Distance(transform.position, _targetPosition);
             
-            if (distanceBeforeShooting < distanceAfterShooting)
+            if (distanceBeforeShooting < distanceAfterShooting || Vector3.Distance(transform.position, _targetPosition) < 0.1f)
             {
                 _hasImpacted = true;
                 transform.position = _targetPosition;
@@ -41,10 +40,8 @@ public class Projectile : NetworkBehaviour
                 {
                     trailRenderer.transform.SetParent(null, true);
                     RPC_PlayImpactEffect(transform.position);
-                    
                 }
                 StartCoroutine(DespawnAfterDelay(0.2f));
-                
             }
         }
     }

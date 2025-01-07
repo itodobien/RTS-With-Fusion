@@ -1,6 +1,7 @@
 using Actions;
 using Fusion;
 using Grid;
+using UI;
 using UnityEngine;
 
 namespace Units
@@ -9,10 +10,10 @@ namespace Units
     {
         [SerializeField] private Transform aimTransform;
         
-        [Networked] private NetworkBool IsSelected { get; set; }
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] private int _teamID { get; set; }
+        [Networked] private int _prefabIndex { get; set; }
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
@@ -47,18 +48,21 @@ namespace Units
                 _gridPosition = newGridPosition;
             }
         }
+        public void SetPrefabIndex(int index)
+        {
+            if (HasStateAuthority)
+            {
+                _prefabIndex = index;
+            }
+        }
+        public int GetPrefabIndex()
+        {
+            return _prefabIndex;
+        }
         
         public Vector3 GetAimPosition()
         {
             return aimTransform.position;
-        }
-
-        public void SetNetworkSelected(bool selected)
-        {
-            if (HasStateAuthority)
-            {
-                IsSelected = selected;
-            }
         }
 
         public void SetIsBusy(bool isBusy)
@@ -87,12 +91,51 @@ namespace Units
 
         private void HealthSystem_OnDead(object sender, System.EventArgs e)
         {
-            LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
-            
             if (HasStateAuthority)
             {
+                RPC_ForceDeselectUnit(Object.Id, OwnerPlayerRef);
+                UnitSelectionManager.Instance.ForceDeselectUnit(this);
+                UnitSelectionManager.Instance.CleanupDestroyedUnits();
+                LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+
+                var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[_prefabIndex];
+                RPC_SpawnLocalRagdoll(transform.position, transform.rotation, _prefabIndex);
+
                 Runner.Despawn(Object);
             }
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_ForceDeselectUnit(NetworkId deadUnitId, PlayerRef ownerPlayerRef)
+        {
+            var foundUnit = Runner.FindObject(deadUnitId)?.GetComponent<Unit>();
+            if (foundUnit != null)
+            {
+                UnitSelectionManager.Instance.ForceDeselectUnit(foundUnit);
+            }
+            else
+            {
+                UnitSelectionManager.Instance.ForceDeselectUnitById(deadUnitId);
+            }
+
+            var currentlySelected = UnitActionSystem.Instance.GetSelectedUnitForPlayer(ownerPlayerRef);
+            if (currentlySelected != null && currentlySelected.Object != null)
+            {
+                if (currentlySelected.Object.Id == deadUnitId)
+                {
+                    UnitActionSystem.Instance.SetSelectedUnitForPlayer(ownerPlayerRef, null);
+                }
+            }
+            Debug.Log($"[RPC_ForceDeselectUnit] Removing Unit: {deadUnitId}");
+
+        }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_SpawnLocalRagdoll(Vector3 position, Quaternion rotation, int prefabIndex)
+        {
+            var data = BasicSpawner.Instance.unitDatabase.unitDataList[prefabIndex];
+            var ragdollPrefab = data.ragdollPrefab;
+            Instantiate(ragdollPrefab, position, rotation);
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
@@ -103,9 +146,9 @@ namespace Units
             }
             base.Despawned(runner, hasState);
         }
-
-
-        public bool GetIsSelected() => IsSelected;
+        
+        
+        
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
 
@@ -114,6 +157,5 @@ namespace Units
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
         
         public Vector3 GetWorldPosition() => transform.position;
-
     }
 }

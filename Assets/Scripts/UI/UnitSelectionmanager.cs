@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Actions;
 using Fusion;
 using Units;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -14,7 +16,7 @@ namespace UI
 
         [SerializeField] private RectTransform selectionBoxVisual;
         [SerializeField] private LayerMask unitLayerMask;
-
+        
         private Vector2 _selectionBoxStart;
         private Vector2 _selectionBoxEnd;
         
@@ -22,7 +24,6 @@ namespace UI
         private List<Unit> _selectedUnits = new(); 
         private PlayerRef _activePlayer; 
         private Player _localPlayer;
-        
 
         private bool _isMouseDragging;
         private bool _isMouseDown;
@@ -49,9 +50,15 @@ namespace UI
         private void Update()
         {
             if (_localPlayer == null) return;
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ForceClearSelectionBox();
+                UpdateSelectedUnits(new List<Unit>());
+            }
             if (Input.GetMouseButtonDown(0)) 
             {
-                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+                Debug.Log("Mouse UP: " + Time.frameCount);
+                if (EventSystem.current.IsPointerOverGameObject()) return;
                 _isMouseDown = true;
                 _isMouseDragging = false;
                 _mouseStartPosition = Input.mousePosition;
@@ -59,6 +66,7 @@ namespace UI
             }
             else if (_isMouseDown && Input.GetMouseButton(0)) 
             {
+                Debug.Log("Mouse UP: " + Time.frameCount);
                 if (!_isMouseDragging) 
                 {
                     if (Vector3.Distance(Input.mousePosition, _mouseStartPosition) > 10f) 
@@ -102,6 +110,12 @@ namespace UI
                 {
                     if (raycastHit.transform.TryGetComponent(out Unit unit))
                     {
+                        if (!unit.Object || !unit.Object.IsInSimulation)
+                        {
+                            UpdateSelectedUnits(new List<Unit>());
+                            return;
+                        }
+
                         if (_localPlayer == null)
                         {
                             UpdateSelectedUnits(new List<Unit>());
@@ -152,8 +166,9 @@ namespace UI
 
             foreach (var unit in FindObjectsByType<Unit>(FindObjectsSortMode.None))
             {
-                
                 int localPlayerTeam = _localPlayer.GetTeamID();
+                
+                if (!unit.Object || !unit.Object.IsInSimulation) continue;
                         
                 if (unit.GetTeamID() ==  localPlayerTeam && unit.OwnerPlayerRef == _activePlayer)
                 {
@@ -179,13 +194,21 @@ namespace UI
 
         private void UpdateSelectedUnits(List<Unit> newSelection)
         {
-            foreach (var unit in _selectedUnits)
+            _selectedUnits.RemoveAll(unit => unit == null || !unit.Object || !unit.Object.IsInSimulation);
+            
+            foreach (var unit in _selectedUnits.ToList())
             {
-                _pendingSelectionChanges.Add((unit.Object.Id, false));
+                if (!newSelection.Contains(unit))
+                {
+                    _pendingSelectionChanges.Add((unit.Object.Id, false));
+                }
             }
             foreach (var unit in newSelection)
             {
-                _pendingSelectionChanges.Add((unit.Object.Id, true));
+                if (!_selectedUnits.Contains(unit))
+                {
+                    _pendingSelectionChanges.Add((unit.Object.Id, true));
+                }
             }
             _selectedUnits = newSelection.ToList();
             OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
@@ -200,6 +223,49 @@ namespace UI
             }
             return null;
         }
+        
+        public void ForceDeselectUnitById(NetworkId unitId)
+        {
+            Unit existing = _selectedUnits.FirstOrDefault(u => u.Object != null && u.Object.Id == unitId);
+            if (existing != null)
+            {
+                _selectedUnits.Remove(existing);
+                _pendingSelectionChanges.Add((unitId, false));
+                OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public void ForceDeselectUnit(Unit unit)
+        {
+            if (_selectedUnits.Contains(unit))
+            {
+                if (_selectedUnits.Remove(unit))
+                {
+                    Debug.Log("[ForceDeselectUnit] Removed unit from selection");
+                    _pendingSelectionChanges.Add((unit.Object.Id, false));
+                    OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+        
+        public void CleanupDestroyedUnits()
+        {
+            int removedCount = _selectedUnits.RemoveAll(unit => unit == null || !unit.Object || !unit.Object.IsInSimulation);
+    
+            if (removedCount > 0)
+            {
+                Debug.Log($"Cleaned up {removedCount} destroyed units from selection.");
+                OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public void ForceClearSelectionBox()
+        {
+            _isMouseDown = false;
+            _isMouseDragging = false;
+            selectionBoxVisual.gameObject.SetActive(false);
+        }
+
 
         public void SetActivePlayer(PlayerRef playerRef)
         {

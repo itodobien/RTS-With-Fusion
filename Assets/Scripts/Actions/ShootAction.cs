@@ -25,6 +25,7 @@ namespace Actions
         [Networked] private bool IsAiming { get; set; }
         [Networked] private bool IsFiring { get; set; }
         [Networked] private float FiringTimer { get; set; }
+        [Networked] private NetworkId TargetUnitId { get; set; }
         private GridPosition targetPosition;
         private Unit _targetUnit;
         
@@ -46,9 +47,15 @@ namespace Actions
 
                     if (!LevelGrid.Instance.IsValidGridPosition(testPosition)) continue;
                     if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
+                    
+                    var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
 
                     foreach (Unit potentialTarget in LevelGrid.Instance.GetUnitAtGridPosition(testPosition))
                     {
+                        if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation)
+                        {
+                            continue; 
+                        }
                         if (potentialTarget.GetTeamID() != _unit.GetTeamID())
                         {
                             validGridPositionList.Add(testPosition);
@@ -62,7 +69,6 @@ namespace Actions
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
         {
-            
             if (!Object.HasStateAuthority)
             {
                 onActionComplete?.Invoke();
@@ -78,6 +84,7 @@ namespace Actions
             if (unitAtPos.Count > 0)
             {
                 _targetUnit = unitAtPos[0];
+                TargetUnitId = _targetUnit.Object.Id;
             }
             else
             {
@@ -93,6 +100,18 @@ namespace Actions
         public override void FixedUpdateNetwork()
         {
             if (!Object.HasStateAuthority) return;
+            
+            if (_targetUnit == null || !_targetUnit.Object || !_targetUnit.Object.IsInSimulation)
+            {
+                if (TargetUnitId != default)
+                {
+                    Debug.Log("Target is gone, aborting ShootAction");
+                    IsFiring = false;
+                    IsAiming = false;
+                    ActionComplete();
+                }
+                return;
+            }
 
             if (IsAiming)
             {
@@ -104,6 +123,7 @@ namespace Actions
                 if (FiringTimer <= 0f)
                 {
                     IsFiring = false;
+                    OnStopShooting?.Invoke(this, EventArgs.Empty);
                     ActionComplete();
                 }
             }
@@ -132,9 +152,9 @@ namespace Actions
         }
         private void HandleFiring()
         {
-            if (_targetUnit == null)
+            if (_targetUnit == null || !_targetUnit.Object || !_targetUnit.Object.IsInSimulation)
             {
-                Debug.LogWarning("Tried to fire with no targets");
+                Debug.LogWarning("Target is no longer valid, aborting firing");
                 IsFiring = false;
                 ActionComplete();
                 return;

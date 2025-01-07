@@ -1912,6 +1912,7 @@ GameObject:
   - component: {fileID: 3271003734873541834}
   - component: {fileID: 2148023841894036030}
   - component: {fileID: -3702157382125192298}
+  - component: {fileID: -6267336700408065696}
   m_Layer: 6
   m_Name: UnitGrey
   m_TagString: Untagged
@@ -1997,6 +1998,7 @@ MonoBehaviour:
   firingDuration: 0.1
   bulletPrefab: {fileID: -7962226692007311978, guid: 79239154d8a256a4aadaeceda4c7d8ee, type: 3}
   bulletSpawnPoint: {fileID: 6590715327607802558}
+  shotDamageAmount: 40
 --- !u!114 &2439858525930125371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2106,6 +2108,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7fa23f75823b04c9d935710b184bbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6267336700408065696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guid:
+    RawGuidValue: 12aeaa5f4a3ce914eb74bc9a1fb86dc4
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

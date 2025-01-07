@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 66935e5c9035c46448e9559f0016bc79
+labels:
+- Ragdoll
+- Wizard
+- Joints
+- Creator
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48977
+  packageName: PuppetMaster
+  packageVersion: 1.3
+  assetPath: Assets/Plugins/RootMotion/RagdollManager/Scripts/BipedRagdollCreator.cs
+  uploadId: 625910
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

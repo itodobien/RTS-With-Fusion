@@ -11,7 +11,7 @@ namespace Fusion
         
         [SerializeField] private int moveSpeed = 4;
 
-        [SerializeField] private NetworkPrefabRef[] unitPrefabs;
+        /*[SerializeField] private NetworkPrefabRef[] unitPrefabs;*/
         [SerializeField] private float spawnDelay = 0.5f;
         [SerializeField] private Animator playerAnimator;
         [Networked] private TickTimer Delay { get; set; }
@@ -42,10 +42,10 @@ namespace Fusion
             return TeamID;
         }
 
-        public void SetUnitPrefabs(NetworkPrefabRef[] prefabs)
+        /*public void SetUnitPrefabs(NetworkPrefabRef[] prefabs)
         {
             unitPrefabs = prefabs;
-        }
+        }*/
         public override void FixedUpdateNetwork()
         {
             if (GetInput(out NetworkInputData data))
@@ -72,7 +72,9 @@ namespace Fusion
                             ? data.spawnPosition
                             : transform.position + _forward;
                         
-                        NetworkPrefabRef chosenUnitPrefab = unitPrefabs[UnitPrefabIndex];
+                        /*NetworkPrefabRef chosenUnitPrefab = unitPrefabs[UnitPrefabIndex];*/
+                        var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[UnitPrefabIndex];
+                        NetworkPrefabRef chosenUnitPrefab = unitData.liveUnitPrefab;
 
                         Runner.Spawn(
                             chosenUnitPrefab,
@@ -86,6 +88,7 @@ namespace Fusion
                                 {
                                     spawnedUnit.OwnerPlayerRef = Object.InputAuthority;
                                     spawnedUnit.SetTeamID(TeamID);
+                                    spawnedUnit.SetPrefabIndex(UnitPrefabIndex);
                                 }
                             }
                         );
