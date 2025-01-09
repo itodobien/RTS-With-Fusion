@@ -123,8 +123,6 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
-            if (!Object.HasStateAuthority) return;
-
             foreach (var playerRef in Runner.ActivePlayers)
             {
                 NetworkInputData? maybeData = Runner.GetInputForPlayer<NetworkInputData>(playerRef);

@@ -87,7 +87,6 @@ namespace UI
                     actionButtonUI.SetInteractable(canPerformThisAction);
                     _actionButtons.Add(actionButton);
                     _actionButtonUIList.Add(actionButtonUI);
-                    
                 }
             }
         }

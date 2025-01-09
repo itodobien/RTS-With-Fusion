@@ -65,7 +65,6 @@ namespace Grid
                    gridPosition.z >= 0 && 
                    gridPosition.z < _height;
         }
-
         public int GetWidth() => _width;
         public int GetHeight() => _height;
         

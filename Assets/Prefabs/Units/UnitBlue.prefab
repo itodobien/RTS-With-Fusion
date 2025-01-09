@@ -1951,6 +1951,7 @@ MonoBehaviour:
   aimTransform: {fileID: 6293219503291399085}
   deathForce: 1
   delayTimer: 0.2
+  originalRootBone: {fileID: 6293219503291399115}
   _IsBusy: 0
 --- !u!114 &2513909572344953795
 MonoBehaviour:

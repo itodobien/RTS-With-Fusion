@@ -56,7 +56,6 @@ namespace UI
             }
             if (Input.GetMouseButtonDown(0)) 
             {
-                Debug.Log("Mouse UP: " + Time.frameCount);
                 if (EventSystem.current.IsPointerOverGameObject()) return;
                 _isMouseDown = true;
                 _isMouseDragging = false;
@@ -65,7 +64,6 @@ namespace UI
             }
             else if (_isMouseDown && Input.GetMouseButton(0)) 
             {
-                Debug.Log("Mouse UP: " + Time.frameCount);
                 if (!_isMouseDragging) 
                 {
                     if (Vector3.Distance(Input.mousePosition, _mouseStartPosition) > 10f) 

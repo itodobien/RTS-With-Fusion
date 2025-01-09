@@ -78,6 +78,5 @@ namespace Grid
             }
             return validUnits;
         }
-    
     }
 }

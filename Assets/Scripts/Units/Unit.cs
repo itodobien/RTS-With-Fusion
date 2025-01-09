@@ -12,6 +12,7 @@ namespace Units
         [SerializeField] private Transform aimTransform;
         [SerializeField] private float deathForce = 1f;
         [SerializeField] private float delayTimer = .2f;
+        [SerializeField] private Transform originalRootBone;
         
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
@@ -35,12 +36,16 @@ namespace Units
             _healthSystem = GetComponent<HealthSystem>();
         }
 
-        private void Start()
+        public override void Spawned()
         {
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
 
             _healthSystem.OnDeath += HealthSystem_OnDead;
+            Debug.Log(
+                $"{name} client sees transform.position={transform.position}, " +
+                $"gridPos={_gridPosition}, HasUnitAtGridPosition={LevelGrid.Instance.HasUnitAtGridPosition(_gridPosition)}"
+            );
         }
 
         private void Update()
@@ -114,12 +119,14 @@ namespace Units
 
             var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
             GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
+            UnitRagdoll unitRagdoll = ragdoll.GetComponent<UnitRagdoll>();
+            unitRagdoll.Setup(originalRootBone);
             
             Rigidbody[] rigidbodies = ragdoll.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rb in rigidbodies)
+            /*foreach (Rigidbody rb in rigidbodies)
             {
                 rb.AddForce(Vector3.down * deathForce, ForceMode.Impulse);
-            }
+            }*/
             StartCoroutine(DestroyAfterDelay(delayTimer));
         }
         private IEnumerator DestroyAfterDelay(float delay)
