@@ -42,10 +42,6 @@ namespace Units
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
 
             _healthSystem.OnDeath += HealthSystem_OnDead;
-            Debug.Log(
-                $"{name} client sees transform.position={transform.position}, " +
-                $"gridPos={_gridPosition}, HasUnitAtGridPosition={LevelGrid.Instance.HasUnitAtGridPosition(_gridPosition)}"
-            );
         }
 
         private void Update()
@@ -110,23 +106,12 @@ namespace Units
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_HandleUnitDeath()
         {
-            Debug.Log($"Handling death for unit {gameObject.name}");
-            
             RPC_ForceDeselectUnit(Object.Id, OwnerPlayerRef);
             UnitSelectionManager.Instance.ForceDeselectUnit(this);
             UnitSelectionManager.Instance.CleanupDestroyedUnits();
             LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
-
-            var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
-            GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
-            UnitRagdoll unitRagdoll = ragdoll.GetComponent<UnitRagdoll>();
-            unitRagdoll.Setup(originalRootBone);
+            RPC_SpawnLocalRagdoll(transform.position, transform.rotation, PrefabIndex);
             
-            Rigidbody[] rigidbodies = ragdoll.GetComponentsInChildren<Rigidbody>();
-            /*foreach (Rigidbody rb in rigidbodies)
-            {
-                rb.AddForce(Vector3.down * deathForce, ForceMode.Impulse);
-            }*/
             StartCoroutine(DestroyAfterDelay(delayTimer));
         }
         private IEnumerator DestroyAfterDelay(float delay)
@@ -159,15 +144,19 @@ namespace Units
                     UnitActionSystem.Instance.SetSelectedUnitForPlayer(ownerPlayerRef, null);
                 }
             }
-            Debug.Log($"[RPC_ForceDeselectUnit] Removing Unit: {deadUnitId}");
         }
         
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_SpawnLocalRagdoll(Vector3 position, Quaternion rotation, int prefabIndex)
         {
-            var data = BasicSpawner.Instance.unitDatabase.unitDataList[prefabIndex];
-            var ragdollPrefab = data.ragdollPrefab;
-            Instantiate(ragdollPrefab, position, rotation);
+            var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
+            GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
+            UnitRagdoll unitRagdoll = ragdoll.GetComponent<UnitRagdoll>();
+
+            if (unitRagdoll != null)
+            {
+                unitRagdoll.Setup(originalRootBone);
+            }
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)

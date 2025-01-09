@@ -6,7 +6,9 @@ namespace Units
     public class HealthSystem : MonoBehaviour
     {
         public event EventHandler OnDeath;
-        private int _health = 100;
+        public event EventHandler OnDamaged;
+        [SerializeField] private float _health = 100f;
+        [SerializeField] private float _healthMax = 100f;
     
         public void TakeDamage(int damageAmount)
         {
@@ -16,6 +18,7 @@ namespace Units
             {
                 _health = 0;
             }
+            OnDamaged?.Invoke(this, EventArgs.Empty);
 
             if (_health == 0)
             {
@@ -27,5 +30,7 @@ namespace Units
         {
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
+        
+        public float GetHealthNormalized() => _health / _healthMax;
     }
 }
