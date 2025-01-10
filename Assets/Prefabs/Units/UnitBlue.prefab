@@ -2248,6 +2248,7 @@ GameObject:
   - component: {fileID: 2148023841894036030}
   - component: {fileID: -8491581314537173707}
   - component: {fileID: 7640360387205130233}
+  - component: {fileID: -815629911742533964}
   m_Layer: 6
   m_Name: UnitBlue
   m_TagString: Untagged
@@ -2353,7 +2354,7 @@ MonoBehaviour:
   Animator: {fileID: 2016504890143318460}
   ApplyTiming: 0
   SyncSettings: 79
-  StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
+  StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b12fc28f551521bf60b98c51d7326cd7c
   TriggerHashes: 00000000
   TotalWords: 1
 --- !u!114 &2699177952912815779
@@ -2381,6 +2382,7 @@ MonoBehaviour:
   - {fileID: -3982687064086801559}
   - {fileID: 302747443033000789}
   - {fileID: 7640360387205130233}
+  - {fileID: -815629911742533964}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3982687064086801559
 MonoBehaviour:
@@ -2460,6 +2462,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c81052180c558e45be7b00cb324fc26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-815629911742533964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc9e8cd56fe6bc41918f7e13edd618a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2567893523251301822

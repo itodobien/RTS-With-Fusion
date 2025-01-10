@@ -26,6 +26,7 @@ namespace Units
         private SpinAction _spinAction;
         private ShootAction _shootAction;
         private HealthSystem _healthSystem;
+        private DanceAction _danceAction;
 
         private void Awake()
         {
@@ -34,6 +35,7 @@ namespace Units
             _spinAction = GetComponent<SpinAction>();
             _shootAction = GetComponent<ShootAction>();
             _healthSystem = GetComponent<HealthSystem>();
+            _danceAction = GetComponent<DanceAction>();
         }
 
         public override void Spawned()
@@ -171,6 +173,7 @@ namespace Units
         public MoveAction GetMoveAction() => _moveAction;
         public SpinAction GetSpinAction() => _spinAction;
         public ShootAction GetShootAction() => _shootAction;
+        public DanceAction GetDanceAction() => _danceAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
         public Vector3 GetWorldPosition() => transform.position;

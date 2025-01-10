@@ -12,13 +12,14 @@ namespace Units
         
         private MoveAction _moveAction;
         private ShootAction _shootAction;
+        private DanceAction _danceAction;
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private static readonly int Shoot = Animator.StringToHash("Shoot");
-
+        private static readonly int IsDancing = Animator.StringToHash("IsDancing");
+        
         private void Awake()
         {
-            
             var actions = GetComponents<BaseAction>();
             foreach (var action in actions)
             {
@@ -33,6 +34,12 @@ namespace Units
                     _shootAction = shootAction;
                     shootAction.OnStartShooting += ShootAction_OnStartShooting;
                     shootAction.OnStopShooting += ShootAction_OnStopShooting;
+                }
+                else if (action is DanceAction danceAction)
+                {
+                    _danceAction = danceAction;
+                    danceAction.OnStartDancing += DanceAction_OnStartDancing;
+                    danceAction.OnStopDancing += DanceAction_OnStopDancing;
                 }
             }
         }
@@ -51,6 +58,11 @@ namespace Units
                 {
                     shootAction.OnStartShooting -= ShootAction_OnStartShooting;
                     shootAction.OnStopShooting -= ShootAction_OnStopShooting;
+                }
+                else if (action is DanceAction danceAction)
+                {
+                    danceAction.OnStartDancing -= DanceAction_OnStartDancing;
+                    danceAction.OnStopDancing -= DanceAction_OnStopDancing;
                 }
             }
         }
@@ -76,8 +88,17 @@ namespace Units
             {
                 animator.SetBool(Shoot, false);
             }
-        }
 
+            if (_danceAction != null)
+            {
+                bool isCurrentlyDancing = _danceAction.GetIsDancing();
+                animator.SetBool(IsDancing, isCurrentlyDancing);
+            }
+            else
+            {
+                animator.SetBool(IsDancing, false);
+            }
+        }
 
         private void MoveAction_OnStartMoving(object sender, EventArgs e)
         {
@@ -98,6 +119,16 @@ namespace Units
         private void ShootAction_OnStopShooting(object sender, EventArgs e)
         {
             animator.SetBool(Shoot, false);
+        }
+
+        private void DanceAction_OnStartDancing(object sender, EventArgs e)
+        {
+            animator.SetBool(IsDancing, true);
+        }
+        
+        private void DanceAction_OnStopDancing(object sender, EventArgs e)
+        {
+            animator.SetBool(IsDancing, false);
         }
     }
 }

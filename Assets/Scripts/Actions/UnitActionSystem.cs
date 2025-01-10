@@ -16,7 +16,7 @@ namespace Actions
         public event EventHandler OnSelectedActionChanged;
         
         private BaseAction _selectedAction;
-        private Dictionary<PlayerRef, Unit> _selectedUnitDict = new();
+        private readonly Dictionary<PlayerRef, Unit> _selectedUnitDict = new();
         
         private void Awake()
         {
@@ -59,6 +59,7 @@ namespace Actions
             BaseAction defaultAction = unit.GetMoveAction();
             _selectedAction = defaultAction; 
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+            SetLocalSelectedAction(ActionType.Move);
         }
 
         public void SetLocalSelectedAction(ActionType newAction)
@@ -87,6 +88,11 @@ namespace Actions
 
         public void SetSelectedAction(BaseAction baseAction)
         {
+            if (_selectedAction is DanceAction oldDanceAction && oldDanceAction.GetIsDancing())
+            {
+                oldDanceAction.StopDancing();
+            }
+
             _selectedAction = baseAction;
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -96,11 +102,17 @@ namespace Actions
         private void HandleSelectedAction(PlayerRef playerRef, ActionType actionType, GridPosition gridPosition)
         {
             Unit selectedUnit = GetSelectedUnitForPlayer(playerRef);
-            if (selectedUnit == null)
+            if (selectedUnit == null) return;
+            
+            if (actionType != ActionType.Dance)
             {
-                Debug.LogWarning($"Player {playerRef} tried to do {actionType}, but has no selected unit");
-                return;
+                DanceAction danceAction = selectedUnit.GetDanceAction();
+                if (danceAction.GetIsDancing())
+                {
+                    danceAction.StopDancing();
+                }
             }
+            
             switch (actionType)
             {
                 case ActionType.Move:
@@ -114,7 +126,9 @@ namespace Actions
                 case ActionType.Shoot:
                     selectedUnit.GetShootAction().TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
                     break;
-
+                case ActionType.Dance:
+                    selectedUnit.GetDanceAction().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
+                    break;
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");
                     break;

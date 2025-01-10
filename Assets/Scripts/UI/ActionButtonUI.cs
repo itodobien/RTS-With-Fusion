@@ -21,6 +21,7 @@ namespace UI
             {
                 UnitSelectionManager.Instance?.ForceClearSelectionBox();
                 UnitActionSystem.Instance.SetSelectedAction(_baseAction);
+                
 
                 if (_baseAction is MoveAction) {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Move);
@@ -28,7 +29,10 @@ namespace UI
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Spin);
                 } else if (_baseAction is ShootAction) {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Shoot);
-                } else {
+                }else if (_baseAction is DanceAction) {
+                    UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Dance);
+                }
+                else {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.None);
                 }
             });

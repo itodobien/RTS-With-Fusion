@@ -34,7 +34,6 @@ namespace Actions
         {
             if (_unit == null || !_unit.Object || !_unit.Object.IsInSimulation)
             {
-                Debug.Log($"{GetActionName()} => Our acting unit is gone or out of simulation, force-completing action.");
                 ActionComplete();
                 return;
             }

@@ -83,7 +83,7 @@ namespace UI
                     ActionButtonUI actionButtonUI = actionButton.GetComponent<ActionButtonUI>();
                     actionButtonUI.SetBaseAction(baseAction);
                     
-                    bool canPerformThisAction = !firstSelectedUnit.IsBusy;
+                    bool canPerformThisAction = true;
                     actionButtonUI.SetInteractable(canPerformThisAction);
                     _actionButtons.Add(actionButton);
                     _actionButtonUIList.Add(actionButtonUI);
