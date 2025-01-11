@@ -5,10 +5,11 @@ namespace Grid
 {
     public class GridObject
     {
+        private GridSystem<GridObject> _gridSystem;
         private readonly List<Unit> _unitList;
         private readonly GridPosition _gridPosition;
 
-        public GridObject(GridSystem gridSystem, GridPosition gridPosition)
+        public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
         {
             _gridPosition = gridPosition;
             _unitList = new List<Unit>();

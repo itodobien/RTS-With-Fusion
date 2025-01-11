@@ -56,7 +56,7 @@ namespace Actions
         }
         private void SetLocalSelectedUnit(Unit unit)
         {
-            BaseAction defaultAction = unit.GetMoveAction();
+            BaseAction defaultAction = unit.GetAction<MoveAction>();
             _selectedAction = defaultAction; 
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
             SetLocalSelectedAction(ActionType.Move);
@@ -106,7 +106,7 @@ namespace Actions
             
             if (actionType != ActionType.Dance)
             {
-                DanceAction danceAction = selectedUnit.GetDanceAction();
+                DanceAction danceAction = selectedUnit.GetAction<DanceAction>();
                 if (danceAction.GetIsDancing())
                 {
                     danceAction.StopDancing();
@@ -116,18 +116,18 @@ namespace Actions
             switch (actionType)
             {
                 case ActionType.Move:
-                    selectedUnit.GetMoveAction().TakeAction(gridPosition, () => Debug.Log("Move complete"));
+                    selectedUnit.GetAction<MoveAction>().TakeAction(gridPosition, () => Debug.Log("Move complete"));
                     break;
 
                 case ActionType.Spin:
-                    selectedUnit.GetSpinAction().TakeAction(gridPosition, () => Debug.Log("Spin complete"));
+                    selectedUnit.GetAction<SpinAction>().TakeAction(gridPosition, () => Debug.Log("Spin complete"));
                     break;
 
                 case ActionType.Shoot:
-                    selectedUnit.GetShootAction().TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
+                    selectedUnit.GetAction<ShootAction>().TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
                     break;
                 case ActionType.Dance:
-                    selectedUnit.GetDanceAction().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
+                    selectedUnit.GetAction<DanceAction>().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
                     break;
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");

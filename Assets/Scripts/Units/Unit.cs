@@ -22,27 +22,19 @@ namespace Units
         
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
-        private MoveAction _moveAction;
-        private SpinAction _spinAction;
-        private ShootAction _shootAction;
         private HealthSystem _healthSystem;
-        private DanceAction _danceAction;
+        
 
         private void Awake()
         {
             _baseActionsArray = GetComponents<BaseAction>();
-            _moveAction = GetComponent<MoveAction>();
-            _spinAction = GetComponent<SpinAction>();
-            _shootAction = GetComponent<ShootAction>();
             _healthSystem = GetComponent<HealthSystem>();
-            _danceAction = GetComponent<DanceAction>();
         }
 
         public override void Spawned()
         {
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
-
             _healthSystem.OnDeath += HealthSystem_OnDead;
         }
 
@@ -169,11 +161,19 @@ namespace Units
             }
             base.Despawned(runner, hasState);
         }
+
+        public T GetAction<T>() where T : BaseAction
+        {
+            foreach (BaseAction baseAction in _baseActionsArray)
+            {
+                if (baseAction is T)
+                {
+                    return (T)baseAction;
+                }
+            }
+            return null;
+        }
         
-        public MoveAction GetMoveAction() => _moveAction;
-        public SpinAction GetSpinAction() => _spinAction;
-        public ShootAction GetShootAction() => _shootAction;
-        public DanceAction GetDanceAction() => _danceAction;
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
         public Vector3 GetWorldPosition() => transform.position;

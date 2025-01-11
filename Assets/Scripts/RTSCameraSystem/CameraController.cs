@@ -1,7 +1,8 @@
-using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine;
 
-namespace UI
+
+namespace RTSCameraSystem
 {
     public class CameraController : MonoBehaviour // attached to Empty game Object in scene
     {
