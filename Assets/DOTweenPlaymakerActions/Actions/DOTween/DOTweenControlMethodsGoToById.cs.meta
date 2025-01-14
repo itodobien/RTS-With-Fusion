@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 424e5f7c8a2175f4ab88fb1823ace84a
+timeCreated: 1446461475
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 49222
+  packageName: Playmaker Actions for DOTween by Doozy
+  packageVersion: 1.5
+  assetPath: Assets/DOTweenPlaymakerActions/Actions/DOTween/DOTweenControlMethodsGoToById.cs
+  uploadId: 290057

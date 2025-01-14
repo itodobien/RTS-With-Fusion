@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 33000a94f2797dc48aa0176b329e683c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Scripts/Demo/PatrolMovement.cs
+  uploadId: 696761

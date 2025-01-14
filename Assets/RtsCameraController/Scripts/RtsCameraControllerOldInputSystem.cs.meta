@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f1d28d0d55ec204408abf6082f6145d1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Scripts/RtsCameraControllerOldInputSystem.cs
+  uploadId: 696761

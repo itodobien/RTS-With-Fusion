@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1fcf30e39c1d8d54ebc9cac5d8087c58
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Resources/TopDownRtsCameraControllerSettingsPreset.asset
+  uploadId: 696761

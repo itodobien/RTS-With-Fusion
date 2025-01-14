@@ -1,0 +1,301 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4251695961475691158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4251695961475691155}
+  - component: {fileID: 4251695961475691156}
+  - component: {fileID: 4251695961475691157}
+  - component: {fileID: 4251695961475691154}
+  - component: {fileID: 4251695961475691153}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4251695961475691155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4251695961475691158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &4251695961475691156
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4251695961475691158}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.1254902, g: 0.19607845, b: 0.3137255, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &4251695961475691157
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4251695961475691158}
+  m_Enabled: 1
+--- !u!114 &4251695961475691154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4251695961475691158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5a312b5b1f1ea448133e00ea198987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useOldInputSystem: 1
+  SettingsPreset: {fileID: 11400000, guid: 4dc239e03a0e4324f8fb9b0472ae53b2, type: 2}
+  MovementSpeed: 20
+  movementDirectionSmoothness: 4
+  currentMovementSpeed: 0
+  movementSpeedCurveMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 5
+      value: 3
+      inSlope: 1.0939295
+      outSlope: 1.0939295
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.039237596
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  currentMoveDirection: {x: 0, y: 0}
+  EdgeScrollingBorderInput: 20
+  EdgeScrollingMovementSpeed: 5
+  edgeScrollingMovementDirectionSmoothness: 4
+  edgeScrollingCurrentMovementSpeed: 0
+  edgeScrollingMovementSpeedCurveMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.4
+      outSlope: 0.4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 5
+      value: 3
+      inSlope: 0.4
+      outSlope: 0.4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  edgeScrollingCurrentMoveDirection: {x: 0, y: 0}
+  moveToIsActive: 0
+  MoveToSpeed: 1
+  MoveToRotationSpeed: 10
+  MoveToDistanceThreshold:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: 90
+      outSlope: 90
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 100
+      inSlope: 90
+      outSlope: 90
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveToDistanceDelta: 0
+  zoomPosition: 0
+  ZoomScrollingPower: 0.1
+  ZoomMinHeight: 20
+  ZoomMaxHeight: 150
+  zoomSmoothness: 0
+  ZoomSmoothness: 4
+  heightXAngle:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 60
+      outSlope: 60
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 60
+      inSlope: 60
+      outSlope: 60
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ZoomHeightRotationSpeed: 5
+  heightForwardDistanceToTargetPoint:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 100
+      outSlope: 100
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 100
+      inSlope: 100
+      outSlope: 100
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  zoomCurrentForwardDistance: 0
+  zoomHeightPercentage: 0
+  AutoHeightEnabled: 1
+  AutoHeightLowHeightGroundLayer:
+    serializedVersion: 2
+    m_Bits: 192
+  AutoHeightHighHeightGroundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  AutoHeightMaxPercentageForLowGroundLayer: 0.3
+  autoHeightGroundMask:
+    serializedVersion: 2
+    m_Bits: 192
+  autoHeightDistanceToGround: 21.764618
+  RotationSpeed: 180
+  rotationSmoothness: 4
+  rotationCurrentValue: 0
+  LimiterEnabled: 1
+  LimiterLeftTopCorner: {fileID: 0}
+  LimiterRightTopCorner: {fileID: 0}
+  LimiterLeftBotCorner: {fileID: 0}
+  LimiterRightBotCorner: {fileID: 0}
+  LimiterEnableSmoothClamp: 1
+  LimiterClampPositionSmoothness: 10
+  limiterLeftSideLimit: 0
+  limiterRightSideLimit: 0
+  limiterBotSideLimit: 0
+  limiterTopSideLimit: 0
+--- !u!114 &4251695961475691153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4251695961475691158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1d28d0d55ec204408abf6082f6145d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveForwardKey: 119
+  MoveLeftKey: 97
+  MoveBackwardKey: 115
+  MoveRightKey: 100
+  moveDirection: {x: 0, y: 0}
+  EdgeScrollingEnabled: 1
+  edgeScrollingInputMoveDirection: {x: 0, y: 0}
+  SwipeMoveEnabled: 1
+  swipeMoveKey: 323
+  swipeMoveSpeed: 0.002
+  ClickMoveEnabled: 1
+  clickMoveKey: 324
+  ZoomEnabled: 1
+  ZoomReverse: 0
+  rotateLeftKey: 113
+  rotateRightKey: 101
+  SwipeRotateEnabled: 1
+  swipeRotateKey: 325
+  swipeRotateSpeed: 0.001

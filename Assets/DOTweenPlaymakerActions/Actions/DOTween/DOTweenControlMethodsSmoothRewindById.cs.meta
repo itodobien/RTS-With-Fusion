@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d1de19a224a9aec4fb5d75e093ce966a
+timeCreated: 1446475728
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 49222
+  packageName: Playmaker Actions for DOTween by Doozy
+  packageVersion: 1.5
+  assetPath: Assets/DOTweenPlaymakerActions/Actions/DOTween/DOTweenControlMethodsSmoothRewindById.cs
+  uploadId: 290057

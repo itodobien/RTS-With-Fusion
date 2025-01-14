@@ -712,7 +712,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2309873270506976185}
-  - component: {fileID: 5365075064934301481}
   m_Layer: 5
   m_Name: RTSScreenSidesDebug
   m_TagString: EditorOnly
@@ -739,20 +738,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5365075064934301481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851239802205901644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13b4ee04a5d5f741baf2c4a305cdf19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rTSCameraTargetController: {fileID: 6047647483441301467}
-  color: {r: 1, g: 1, b: 1, a: 0.5}
 --- !u!1 &1872502441559745189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +986,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4328692193973386784}
   - component: {fileID: 3716440030471169487}
-  - component: {fileID: 2501284273142816854}
   m_Layer: 5
   m_Name: RTSGameSpeed
   m_TagString: Untagged
@@ -1057,26 +1041,6 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 5
---- !u!114 &2501284273142816854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912618525674189500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afda5961250633148a9ecdc1f00627ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameSpeedController: {fileID: 4267131581715548854}
-  pausedImage: {fileID: 8248939702629837024}
-  halfSpeedImage: {fileID: 4611707758299666386}
-  normalSpeedImage: {fileID: 8837550169001858307}
-  doubleSpeedImage: {fileID: 9080837389431300302}
-  trippleSpeedImage: {fileID: 6720254680733209637}
-  activeColor: {r: 1, g: 1, b: 1, a: 1}
-  notActiveColor: {r: 1, g: 1, b: 1, a: 0.25}
 --- !u!1 &3155939895496924047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,7 +1050,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029677034623900755}
-  - component: {fileID: 6839242157050270012}
   m_Layer: 5
   m_Name: RTSCompas
   m_TagString: Untagged
@@ -1118,29 +1081,6 @@ RectTransform:
   m_AnchoredPosition: {x: -75, y: -75}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &6839242157050270012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155939895496924047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14562404d676bb84ab0c2895535f5b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pivotRectTransform: {fileID: 164791846426882385}
-  cardinalPoints:
-  - rectTransform: {fileID: 6606021182576297169}
-    angle: 0
-  - rectTransform: {fileID: 1014610146872901502}
-    angle: 90
-  - rectTransform: {fileID: 2997864276866379798}
-    angle: 180
-  - rectTransform: {fileID: 2460316914868441765}
-    angle: 270
-  distanceFromCenter: 50
 --- !u!1 &3354255521377307976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,9 +1854,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 62651793542294555}
-  - component: {fileID: 6047647483441301467}
-  - component: {fileID: 4267131581715548854}
-  - component: {fileID: 6723006549657048208}
   m_Layer: 0
   m_Name: RTSCameraController
   m_TagString: Untagged
@@ -1942,93 +1879,6 @@ Transform:
   - {fileID: 7473017609056750099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6047647483441301467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254098112738338918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8fa672879251ed4f9aee8766a48a4bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cinemachineCamera: {fileID: 0}
-  RTSCanvasRectTransform: {fileID: 0}
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  CameraTarget: {fileID: 0}
-  IndependentTimeScale: 1
-  IndependentCinemachineBrainTimeScale: 1
-  AllowMouseRotate: 1
-  AllowKeysRotate: 1
-  AllowTiltRotate: 1
-  AllowZoom: 1
-  AllowDragMove: 1
-  mouseDragStyle: 0
-  AllowKeysMove: 1
-  AllowScreenSideMove: 1
-  AllowHeightOffsetChange: 1
-  MouseLockOnRotate: 1
-  InvertMouseVertical: 0
-  InvertMouseHorizontal: 0
-  CameraMouseSpeed: 16
-  CameraRotateSpeed: 2
-  CameraKeysRotateSpeedMultiplier: 50
-  CameraKeysSpeed: 6
-  CameraScreenSideSpeed: 6
-  CameraZoomSpeed: 4
-  TargetLockSpeed: 10
-  HeightOffsetSpeed: 20
-  ScreenSidesZoneSize: 75
-  CameraDragDeadZone: 5
-  HeightOffsetMin: 1
-  HeightOffsetMax: 50
-  CameraTiltMin: 15
-  CameraTiltMax: 75
-  CameraZoomMin: 5
-  CameraZoomMax: 200
-  CameraTargetGroundHeightCheckSmoothTime: 4
-  CameraZoomSmoothTime: 7
-  CameraTargetRotateSmoothTime: 4
-  enableBoundaries: 1
-  BoundaryMinX: -500
-  BoundaryMaxX: 500
-  BoundaryMinZ: -500
-  BoundaryMaxZ: 500
---- !u!114 &4267131581715548854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254098112738338918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18879e45399e97f41aa5bba56d30ef4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6723006549657048208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254098112738338918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fde1259ace87a44ab935ee7172f86a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraZoomSlider: {fileID: 5615179869407876769}
-  mouseDragCanvasGameObject: {fileID: 772063500413075908}
-  mouseDragStartPoint: {fileID: 5973911360598771586}
-  mouseDragEndPoint: {fileID: 2900162165246122645}
-  dragUiImageGameObject: {fileID: 2867024676853595533}
-  rotateCameraCanvasGameObject: {fileID: 3696286627343417229}
-  compassUiImageGameObject: {fileID: 8075162235354373994}
 --- !u!1 &7484046904810839497
 GameObject:
   m_ObjectHideFlags: 0

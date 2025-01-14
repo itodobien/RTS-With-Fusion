@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a4513e873643af04ea80fc77c52e59a5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Scene_Resources/Materials/GridRed_01_Mat.mat
+  uploadId: 696761

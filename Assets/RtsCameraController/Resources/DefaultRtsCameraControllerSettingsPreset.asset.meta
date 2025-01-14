@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4dc239e03a0e4324f8fb9b0472ae53b2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Resources/DefaultRtsCameraControllerSettingsPreset.asset
+  uploadId: 696761

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 05091a9d2d1205a489431cda743680c6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 8574412962073106934
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275288
+  packageName: RTS Camera Controller
+  packageVersion: 1.3.0
+  assetPath: Assets/RtsCameraController/Scene_Resources/Textures/Terrain_Texture.terrainlayer
+  uploadId: 696761

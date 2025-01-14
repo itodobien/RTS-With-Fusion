@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: ad694f07523134e46b5ec507c5192578
+timeCreated: 1453286894
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 49222
+  packageName: Playmaker Actions for DOTween by Doozy
+  packageVersion: 1.5
+  assetPath: Assets/DOTweenPlaymakerActions/Actions/DOTween/DOTweenAnimateVector2.cs
+  uploadId: 290057
