@@ -22,7 +22,7 @@ namespace Grid
             {
                 unitString += unit + "\n";
             }
-            return _gridPosition + "\n" + unitString;
+            return $"x: {_gridPosition.x / 2}, z: {_gridPosition.z / 2}\n" + unitString;
         }
 
         public void AddUnit(Unit unit)

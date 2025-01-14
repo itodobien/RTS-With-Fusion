@@ -2250,6 +2250,7 @@ GameObject:
   - component: {fileID: 1752036265876379655}
   - component: {fileID: 5942247792138342304}
   - component: {fileID: 3683561881723213900}
+  - component: {fileID: -3403381089009923015}
   m_Layer: 6
   m_Name: EnemyUnit
   m_TagString: Untagged
@@ -2304,10 +2305,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4036f02d7f908e944aab9074eea88afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 0.5
-  moveSpeed: 5
-  rotateSpeed: 8
+  stopDistance: 0.1
+  rotateSpeed: 10
   maxMoveDistance: 4
+  moveSpeed: 4
+  nextWaypointDistance: 1
 --- !u!114 &3633962395186661532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2490,6 +2492,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc9e8cd56fe6bc41918f7e13edd618a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3403381089009923015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1073741824
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

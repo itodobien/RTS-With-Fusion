@@ -72,7 +72,6 @@ namespace Fusion
                             ? data.spawnPosition
                             : transform.position + _forward;
                         
-                        /*NetworkPrefabRef chosenUnitPrefab = unitPrefabs[UnitPrefabIndex];*/
                         var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[UnitPrefabIndex];
                         NetworkPrefabRef chosenUnitPrefab = unitData.liveUnitPrefab;
 

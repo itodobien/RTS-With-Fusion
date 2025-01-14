@@ -3,7 +3,7 @@
 using UnityEngine.UI;
 #endif
 using System.Collections;
-#if (MM_TEXTMESHPRO || MM_UGUI2)
+#if MM_UGUI2
 using TMPro;
 #endif
 using UnityEngine.Events;
@@ -219,7 +219,7 @@ namespace MoreMountains.Tools
 		/// a Text object to update with the bar's value
 		[Tooltip("a Text object to update with the bar's value")]
 		public Text PercentageText;
-		#if (MM_TEXTMESHPRO || MM_UGUI2)
+		#if MM_UGUI2
 		/// a TMPro text object to update with the bar's value
 		[Tooltip("a TMPro text object to update with the bar's value")]
 		public TMP_Text PercentageTextMeshPro;
@@ -490,7 +490,7 @@ namespace MoreMountains.Tools
 			_isDelayedBarDecreasingNotNull = DelayedBarDecreasing != null;
 			_isDelayedBarIncreasingNotNull = DelayedBarIncreasing != null;
 			_isPercentageTextNotNull = PercentageText != null;
-			#if (MM_TEXTMESHPRO || MM_UGUI2)
+			#if MM_UGUI2
 			_isPercentageTextMeshProNotNull = PercentageTextMeshPro != null;
 			#endif
 			_initialScale = this.transform.localScale;
@@ -606,7 +606,7 @@ namespace MoreMountains.Tools
 			{
 				PercentageText.text = _updatedText;
 			}
-			#if (MM_TEXTMESHPRO || MM_UGUI2)
+			#if MM_UGUI2
 			if (_isPercentageTextMeshProNotNull)
 			{
 				PercentageTextMeshPro.text = _updatedText;

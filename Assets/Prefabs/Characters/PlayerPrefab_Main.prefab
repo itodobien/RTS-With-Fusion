@@ -151,7 +151,6 @@ GameObject:
   - component: {fileID: 4960225366003212357}
   - component: {fileID: 4846227252036254390}
   - component: {fileID: -8025355822430486467}
-  - component: {fileID: -4873622648544212070}
   m_Layer: 0
   m_Name: PlayerPrefab_Main
   m_TagString: Untagged
@@ -189,12 +188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  unitPrefabs:
-  - RawGuidValue: 51524ca01c9e28548a706f6ac9e1ab03
-  - RawGuidValue: 609bc84fb650faf42a7ade3ca7491ae6
-  - RawGuidValue: 12aeaa5f4a3ce914eb74bc9a1fb86dc4
-  - RawGuidValue: c26374f038b8a3844bef898533ca5514
-  - RawGuidValue: c8717d88a46b7c24b8c83dac37442c4f
   spawnDelay: 0.5
   playerAnimator: {fileID: 242778183055768082}
 --- !u!114 &7012137610215788588
@@ -280,20 +273,6 @@ MonoBehaviour:
   StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861b
   TriggerHashes: 00000000
   TotalWords: 1
---- !u!114 &-4873622648544212070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6722205577601848587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 1126181a543cc9347b54e882e60ab2f0
 --- !u!1001 &136382109172231205
 PrefabInstance:
   m_ObjectHideFlags: 0

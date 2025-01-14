@@ -26,10 +26,14 @@ namespace Grid
 
         private void Start()
         {
-            _gridSystemVisualSingleArray = new GridSystemVisualSingle[LevelGrid.Instance.GetWidth(), LevelGrid.Instance.GetHeight()];
-            for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
+            int width = LevelGrid.Instance.GetWidth();
+            int height = LevelGrid.Instance.GetHeight();
+            
+            _gridSystemVisualSingleArray = new GridSystemVisualSingle[width, height];
+            
+            for (int x = 0; x < width; x++)
             {
-                for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
+                for (int z = 0; z < height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
                     Transform gridSystemVisualSingleTransform = Instantiate(gridSystemVisualSinglePrefab, LevelGrid.Instance.GetWorldPosition(gridPosition), Quaternion.identity);

@@ -162,22 +162,25 @@ namespace Fusion
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit rayHit, Mathf.Infinity))
+                if (Camera.main != null)
                 {
-                    if (rayHit.collider.TryGetComponent(out Unit hitUnit))
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out RaycastHit rayHit, Mathf.Infinity))
                     {
-                        var hitGridPos = LevelGrid.Instance.GetGridPosition(hitUnit.GetWorldPosition());
-                        data.targetGridX = hitGridPos.x;
-                        data.targetGridZ = hitGridPos.z;
-                    }
-                    else
-                    {
-                        var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
-                        var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
+                        if (rayHit.collider.TryGetComponent(out Unit hitUnit))
+                        {
+                            var hitGridPos = LevelGrid.Instance.GetGridPosition(hitUnit.GetWorldPosition());
+                            data.targetGridX = hitGridPos.x;
+                            data.targetGridZ = hitGridPos.z;
+                        }
+                        else
+                        {
+                            var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
+                            var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
 
-                        data.targetGridX = clickedGridPosition.x;
-                        data.targetGridZ = clickedGridPosition.z;
+                            data.targetGridX = clickedGridPosition.x;
+                            data.targetGridZ = clickedGridPosition.z;
+                        }
                     }
                 }
                 data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();

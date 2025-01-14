@@ -9,7 +9,9 @@ namespace Grid
         public static LevelGrid Instance {get; private set;}
         
         [SerializeField] private Transform gridDebugObjectPrefab;
-    
+        [SerializeField] private int gridWidth = 20;
+        [SerializeField] private int gridHeight = 20;
+        [SerializeField] private float cellSize = 2f;
         private GridSystem<GridObject> _gridSystem;
         
         private void Awake()
@@ -21,7 +23,7 @@ namespace Grid
                 return;
             }
             Instance = this;
-            _gridSystem = new GridSystem<GridObject>(10, 10, 2f, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
+            _gridSystem = new GridSystem<GridObject>(gridWidth, gridHeight, cellSize, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
             _gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
         }
 
@@ -49,6 +51,8 @@ namespace Grid
         
         public int GetWidth() => _gridSystem.GetWidth();
         public int GetHeight() => _gridSystem.GetHeight();
+        public GridSystem<GridObject> GetGridSystem() => _gridSystem;
+
 
         public bool HasUnitAtGridPosition(GridPosition gridPosition)
         {
