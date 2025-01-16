@@ -14,9 +14,7 @@ namespace Fusion
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
-        
-        /*[SerializeField] private NetworkPrefabRef[] unitPrefabs;*/
-        
+        [SerializeField] public GameObject[] spawnLocations;
         public static BasicSpawner Instance { get; private set; }
         [SerializeField] public UnitDatabase unitDatabase;
         
@@ -94,7 +92,6 @@ namespace Fusion
         
                 int unitIndex = player.RawEncoded % unitDatabase.unitDataList.Length;
                 playerScript.SetUnitPrefabIndex(unitIndex);
-                /*playerScript.SetUnitPrefabs(unitPrefabs);*/
         
                 _spawnedCharacters.Add(player, networkPlayerObject);
 
@@ -112,7 +109,6 @@ namespace Fusion
                 SetUpLocalPlayer(runner, player);
             }
         }
-
 
         private void SetUpLocalPlayer(NetworkRunner runner, PlayerRef playerRef)
         {
@@ -162,34 +158,25 @@ namespace Fusion
             if (Input.GetMouseButton(1))
             {
                 data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
-                if (Camera.main != null)
+                
+                if (RaycastUtility.TryRaycastFromCamera(Input.mousePosition, out RaycastHit rayHit))
                 {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out RaycastHit rayHit, Mathf.Infinity))
+                    if (rayHit.collider.TryGetComponent(out Unit hitUnit))
                     {
-                        if (rayHit.collider.TryGetComponent(out Unit hitUnit))
-                        {
-                            var hitGridPos = LevelGrid.Instance.GetGridPosition(hitUnit.GetWorldPosition());
-                            data.targetGridX = hitGridPos.x;
-                            data.targetGridZ = hitGridPos.z;
-                        }
-                        else
-                        {
-                            var mouseWorldPosition = MouseWorldPosition.GetMouseWorldPosition();
-                            var clickedGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
-
-                            data.targetGridX = clickedGridPosition.x;
-                            data.targetGridZ = clickedGridPosition.z;
-                        }
+                        var hitGridPos = LevelGrid.Instance.GetGridPosition(hitUnit.GetWorldPosition());
+                        data.targetGridX = hitGridPos.x;
+                        data.targetGridZ = hitGridPos.z;
+                        data.targetPosition = rayHit.point;
+                    }
+                    else
+                    {
+                        var clickedGridPosition = LevelGrid.Instance.GetGridPosition(rayHit.point);
+                        data.targetGridX = clickedGridPosition.x;
+                        data.targetGridZ = clickedGridPosition.z;
+                        data.targetPosition = rayHit.point;
                     }
                 }
-                data.targetPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
-
-            if (Input.GetKey(KeyCode.W)) data.direction += Vector3.forward;
-            if (Input.GetKey(KeyCode.S)) data.direction += Vector3.back;
-            if (Input.GetKey(KeyCode.A)) data.direction += Vector3.left;
-            if (Input.GetKey(KeyCode.D)) data.direction += Vector3.right;
 
             if (Input.GetKey(KeyCode.U))
             {
@@ -204,7 +191,6 @@ namespace Fusion
                 data.selectedUnitId = selectionChange.Value.unitId;
                 data.isSelected = selectionChange.Value.isSelected;                
             }
-            
             
             ActionType localAction = UnitActionSystem.Instance.GetLocalSelectedAction();
             data.actionType = localAction;

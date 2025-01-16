@@ -102,10 +102,10 @@ namespace UI
         {
             if (Camera.main != null)
             {
-                Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, unitLayerMask))
+                
+                if (RaycastUtility.TryRaycastFromCamera(mousePosition, out RaycastHit rayHit))
                 {
-                    if (raycastHit.transform.TryGetComponent(out Unit unit))
+                    if (rayHit.transform.TryGetComponent(out Unit unit))
                     {
                         if (!unit.Object || !unit.Object.IsInSimulation)
                         {

@@ -50,12 +50,11 @@ namespace Actions
                     
                     var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
 
-                    foreach (Unit potentialTarget in LevelGrid.Instance.GetUnitAtGridPosition(testPosition))
+                    foreach (Unit potentialTarget in unitsHere)
                     {
-                        if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation)
-                        {
-                            continue; 
-                        }
+                        if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
+                        if (potentialTarget == _unit) continue;
+                        
                         if (potentialTarget.GetTeamID() != _unit.GetTeamID())
                         {
                             validGridPositionList.Add(testPosition);
@@ -83,7 +82,15 @@ namespace Actions
             List<Unit> unitAtPos = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
             if (unitAtPos.Count > 0)
             {
-                _targetUnit = unitAtPos[0];
+                Unit candidateTarget = unitAtPos[0];
+
+                if (candidateTarget == _unit || candidateTarget.GetTeamID() == _unit.GetTeamID())
+                {
+                    onActionComplete?.Invoke();
+                    return;
+                }
+
+                _targetUnit = candidateTarget;
                 TargetUnitId = _targetUnit.Object.Id;
             }
             else
@@ -91,6 +98,7 @@ namespace Actions
                 onActionComplete?.Invoke();
                 return;
             }
+
             StartAction(onActionComplete);
             CurrentAimingTime = aimingTime;
             IsAiming = true;
