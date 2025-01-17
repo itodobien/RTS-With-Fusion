@@ -19,6 +19,8 @@ namespace Actions
         [SerializeField] private Projectile bulletPrefab;
         [SerializeField] private Transform bulletSpawnPoint;
         [SerializeField] private int shotDamageAmount = 40;
+        [SerializeField] private LayerMask obstacleLayerMask;
+        [SerializeField] private float shoulderHeight = 1.7f;
 
         
         [Networked] private float CurrentAimingTime { get; set; }
@@ -49,6 +51,7 @@ namespace Actions
                     if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
                     
                     var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
+                    
 
                     foreach (Unit potentialTarget in unitsHere)
                     {
@@ -57,9 +60,15 @@ namespace Actions
                         
                         if (potentialTarget.GetTeamID() != _unit.GetTeamID())
                         {
-                            validGridPositionList.Add(testPosition);
-                            break;
+                            Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+                            Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
+                            Vector3 shootDir = (targetPos - shooterPos).normalized;
+                            float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
+                            
+                            if (Physics.Raycast(shooterPos, shootDir, distanceToTarget, obstacleLayerMask)) continue;
                         }
+                        validGridPositionList.Add(testPosition);
+                        break;
                     }
                 }
             }
@@ -89,7 +98,6 @@ namespace Actions
                     onActionComplete?.Invoke();
                     return;
                 }
-
                 _targetUnit = candidateTarget;
                 TargetUnitId = _targetUnit.Object.Id;
             }
@@ -146,7 +154,7 @@ namespace Actions
                 return;
             }
             Vector3 direction = (_targetUnit.GetWorldPosition() - _unit.GetWorldPosition()).normalized;
-            direction.y = 0; // Only rotate on the Y-axis for 2D plane.
+            direction.y = 0; 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, aimRotationSpeed * Runner.DeltaTime);
 

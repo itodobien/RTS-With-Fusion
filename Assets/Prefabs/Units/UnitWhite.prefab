@@ -2232,6 +2232,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: -7962226692007311978, guid: 79239154d8a256a4aadaeceda4c7d8ee, type: 3}
   bulletSpawnPoint: {fileID: 6590715327607802558}
   shotDamageAmount: 40
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  shoulderHeight: 1.7
 --- !u!114 &2439858525930125371
 MonoBehaviour:
   m_ObjectHideFlags: 0
