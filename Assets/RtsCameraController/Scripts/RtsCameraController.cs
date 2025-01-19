@@ -202,7 +202,7 @@ namespace RtsCamera
 
             direction *= currentMovementSpeed;
 
-            currentMoveDirection = Vector2.Lerp(currentMoveDirection, direction, (10.1f - movementDirectionSmoothness) * Time.deltaTime);
+            currentMoveDirection = direction;
 
             Vector3 targetDirection = new Vector3(currentMoveDirection.x, 0.0f, currentMoveDirection.y);
             targetDirection = Quaternion.Euler(0.0f, transform.eulerAngles.y, 0.0f) * targetDirection;
@@ -491,19 +491,16 @@ namespace RtsCamera
 
             OnCameraHeightChange(HeightPercentage);
         }
-
         public void Rotate(float direction)
         {
             if (direction != 0.0f && moveToIsActive)
             {
                 StopMoveTo();
             }
+            float rotationAmount = direction * RotationSpeed * Time.deltaTime;
 
-            direction *= RotationSpeed;
-
-            rotationCurrentValue = Mathf.Lerp(rotationCurrentValue, direction, (10.1f - rotationSmoothness) * Time.deltaTime);
-
-            transform.RotateAround(transform.position + transform.forward * zoomCurrentForwardDistance, Vector3.up, rotationCurrentValue * Time.deltaTime);
+            transform.RotateAround(
+                transform.position + transform.forward * zoomCurrentForwardDistance, Vector3.up,rotationAmount);
         }
 
         private float DistanceToGround()
