@@ -127,12 +127,14 @@ namespace Actions
                     var shootAction = selectedUnit.GetAction<ShootAction>();
                     var validPositions = shootAction.GetValidActionGridPositionList();
                     if (!validPositions.Contains(gridPosition)) return;
-
                     shootAction.TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
                     break;
 
                 case ActionType.Dance:
                     selectedUnit.GetAction<DanceAction>().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
+                    break;
+                case ActionType.Grenade:
+                    selectedUnit.GetAction<GrenadeAction>().TakeAction(gridPosition, () => Debug.Log("Grenade complete"));
                     break;
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");

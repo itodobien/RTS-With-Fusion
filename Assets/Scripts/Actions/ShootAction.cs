@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using Grid;
+using MoreMountains.Feedbacks;
+using Projectiles;
 using Units;
 using UnityEngine;
 
@@ -16,12 +18,14 @@ namespace Actions
         [SerializeField] private float aimRotationSpeed = 360f;
         [SerializeField] private float aimingTime = 1f;
         [SerializeField] private float firingDuration = 0.3f; 
-        [SerializeField] private Projectile bulletPrefab;
+        [SerializeField] private AutomaticRifleProjectile bulletPrefab;
         [SerializeField] private Transform bulletSpawnPoint;
         [SerializeField] private int shotDamageAmount = 40;
         [SerializeField] private LayerMask obstacleLayerMask;
         [SerializeField] private float shoulderHeight = 1.7f;
-
+        
+        [Header("Feel Feedbacks")]
+        public MMF_Player fireFeedbackPlayer;
         
         [Networked] private float CurrentAimingTime { get; set; }
         [Networked] private bool IsAiming { get; set; }
@@ -32,44 +36,53 @@ namespace Actions
         private Unit _targetUnit;
         
         public bool GetIsFiring() => IsFiring;
+        private bool _wasFiring;
         public Unit GetTargetUnit() => _targetUnit;
         
         public override string GetActionName() => "Shoot";
+        private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
+        
+        private void Update()
+        {
+            if (Object.HasInputAuthority)
+            {
+                bool currentlyFiring = IsFiring;
+                
+                if (currentlyFiring && !_wasFiring)
+                {
+                    fireFeedbackPlayer?.PlayFeedbacks();
+                }
+                _wasFiring = currentlyFiring;
+            }
+        }
    
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            List<GridPosition> validGridPositionList = new List<GridPosition>();
             GridPosition unitGridPosition = _unit.GetGridPosition();
+            List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-            for (int x = -maxShootDistance; x <= maxShootDistance; x++)
+            foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, maxShootDistance))
             {
-                for (int z = -maxShootDistance; z <= maxShootDistance; z++)
+                if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
+
+                var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
+
+                foreach (Unit potentialTarget in unitsHere)
                 {
-                    GridPosition testPosition = unitGridPosition + new GridPosition(x, z);
+                    if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
+                    if (potentialTarget == _unit) continue;
 
-                    if (!LevelGrid.Instance.IsValidGridPosition(testPosition)) continue;
-                    if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
-                    
-                    var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
-                    
-
-                    foreach (Unit potentialTarget in unitsHere)
+                    if (potentialTarget.GetTeamID() != _unit.GetTeamID())
                     {
-                        if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
-                        if (potentialTarget == _unit) continue;
-                        
-                        if (potentialTarget.GetTeamID() != _unit.GetTeamID())
-                        {
-                            Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
-                            Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
-                            Vector3 shootDir = (targetPos - shooterPos).normalized;
-                            float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
-                            
-                            if (Physics.Raycast(shooterPos, shootDir, distanceToTarget, obstacleLayerMask)) continue;
-                        }
-                        validGridPositionList.Add(testPosition);
-                        break;
+                        Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+                        Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
+                        Vector3 shootDir = (targetPos - shooterPos).normalized;
+                        float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
+
+                        if (Physics.Raycast(shooterPos, shootDir, distanceToTarget, obstacleLayerMask)) continue;
                     }
+                    validGridPositionList.Add(testPosition);
+                    break;
                 }
             }
             return validGridPositionList;
@@ -186,7 +199,7 @@ namespace Actions
                 Object.InputAuthority,
                 (runner, spawnedBullet) =>
                 {
-                    spawnedBullet.GetComponent<Projectile>().ShootAtTarget(shootDirection, targetPosition);
+                    spawnedBullet.GetComponent<AutomaticRifleProjectile>().ShootAtTarget(shootDirection, targetPosition);
                 }
             );
             
@@ -194,6 +207,10 @@ namespace Actions
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = true;
             FiringTimer = firingDuration;
+            if (IsLocalPlayerUnit())
+            {
+                fireFeedbackPlayer?.PlayFeedbacks();
+            }
         }
     }
 }

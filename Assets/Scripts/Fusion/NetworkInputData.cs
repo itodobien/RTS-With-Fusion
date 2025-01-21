@@ -9,7 +9,8 @@ namespace Fusion
         Move = 1,
         Spin = 2,
         Shoot = 3,
-        Dance = 4
+        Dance = 4,
+        Grenade = 5
     }
     public struct NetworkInputData : INetworkInput
     {

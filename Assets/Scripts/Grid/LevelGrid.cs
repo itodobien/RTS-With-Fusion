@@ -49,9 +49,6 @@ namespace Grid
         public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
         public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
         
-        public int GetWidth() => _gridSystem.GetWidth();
-        public int GetHeight() => _gridSystem.GetHeight();
-        public GridSystem<GridObject> GetGridSystem() => _gridSystem;
 
 
         public bool HasUnitAtGridPosition(GridPosition gridPosition)
@@ -82,5 +79,9 @@ namespace Grid
             }
             return validUnits;
         }
+        public int GetWidth() => _gridSystem.GetWidth();
+        public int GetHeight() => _gridSystem.GetHeight();
+        public float GetCellSize() => cellSize;
+        public GridSystem<GridObject> GetGridSystem() => _gridSystem;
     }
 }
