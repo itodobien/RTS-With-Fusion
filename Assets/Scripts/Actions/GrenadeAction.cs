@@ -12,8 +12,8 @@ namespace Actions
     public class GrenadeAction : BaseAction
     {
         [SerializeField] private int maxThrowDistance = 5;
-        [SerializeField] private float grenadeExplosionRadius = 2f;
-        [SerializeField] private int grenadeDamageAmount = 30;
+        [SerializeField] private float grenadeExplosionRadius = 4f;
+        [SerializeField] private int grenadeDamageAmount = 60;
         
         [SerializeField] private GrenadeProjectile grenadePrefab;
         [SerializeField] private Transform grenadeSpawnPoint;
@@ -99,14 +99,16 @@ namespace Actions
         private void HandleGrenadeExplode(object sender, EventArgs e)
         {
             if (!Object.HasStateAuthority) return;
+            if (!IsThrowing) return;
 
             GrenadeProjectile grenade = sender as GrenadeProjectile;
             if (grenade == null) return;
 
             Vector3 explosionPosition = grenade.transform.position;
-            ExplodeAtPosition(explosionPosition);
             IsThrowing = false;
             ThrowTimer = 0f;
+            
+            ExplodeAtPosition(explosionPosition);
         }
 
         public override void FixedUpdateNetwork()
@@ -119,7 +121,6 @@ namespace Actions
                 if (ThrowTimer <= 0f)
                 {
                     IsThrowing = false;
-                    ExplodeAtPosition(_targetWorldPosition);
                 }
             }
         }
@@ -144,6 +145,7 @@ namespace Actions
                     }
                 }
             }
+
             UnsubscribeFromGrenadeEvent();
             RPC_PlayGrenadeFeedback();
             ActionComplete();

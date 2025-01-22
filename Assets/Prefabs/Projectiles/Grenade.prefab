@@ -104,7 +104,48 @@ MonoBehaviour:
   speed: 20
   stopDistance: 0.1
   explosionVisualEffect: {fileID: 2242157297793171095, guid: 46a45d2af328c91489c9d8aa283ea9ce, type: 3}
-  grenadeFeedbackPlayer: {fileID: 0}
+  arcYAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.14937808
+      outSlope: -0.14937808
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.20694625
+      value: 0.96908677
+      inSlope: -0.60911644
+      outSlope: -0.60911644
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9095538
+      value: 0.21810123
+      inSlope: -1.7401237
+      outSlope: -1.7401237
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.4113927
+      outSlope: -2.4113927
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &-5002743415087979340
 MonoBehaviour:
   m_ObjectHideFlags: 0

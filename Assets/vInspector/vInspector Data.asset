@@ -12,4 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7915df4cd4da490ab52fc8fa9ee9127, type: 3}
   m_Name: vInspector Data
   m_EditorClassIdentifier: 
-  bookmarks: []
+  bookmarks:
+  - _obj: {fileID: 8894382734379626466, guid: 51524ca01c9e28548a706f6ac9e1ab03, type: 3}
+    globalId:
+      globalObjectIdString: GlobalObjectId_V1-1-51524ca01c9e28548a706f6ac9e1ab03-8894382734379626466-0
+    isSceneGameObject: 0
+    isAsset: 1
+    _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - _obj: {fileID: 8894382734379626466, guid: 609bc84fb650faf42a7ade3ca7491ae6, type: 3}
+    globalId:
+      globalObjectIdString: GlobalObjectId_V1-1-609bc84fb650faf42a7ade3ca7491ae6-8894382734379626466-0
+    isSceneGameObject: 0
+    isAsset: 1
+    _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - _obj: {fileID: 8894382734379626466, guid: 12aeaa5f4a3ce914eb74bc9a1fb86dc4, type: 3}
+    globalId:
+      globalObjectIdString: GlobalObjectId_V1-1-12aeaa5f4a3ce914eb74bc9a1fb86dc4-8894382734379626466-0
+    isSceneGameObject: 0
+    isAsset: 1
+    _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - _obj: {fileID: 8894382734379626466, guid: c26374f038b8a3844bef898533ca5514, type: 3}
+    globalId:
+      globalObjectIdString: GlobalObjectId_V1-1-c26374f038b8a3844bef898533ca5514-8894382734379626466-0
+    isSceneGameObject: 0
+    isAsset: 1
+    _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - _obj: {fileID: 8894382734379626466, guid: c8717d88a46b7c24b8c83dac37442c4f, type: 3}
+    globalId:
+      globalObjectIdString: GlobalObjectId_V1-1-c8717d88a46b7c24b8c83dac37442c4f-8894382734379626466-0
+    isSceneGameObject: 0
+    isAsset: 1
+    _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

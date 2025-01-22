@@ -2767,7 +2767,6 @@ GameObject:
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 724400808356085265}
   - component: {fileID: 7088812926517333020}
-  - component: {fileID: -6267336700408065696}
   m_Layer: 6
   m_Name: UnitRed
   m_TagString: Untagged
@@ -2916,8 +2915,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxThrowDistance: 5
-  grenadeExplosionRadius: 2
-  grenadeDamageAmount: 10
+  grenadeExplosionRadius: 4
+  grenadeDamageAmount: 60
   grenadePrefab: {fileID: -4227373207856718915, guid: 3a83adf07d337a84d8527053b13da2ad, type: 3}
   grenadeSpawnPoint: {fileID: 6293219503291399081}
   obstacleLayerMask:
@@ -3054,20 +3053,6 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &-6267336700408065696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: c26374f038b8a3844bef898533ca5514
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0
