@@ -9,7 +9,7 @@ namespace Units
         public event EventHandler OnDamaged;
         [SerializeField] private float _health = 100f;
         [SerializeField] private float _healthMax = 100f;
-    
+
         public void TakeDamage(int damageAmount)
         {
             _health -= damageAmount;
@@ -18,6 +18,7 @@ namespace Units
             {
                 _health = 0;
             }
+
             OnDamaged?.Invoke(this, EventArgs.Empty);
 
             if (_health == 0)
@@ -30,7 +31,7 @@ namespace Units
         {
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
-        
+
         public float GetHealthNormalized() => _health / _healthMax;
     }
 }

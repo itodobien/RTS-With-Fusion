@@ -19,7 +19,7 @@ namespace Actions
                 }
             }
         }
-        
+
         public static bool IsValidActionGridPosition(GridPosition gridPosition, List<GridPosition> validPositions)
         {
             return validPositions.Contains(gridPosition);

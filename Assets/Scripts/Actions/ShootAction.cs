@@ -188,6 +188,7 @@ namespace Actions
                 ActionComplete();
                 return;
             }
+
             OnStartShooting?.Invoke(this, EventArgs.Empty);
             Vector3 targetPosition = _targetUnit.GetAimPosition();
             Vector3 shootDirection = (targetPosition - bulletSpawnPoint.position).normalized;

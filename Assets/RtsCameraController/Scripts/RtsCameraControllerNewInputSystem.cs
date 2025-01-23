@@ -40,10 +40,12 @@ namespace RtsCamera
             {
                 moveDirection = Vector2.zero;
             }
+
             if (edgeScrollingEnabled && edgeScrollingDirection != Vector2.zero)
             {
                 cameraController.EdgeScreenMove(edgeScrollingDirection);
             }
+
             if (rotateDirection != 0)
             {
                 cameraController.Rotate(rotateDirection);
@@ -72,7 +74,7 @@ namespace RtsCamera
             }
             else if (context.canceled)
             {
-                edgeScrollingDirection = Vector2.zero; 
+                edgeScrollingDirection = Vector2.zero;
             }
         }
 
@@ -87,6 +89,7 @@ namespace RtsCamera
                     {
                         cameraController.Move(-(swipeDelta - previousMovePosition) * swipeMoveSpeed / Time.deltaTime);
                     }
+
                     previousMovePosition = swipeDelta;
                 }
                 else if (context.canceled)
@@ -117,7 +120,7 @@ namespace RtsCamera
             }
             else if (context.canceled)
             {
-                rotateDirection = 0; 
+                rotateDirection = 0;
             }
         }
 
@@ -130,8 +133,10 @@ namespace RtsCamera
                 {
                     if (previousRotatePosition != Vector2.zero)
                     {
-                        cameraController.Rotate((swipeRotateDelta.x - previousRotatePosition.x) * swipeRotateSpeed / Time.deltaTime);
+                        cameraController.Rotate((swipeRotateDelta.x - previousRotatePosition.x) * swipeRotateSpeed /
+                                                Time.deltaTime);
                     }
+
                     previousRotatePosition = swipeRotateDelta;
                 }
                 else if (context.canceled)

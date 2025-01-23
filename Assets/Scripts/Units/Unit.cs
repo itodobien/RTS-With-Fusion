@@ -13,17 +13,17 @@ namespace Units
         [SerializeField] private float deathForce = 1f;
         [SerializeField] private float delayTimer = .2f;
         [SerializeField] private Transform originalRootBone;
-        
+
         [Networked] public bool IsBusy { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] private int TeamID { get; set; }
         [Networked] private int PrefabIndex { get; set; }
         [Networked] private bool IsDead { get; set; }
-        
+
         private GridPosition _gridPosition;
         private BaseAction[] _baseActionsArray;
         private HealthSystem _healthSystem;
-        
+
 
         private void Awake()
         {
@@ -47,6 +47,7 @@ namespace Units
                 _gridPosition = newGridPosition;
             }
         }
+
         public void SetPrefabIndex(int index)
         {
             if (HasStateAuthority)
@@ -54,11 +55,12 @@ namespace Units
                 PrefabIndex = index;
             }
         }
+
         public int GetPrefabIndex()
         {
             return PrefabIndex;
         }
-        
+
         public Vector3 GetAimPosition()
         {
             return aimTransform.position;
@@ -71,6 +73,7 @@ namespace Units
                 IsBusy = isBusy;
             }
         }
+
         public void SetTeamID(int newTeamID)
         {
             if (HasStateAuthority)
@@ -78,6 +81,7 @@ namespace Units
                 TeamID = newTeamID;
             }
         }
+
         public int GetTeamID()
         {
             return TeamID;
@@ -105,9 +109,10 @@ namespace Units
             UnitSelectionManager.Instance.CleanupDestroyedUnits();
             LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
             RPC_SpawnLocalRagdoll(transform.position, transform.rotation, PrefabIndex);
-            
+
             StartCoroutine(DestroyAfterDelay(delayTimer));
         }
+
         private IEnumerator DestroyAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
@@ -139,7 +144,7 @@ namespace Units
                 }
             }
         }
-        
+
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_SpawnLocalRagdoll(Vector3 position, Quaternion rotation, int prefabIndex)
         {
@@ -159,6 +164,7 @@ namespace Units
             {
                 LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
             }
+
             base.Despawned(runner, hasState);
         }
 
@@ -168,12 +174,13 @@ namespace Units
             {
                 if (baseAction is T)
                 {
-                    return (T)baseAction;
+                    return (T) baseAction;
                 }
             }
+
             return null;
         }
-        
+
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
         public Vector3 GetWorldPosition() => transform.position;

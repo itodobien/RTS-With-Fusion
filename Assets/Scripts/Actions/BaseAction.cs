@@ -11,7 +11,7 @@ namespace Actions
     {
         protected Unit _unit;
         private Action _onActionComplete;
-        
+
         public abstract string GetActionName();
 
         protected virtual void Awake()
@@ -22,7 +22,7 @@ namespace Actions
         protected void StartAction(Action onActionComplete = null)
         {
             if (_unit == null) return;
-            
+
             _unit.SetIsBusy(true);
             _onActionComplete = onActionComplete;
         }
@@ -30,7 +30,7 @@ namespace Actions
         protected void ActionComplete()
         {
             if (_unit == null) return;
-            
+
             _unit.SetIsBusy(false);
             _onActionComplete?.Invoke();
         }

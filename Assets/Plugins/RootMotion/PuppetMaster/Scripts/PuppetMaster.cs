@@ -794,7 +794,7 @@ namespace RootMotion.Dynamics
         /// To be called before Physics.Simulate() if Physics.autoSimulation is false and PuppetMaster component disabled. Note that this method also updates the Animator so that is forced to disabled.
         /// </summary>
         /// <param name="deltaTime"></param>
-        public void OnPreSimulate(float deltaTime)
+        public void OnPreSimulate(float deltaTime, bool updateAnimator = true)
         {
             simulationDeltaTime = deltaTime;
 
@@ -831,8 +831,8 @@ namespace RootMotion.Dynamics
             if (targetAnimator != null)
             {
                 if (targetAnimator.enabled) targetAnimator.enabled = false;
-
-                targetAnimator.Update(deltaTime);
+                
+                targetAnimator.Update(updateAnimator ? deltaTime : 0f);
             }
 
             foreach (SolverManager solver in solvers)
@@ -1201,9 +1201,26 @@ namespace RootMotion.Dynamics
             // Teleporting
             if (teleport)
             {
+                // version 1.4+, doing the math without changing the parent
+                Vector3 p = transform.position;
+
+                Quaternion targetDeltaRotation = QuaTools.FromToRotation(targetRoot.rotation, teleportRotation);
+                transform.rotation = targetDeltaRotation * transform.rotation;
+
+                Vector3 targetRootOffset = targetRoot.position - transform.position;
+                targetRoot.rotation = targetDeltaRotation * targetRoot.rotation;
+                targetRoot.position = transform.position + targetDeltaRotation * targetRootOffset;
+
+                Vector3 targetDeltaPosition = teleportPosition - targetRoot.position;
+                transform.position += targetDeltaPosition;
+                targetRoot.position += targetDeltaPosition;
+
+
+                /* before version 1.3:
                 GameObject c = new GameObject();
                 c.transform.position = transform.parent != null ? transform.parent.position : Vector3.zero;
                 c.transform.rotation = transform.parent != null ? transform.parent.rotation : Quaternion.identity;
+
                 var parent = transform.parent;
                 var targetParent = targetRoot.parent;
                 transform.parent = c.transform;
@@ -1219,7 +1236,9 @@ namespace RootMotion.Dynamics
 
                 transform.parent = parent;
                 targetRoot.parent = targetParent;
+
                 Destroy(c);
+                */
 
                 muscles[0].targetMappedPosition = p + targetDeltaRotation * (muscles[0].targetMappedPosition - p) + targetDeltaPosition;
                 muscles[0].targetSampledPosition = p + targetDeltaRotation * (muscles[0].targetSampledPosition - p) + targetDeltaPosition;

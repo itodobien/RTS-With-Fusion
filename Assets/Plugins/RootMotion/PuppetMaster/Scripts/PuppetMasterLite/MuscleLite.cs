@@ -144,8 +144,11 @@ namespace RootMotion.Dynamics
 
         public void ClearVelocities()
         {
-            rigidbody.linearVelocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            if (!rigidbody.isKinematic)
+            {
+                rigidbody.linearVelocity = Vector3.zero;
+                rigidbody.angularVelocity = Vector3.zero;
+            }
 
             targetVelocity = Vector3.zero;
             targetAnimatedCenterOfMass = V3Tools.TransformPointUnscaled(target, rigidbody.centerOfMass);

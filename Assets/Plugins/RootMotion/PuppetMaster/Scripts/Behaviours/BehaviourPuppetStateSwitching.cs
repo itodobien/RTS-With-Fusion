@@ -95,25 +95,32 @@ namespace RootMotion.Dynamics
 
                     // Trigger events
                     onLoseBalance.Trigger(puppetMaster, puppetMaster.isAlive);
+                    
+                    // Trigger some more events
+                    if (state == State.Puppet)
+                    {
+                        onLoseBalanceFromPuppet.Trigger(puppetMaster, puppetMaster.isAlive);
+                    }
+                    else
+                    {
+                        onLoseBalanceFromGetUp.Trigger(puppetMaster, puppetMaster.isAlive);
+                    }
+
+                    // Switch behaviours
                     if (onLoseBalance.switchBehaviour)
                     {
                         state = State.Unpinned;
                         return;
                     }
-
-                    // Trigger some more events
                     if (state == State.Puppet)
                     {
-                        onLoseBalanceFromPuppet.Trigger(puppetMaster, puppetMaster.isAlive);
                         if (onLoseBalanceFromPuppet.switchBehaviour)
                         {
                             state = State.Unpinned;
                             return;
                         }
-                    }
-                    else
+                    } else
                     {
-                        onLoseBalanceFromGetUp.Trigger(puppetMaster, puppetMaster.isAlive);
                         if (onLoseBalanceFromGetUp.switchBehaviour)
                         {
                             state = State.Unpinned;

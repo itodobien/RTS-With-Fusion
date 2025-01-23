@@ -189,8 +189,11 @@ namespace RootMotion.Dynamics {
                     m.state.pinWeightMlp = 0f;
                     m.state.muscleDamperAdd = stateSettings.deadMuscleDamper;
 
-                    m.rigidbody.linearVelocity = m.mappedVelocity;
-                    m.rigidbody.angularVelocity = m.mappedAngularVelocity;
+					if (!m.rigidbody.isKinematic)
+					{
+						m.rigidbody.linearVelocity = m.mappedVelocity;
+						m.rigidbody.angularVelocity = m.mappedAngularVelocity;
+					}
                 }
 			}
 
@@ -359,8 +362,11 @@ namespace RootMotion.Dynamics {
 				m.joint.gameObject.SetActive(true);
                 if (kinematic) m.rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 m.SetKinematic(kinematic);
-				m.rigidbody.linearVelocity = Vector3.zero;
-				m.rigidbody.angularVelocity = Vector3.zero;
+				if (!m.rigidbody.isKinematic)
+				{
+					m.rigidbody.linearVelocity = Vector3.zero;
+					m.rigidbody.angularVelocity = Vector3.zero;
+				}
 			}
 
             FlagInternalCollisionsForUpdate();

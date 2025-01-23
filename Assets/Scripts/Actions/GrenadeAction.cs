@@ -14,22 +14,21 @@ namespace Actions
         [SerializeField] private int maxThrowDistance = 5;
         [SerializeField] private float grenadeExplosionRadius = 4f;
         [SerializeField] private int grenadeDamageAmount = 60;
-        
+
         [SerializeField] private GrenadeProjectile grenadePrefab;
         [SerializeField] private Transform grenadeSpawnPoint;
         [SerializeField] private LayerMask obstacleLayerMask;
         [SerializeField] private float grenadeFlightDuration = 1.2f;
-        
-        [Header("Feel Feedbacks")]
-        public MMF_Player grenadeFeedbackPlayer;
-        
+
+        [Header("Feel Feedbacks")] public MMF_Player grenadeFeedbackPlayer;
+
         [Networked] private bool IsThrowing { get; set; }
         [Networked] private float ThrowTimer { get; set; }
-        
+
         private Vector3 _targetWorldPosition;
         private bool _wasThrowing;
         private GrenadeProjectile _spawnedGrenade;
-        
+
         private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
         public override string GetActionName() => "Grenade";
 
@@ -37,7 +36,7 @@ namespace Actions
         {
             GridPosition unitGridPosition = _unit.GetGridPosition();
             List<GridPosition> validPositions = new List<GridPosition>();
-            
+
             foreach (var pos in ActionUtils.GetGridPositionsInRange(unitGridPosition, maxThrowDistance))
             {
                 if (pos != unitGridPosition)
@@ -45,6 +44,7 @@ namespace Actions
                     validPositions.Add(pos);
                 }
             }
+
             return validPositions;
         }
 
@@ -55,12 +55,14 @@ namespace Actions
                 onActionComplete?.Invoke();
                 return;
             }
+
             var validPositions = GetValidActionGridPositionList();
             if (!ActionUtils.IsValidActionGridPosition(gridPosition, validPositions))
             {
                 onActionComplete?.Invoke();
                 return;
             }
+
             StartAction(onActionComplete);
             _targetWorldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
@@ -83,10 +85,11 @@ namespace Actions
                     }
                 );
             }
+
             IsThrowing = true;
             ThrowTimer = grenadeFlightDuration;
         }
-        
+
         private void UnsubscribeFromGrenadeEvent()
         {
             if (_spawnedGrenade != null)
@@ -95,7 +98,7 @@ namespace Actions
                 _spawnedGrenade = null;
             }
         }
-        
+
         private void HandleGrenadeExplode(object sender, EventArgs e)
         {
             if (!Object.HasStateAuthority) return;
@@ -107,7 +110,7 @@ namespace Actions
             Vector3 explosionPosition = grenade.transform.position;
             IsThrowing = false;
             ThrowTimer = 0f;
-            
+
             ExplodeAtPosition(explosionPosition);
         }
 
@@ -129,17 +132,18 @@ namespace Actions
         {
             List<Unit> unitsInRadius = GetUnitsInExplosionRange(explosionCenter, grenadeExplosionRadius);
             float sqrRadius = grenadeExplosionRadius * grenadeExplosionRadius;
-            
+
             foreach (Unit unit in unitsInRadius)
             {
                 if (unit == null || !unit.Object || !unit.Object.IsInSimulation) continue;
 
                 Vector3 toUnit = unit.GetWorldPosition() - explosionCenter;
                 float sqrDist = toUnit.sqrMagnitude;
-                
+
                 if (sqrDist <= sqrRadius)
                 {
-                    if (!Physics.Raycast(explosionCenter + Vector3.up, toUnit.normalized, toUnit.magnitude, obstacleLayerMask))
+                    if (!Physics.Raycast(explosionCenter + Vector3.up, toUnit.normalized, toUnit.magnitude,
+                            obstacleLayerMask))
                     {
                         unit.Damage(grenadeDamageAmount);
                     }
@@ -150,7 +154,7 @@ namespace Actions
             RPC_PlayGrenadeFeedback();
             ActionComplete();
         }
-        
+
         [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
         private void RPC_PlayGrenadeFeedback()
         {
@@ -178,8 +182,10 @@ namespace Actions
                     result.AddRange(unitsHere);
                 }
             }
+
             return result;
         }
+
         private void OnDestroy()
         {
             UnsubscribeFromGrenadeEvent();

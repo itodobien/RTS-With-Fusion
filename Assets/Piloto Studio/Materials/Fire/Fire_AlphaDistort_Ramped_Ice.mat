@@ -8,25 +8,27 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fire_AlphaDistort_Ramped_Ice
-  m_Shader: {fileID: 4800000, guid: d985403ea514e7c46bf7c2fab31b9d95, type: 3}
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
-  - _USEALPHAOVERRIDE_ON
-  - _USERAMP_ON
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
+  - _USEALPHAOVERRIDE_ON
+  - _USERAMP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   - DistortionVectors
   - TransparentBackface
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -34,8 +36,32 @@ Material:
         m_Texture: {fileID: 2800000, guid: d2a0655842a345e3a08c94b09a7483f8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailNoise:
         m_Texture: {fileID: 2800000, guid: 204e24b3132c6754abe847f62aa2807b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LookupTex:
@@ -43,32 +69,69 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d2a0655842a345e3a08c94b09a7483f8, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondTex:
         m_Texture: {fileID: 2800000, guid: 430dca26c2c945b28537f0c49eb27163, type: 3}
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaMul: 1.5
     - _AlphaSrcBlend: 1
+    - _AlphaToMask: 0
+    - _Blend: 0
     - _BlendMode: 0
+    - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClampUV: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
     - _ColorAdd: 0
     - _ColorMul: 1
     - _ColorMul2: 1
     - _Coloring: 1
+    - _Cull: 2
     - _CullMode: 2
     - _CullModeForward: 2
     - _Culling: 0
     - _Cutoff: 0.5
     - _Desaturate: 0
+    - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DisableErosion: 0
     - _Dissolve: 1
@@ -81,9 +144,11 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
-    - _DstBlend: 10
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _DstBlendOutline: 10
     - _EnableFogOnTransparent: 0
+    - _EnvironmentReflections: 1
     - _FadeoutDistance: 0.3
     - _FadeoutY: -0.06
     - _Fresnel: 0
@@ -112,6 +177,8 @@ Material:
     - _OpaqueCullMode: 2
     - _Parallax: 0.02
     - _PremultipliedRGBTexture: 1
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 4
@@ -125,11 +192,13 @@ Material:
     - _SecondTexSwapUV: 0
     - _SecondTexture: 3
     - _SecondTextureType: 1
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SoftFadeFactor: 0
     - _SourceBlendRGB: 10
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
     - _SrcBlendOutline: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
@@ -142,6 +211,7 @@ Material:
     - _StencilWriteMaskGBuffer: 14
     - _StencilWriteMaskMV: 40
     - _SupportDecals: 1
+    - _Surface: 0
     - _SurfaceType: 1
     - _SwapUV: 0
     - _TextureType: 1
@@ -160,13 +230,15 @@ Material:
     - _UseUVOffset: 0
     - _VertexMask: 0
     - _VertexMaskAlphaMul: 1
+    - _WorkflowMode: 1
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _AlphaOverrideChannel: {r: 1, g: 0, b: 0, a: 0}
     - _AlphaOverridePanning: {r: 0, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color2: {r: 1, g: 1, b: 1, a: 1}
     - _DetailAdditiveChannel: {r: 0, g: 0, b: 0, a: 0}
@@ -191,9 +263,24 @@ Material:
     - _Resolution: {r: 64, g: 64, b: 0, a: 0}
     - _ScrollingSpeed: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _SecondTexSpeed_NoiseForce: {r: 0.05, g: 0.05, b: 0.5, a: 0.5}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     - _UnlitColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _VertexMaskLinearGradient: {r: 1, g: 1, b: 1, a: 1}
     - _VertexMaskUVScaleOffset: {r: 1, g: 1, b: 0, a: 0}
     - _WhiteColor: {r: 0, g: 1, b: 0.88423395, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &4024255294417601464
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9

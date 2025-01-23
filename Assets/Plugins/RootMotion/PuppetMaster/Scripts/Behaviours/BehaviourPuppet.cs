@@ -811,8 +811,7 @@ namespace RootMotion.Dynamics {
             }
 			
             if (getupAnimationBlendWeight > 0f) {
-				getupAnimationBlendWeight = Mathf.MoveTowards(getupAnimationBlendWeight, 0f, deltaTime);
-				if (getupAnimationBlendWeight < 0.01f) getupAnimationBlendWeight = 0f;
+				getupAnimationBlendWeight = blendToAnimationTime > 0f? Mathf.MoveTowards(getupAnimationBlendWeight, 0f, deltaTime / blendToAnimationTime): 0f;
 
 				puppetMaster.muscles[0].targetSampledPosition += platformVelocity * deltaTime;
 				

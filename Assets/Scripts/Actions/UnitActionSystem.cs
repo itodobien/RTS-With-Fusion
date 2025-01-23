@@ -14,10 +14,10 @@ namespace Actions
         private ActionType _localSelectedAction = ActionType.Move;
         public static UnitActionSystem Instance { get; private set; }
         public event EventHandler OnSelectedActionChanged;
-        
+
         private BaseAction _selectedAction;
         private readonly Dictionary<PlayerRef, Unit> _selectedUnitDict = new();
-        
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -26,6 +26,7 @@ namespace Actions
                 Destroy(gameObject);
                 return;
             }
+
             Instance = this;
         }
 
@@ -41,7 +42,7 @@ namespace Actions
                 UnitSelectionManager.Instance.OnSelectedUnitsChanged -= UnitSelectionManager_OnSelectedUnitsChanged;
             }
         }
-        
+
         private void UnitSelectionManager_OnSelectedUnitsChanged(object sender, EventArgs e)
         {
             List<Unit> selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
@@ -54,10 +55,11 @@ namespace Actions
                 ClearSelectedUnit();
             }
         }
+
         private void SetLocalSelectedUnit(Unit unit)
         {
             BaseAction defaultAction = unit.GetAction<MoveAction>();
-            _selectedAction = defaultAction; 
+            _selectedAction = defaultAction;
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
             SetLocalSelectedAction(ActionType.Move);
         }
@@ -66,7 +68,7 @@ namespace Actions
         {
             _localSelectedAction = newAction;
         }
-        
+
         public ActionType GetLocalSelectedAction() => _localSelectedAction;
 
         public void SetSelectedUnitForPlayer(PlayerRef player, Unit unit)
@@ -103,7 +105,7 @@ namespace Actions
         {
             Unit selectedUnit = GetSelectedUnitForPlayer(playerRef);
             if (selectedUnit == null) return;
-            
+
             if (actionType != ActionType.Dance)
             {
                 DanceAction danceAction = selectedUnit.GetAction<DanceAction>();
@@ -112,7 +114,7 @@ namespace Actions
                     danceAction.StopDancing();
                 }
             }
-            
+
             switch (actionType)
             {
                 case ActionType.Move:
@@ -134,7 +136,8 @@ namespace Actions
                     selectedUnit.GetAction<DanceAction>().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
                     break;
                 case ActionType.Grenade:
-                    selectedUnit.GetAction<GrenadeAction>().TakeAction(gridPosition, () => Debug.Log("Grenade complete"));
+                    selectedUnit.GetAction<GrenadeAction>()
+                        .TakeAction(gridPosition, () => Debug.Log("Grenade complete"));
                     break;
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");
@@ -167,6 +170,7 @@ namespace Actions
                             }
                         }
                     }
+
                     if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
                     {
                         GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);

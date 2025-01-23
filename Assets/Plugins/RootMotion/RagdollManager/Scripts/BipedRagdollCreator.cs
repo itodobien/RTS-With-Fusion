@@ -353,6 +353,29 @@ namespace RootMotion.Dynamics
             }
         }
 
+        public static CapsuleCollider FixColliderRotation(CapsuleCollider c)
+        {
+            if (c.transform.childCount == 0) return null;
+            var child = c.transform.GetChild(0);
+            if (child == null) return null;
+
+            var toChildAxis = AxisTools.GetAxisToPoint(c.transform, child.position);
+            Vector3 toChild = AxisTools.ToVector3(toChildAxis);
+            float dot = Vector3.Dot(c.transform.rotation * toChild, child.position - c.transform.position);
+            if (dot < 0f) toChild = -toChild;
+
+            var newChild = new GameObject(c.gameObject.name + " Collider", typeof(CapsuleCollider)).transform;
+            newChild.parent = c.transform;
+            newChild.localPosition = Vector3.zero;
+            newChild.localRotation = Quaternion.identity;
+
+            var newCollider = CopyCapsuleCollider(c, newChild.gameObject);
+            newChild.rotation = Quaternion.FromToRotation(newChild.rotation * toChild, child.position - c.transform.position) * newChild.rotation;
+
+            DestroyImmediate(c);
+            return newCollider;
+        }
+
         public static Collider FixFootCollider(Transform foot, Transform root)
         {
             Vector3 fAxis = AxisTools.GetAxisVectorToDirection(foot, root.forward);

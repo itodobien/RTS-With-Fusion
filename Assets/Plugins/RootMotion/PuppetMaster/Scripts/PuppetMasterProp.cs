@@ -160,8 +160,11 @@ namespace RootMotion.Dynamics
 
             if (!puppetMaster.muscles[propMuscleIndex].joint.gameObject.activeInHierarchy || puppetMaster.muscles[propMuscleIndex].rigidbody.isKinematic)
             {
-                r.linearVelocity = puppetMaster.muscles[propMuscleIndex].mappedVelocity;
-                r.angularVelocity = puppetMaster.muscles[propMuscleIndex].mappedAngularVelocity;
+                if (!r.isKinematic)
+                {
+                    r.linearVelocity = puppetMaster.muscles[propMuscleIndex].mappedVelocity;
+                    r.angularVelocity = puppetMaster.muscles[propMuscleIndex].mappedAngularVelocity;
+                }
             }
 
             transform.parent = defaultParent;

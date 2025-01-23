@@ -6,7 +6,6 @@ namespace Projectiles
 {
     public class AutomaticRifleProjectile : NetworkBehaviour
     {
-    
         [SerializeField] private float speed = 40f;
         [SerializeField] private float stopDistance = 0.1f;
         [SerializeField] private TrailRenderer trailRenderer;
@@ -20,19 +19,20 @@ namespace Projectiles
             _direction = shootDirection;
             _targetPosition = targetPosition;
         }
-    
+
         public override void FixedUpdateNetwork()
         {
             if (!Object.HasStateAuthority) return;
             if (_hasImpacted) return;
-        
+
             if (Object.HasStateAuthority)
             {
                 float distanceBeforeShooting = Vector3.Distance(transform.position, _targetPosition);
                 transform.position += _direction * speed * Runner.DeltaTime;
                 float distanceAfterShooting = Vector3.Distance(transform.position, _targetPosition);
-            
-                if (distanceBeforeShooting < distanceAfterShooting || Vector3.Distance(transform.position, _targetPosition) < 0.1f)
+
+                if (distanceBeforeShooting < distanceAfterShooting ||
+                    Vector3.Distance(transform.position, _targetPosition) < 0.1f)
                 {
                     _hasImpacted = true;
                     transform.position = _targetPosition;
@@ -42,6 +42,7 @@ namespace Projectiles
                         trailRenderer.transform.SetParent(null, true);
                         RPC_PlayImpactEffect(transform.position);
                     }
+
                     StartCoroutine(DespawnAfterDelay(0.2f));
                 }
             }
@@ -53,6 +54,7 @@ namespace Projectiles
             var impactInstance = Instantiate(bulletImpactPrefab, impactPosition, Quaternion.identity);
             impactInstance.Play();
         }
+
         private IEnumerator DespawnAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);

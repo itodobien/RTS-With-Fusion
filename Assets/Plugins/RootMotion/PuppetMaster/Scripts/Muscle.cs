@@ -427,6 +427,7 @@ namespace RootMotion.Dynamics
         private ConfigurableJointMotion rebuildAngularXMotion;
         private ConfigurableJointMotion rebuildAngularYMotion;
         private ConfigurableJointMotion rebuildAngularZMotion;
+        private Vector3 connectedBodyScale = Vector3.one;
 
         public void Rebuild()
         {
@@ -801,7 +802,10 @@ namespace RootMotion.Dynamics
             if (!initiated) return;
             if (joint == null) return;
             if (state.isDisconnected) return;
-      
+
+            // For Unity6
+            connectedBodyScale = connectedBodyTarget != null ? connectedBodyTarget.transform.lossyScale : Vector3.one;
+
             if (joint.connectedBody == null)
             {
                 transform.localPosition = defaultPosition;
@@ -921,9 +925,13 @@ namespace RootMotion.Dynamics
             //if (props.mapPosition) target.localPosition = targetLocalPosition;
 
             Vector3 anchorUnscaled = joint.connectedAnchor = InverseTransformPointUnscaled(connectedBodyTarget.position, connectedBodyTarget.rotation * toParentSpace, target.position);
-            float uniformScaleF = 1f / connectedBodyTransform.lossyScale.x;
 
+#if UNITY_6000_0_OR_NEWER
+            joint.connectedAnchor = anchorUnscaled / connectedBodyScale.x;
+#else
+            float uniformScaleF = 1f / connectedBodyTransform.lossyScale.x;
             joint.connectedAnchor = anchorUnscaled * uniformScaleF;
+#endif
         }
 
         // Update this Muscle

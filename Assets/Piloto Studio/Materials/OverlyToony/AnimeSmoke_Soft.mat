@@ -24,29 +24,35 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AnimeSmoke_Soft
-  m_Shader: {fileID: 4800000, guid: d985403ea514e7c46bf7c2fab31b9d95, type: 3}
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
-  - _USESOFTALPHA_ON
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
+  - _USESOFTALPHA_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 3000
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   - DistortionVectors
   - TransparentBackface
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AlphaOverride:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -79,7 +85,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5a0839b9bd7f84c418768540b7be9c1e, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
@@ -102,6 +108,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -121,14 +131,20 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
+    - _Blend: 0
     - _BlendMode: 0
+    - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
     - _CullMode: 0
     - _CullModeForward: 0
     - _Culling: 0
@@ -136,6 +152,7 @@ Material:
     - _DepthOffsetEnable: 0
     - _Depthpower: 0.5
     - _Desaturate: 0
+    - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DisableErosion: 0
     - _DistortionEnable: 0
@@ -144,10 +161,12 @@ Material:
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
-    - _DstBlend: 10
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _Emission: 2
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 0
+    - _EnvironmentReflections: 1
     - _Fresnel: 0
     - _FresnelPower: 1
     - _FresnelScale: 1
@@ -163,15 +182,19 @@ Material:
     - _Opacity: 1
     - _OpaqueCullMode: 2
     - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SoftFadeFactor: 1
     - _SourceBlendRGB: 10
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
@@ -183,6 +206,7 @@ Material:
     - _StencilWriteMaskGBuffer: 14
     - _StencilWriteMaskMV: 40
     - _SupportDecals: 1
+    - _Surface: 0
     - _SurfaceType: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
@@ -201,13 +225,15 @@ Material:
     - _UseUVOffset: 0
     - _Usecenterglow: 0
     - _Usedepth: 1
+    - _WorkflowMode: 1
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _AlphaOverrideChannel: {r: 1, g: 0, b: 0, a: 0}
     - _AlphaOverridePanning: {r: 0, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DetailAdditiveChannel: {r: 0, g: 0, b: 0, a: 0}
     - _DetailDisolveChannel: {r: 0, g: 0, b: 0, a: 1}
@@ -231,7 +257,22 @@ Material:
     - _MidColor: {r: 1, g: 0.44479147, b: 0, a: 0}
     - _NoiseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Resolution: {r: 64, g: 64, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
     - _UnlitColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _WhiteColor: {r: 1, g: 0.8950032, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &4185027856085354592
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9

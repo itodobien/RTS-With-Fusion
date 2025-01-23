@@ -147,6 +147,8 @@ namespace RootMotion.Dynamics {
 			foreach (Muscle m in puppetMaster.muscles) {
 				m.state.pinWeightMlp = 0f;
 
+				if (m.rigidbody.isKinematic) continue;
+
 				m.rigidbody.linearVelocity = m.mappedVelocity;
 				m.rigidbody.angularVelocity = m.mappedAngularVelocity;
 			}
