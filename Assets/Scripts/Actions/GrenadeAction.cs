@@ -101,7 +101,6 @@ namespace Actions
 
         private void HandleGrenadeExplode(object sender, EventArgs e)
         {
-            if (!Object.HasStateAuthority) return;
             if (!IsThrowing) return;
 
             GrenadeProjectile grenade = sender as GrenadeProjectile;
@@ -110,6 +109,7 @@ namespace Actions
             Vector3 explosionPosition = grenade.transform.position;
             IsThrowing = false;
             ThrowTimer = 0f;
+            RPC_PlayGrenadeFeedback();
 
             ExplodeAtPosition(explosionPosition);
         }
@@ -151,13 +151,13 @@ namespace Actions
             }
 
             UnsubscribeFromGrenadeEvent();
-            RPC_PlayGrenadeFeedback();
             ActionComplete();
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_PlayGrenadeFeedback()
         {
+            Debug.Log($"[Grenade] Feedback RPC called on client: {Runner.LocalPlayer}");
             if (grenadeFeedbackPlayer != null)
             {
                 grenadeFeedbackPlayer.PlayFeedbacks();

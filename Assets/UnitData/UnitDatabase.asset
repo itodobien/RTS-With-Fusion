@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: UnitDatabase
   m_EditorClassIdentifier: 
   unitDataList:
+  - {fileID: 11400000, guid: e1a2de26fa824ed4cbbad9d3eb7fcee5, type: 2}
+  - {fileID: 11400000, guid: e236fb7818f4d4e44ab40071a40a086e, type: 2}
   - {fileID: 11400000, guid: 9ab0c7d7e4174d94a89f5ac07f1a94dd, type: 2}
   - {fileID: 11400000, guid: a24576cbd28841e49af56c4dcbb1e518, type: 2}
   - {fileID: 11400000, guid: ed49c5d5180a1214a9c48c7afe0af483, type: 2}
-  - {fileID: 11400000, guid: e236fb7818f4d4e44ab40071a40a086e, type: 2}
-  - {fileID: 11400000, guid: e1a2de26fa824ed4cbbad9d3eb7fcee5, type: 2}

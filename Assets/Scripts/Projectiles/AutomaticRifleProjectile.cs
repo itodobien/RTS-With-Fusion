@@ -1,4 +1,5 @@
 using System.Collections;
+using DarkTonic.MasterAudio;
 using Fusion;
 using UnityEngine;
 
@@ -31,11 +32,11 @@ namespace Projectiles
                 transform.position += _direction * speed * Runner.DeltaTime;
                 float distanceAfterShooting = Vector3.Distance(transform.position, _targetPosition);
 
-                if (distanceBeforeShooting < distanceAfterShooting ||
-                    Vector3.Distance(transform.position, _targetPosition) < 0.1f)
+                if (distanceBeforeShooting < distanceAfterShooting || Vector3.Distance(transform.position, _targetPosition) < 0.1f)
                 {
                     _hasImpacted = true;
                     transform.position = _targetPosition;
+                    RPC_PlayBlasterSound();
 
                     if (trailRenderer != null)
                     {
@@ -53,6 +54,11 @@ namespace Projectiles
         {
             var impactInstance = Instantiate(bulletImpactPrefab, impactPosition, Quaternion.identity);
             impactInstance.Play();
+        }
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_PlayBlasterSound()
+        {
+            MasterAudio.PlaySound3DAtVector3AndForget("Blaster", transform.position);
         }
 
         private IEnumerator DespawnAfterDelay(float delay)

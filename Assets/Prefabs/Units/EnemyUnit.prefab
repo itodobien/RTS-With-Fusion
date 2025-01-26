@@ -2249,9 +2249,8 @@ GameObject:
   - component: {fileID: 3633962395186661532}
   - component: {fileID: -8926113453434877496}
   - component: {fileID: 2439858525930125371}
-  - component: {fileID: 3433552081052675248}
-  - component: {fileID: -8727792154856042969}
-  - component: {fileID: -6267336700408065696}
+  - component: {fileID: -8499180758491836250}
+  - component: {fileID: -794335759598328786}
   m_Layer: 6
   m_Name: EnemyUnit
   m_TagString: Untagged
@@ -2346,6 +2345,7 @@ MonoBehaviour:
   deathForce: 1
   delayTimer: 0.2
   originalRootBone: {fileID: 6293219503291399115}
+  _IsBusy: 0
 --- !u!114 &-7447121023609182994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2407,7 +2407,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   grenadeFlightDuration: 1.2
-  grenadeFeedbackPlayer: {fileID: 0}
+  grenadeFeedbackPlayer: {fileID: 91440798008485847}
 --- !u!114 &2513909572344953795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2492,35 +2492,7 @@ MonoBehaviour:
   StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861bf3df96d57190da50
   TriggerHashes: 00000000
   TotalWords: 1
---- !u!114 &3433552081052675248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 22955653
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 6264426077827160205}
-  - {fileID: -7447121023609182994}
-  - {fileID: 3683561881723213900}
-  - {fileID: 4101256930915939087}
-  - {fileID: 2513909572344953795}
-  - {fileID: -872947019900638353}
-  - {fileID: 3633962395186661532}
-  - {fileID: -8926113453434877496}
-  - {fileID: 2439858525930125371}
-  - {fileID: -8727792154856042969}
-  ForceRemoteRenderTimeframe: 0
---- !u!114 &-8727792154856042969
+--- !u!114 &-8499180758491836250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2537,7 +2509,7 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &-6267336700408065696
+--- !u!114 &-794335759598328786
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2546,11 +2518,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 8894382734379626466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 51524ca01c9e28548a706f6ac9e1ab03
+  SortKey: 183446309
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 6264426077827160205}
+  - {fileID: -7447121023609182994}
+  - {fileID: 3683561881723213900}
+  - {fileID: 4101256930915939087}
+  - {fileID: 2513909572344953795}
+  - {fileID: -872947019900638353}
+  - {fileID: 3633962395186661532}
+  - {fileID: -8926113453434877496}
+  - {fileID: 2439858525930125371}
+  - {fileID: -8499180758491836250}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2748,6 +2734,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7b95cd77f2d6274bb1ebb39c3497edb, type: 3}
+--- !u!114 &91440798008485847 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9153614238877024987, guid: f7b95cd77f2d6274bb1ebb39c3497edb, type: 3}
+  m_PrefabInstance: {fileID: 9100920857705784588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8349724401477129287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 985401388824244555, guid: f7b95cd77f2d6274bb1ebb39c3497edb, type: 3}

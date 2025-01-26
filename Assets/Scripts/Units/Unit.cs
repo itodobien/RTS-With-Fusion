@@ -2,6 +2,7 @@ using System.Collections;
 using Actions;
 using Fusion;
 using Grid;
+using Sirenix.OdinInspector;
 using UI;
 using UnityEngine;
 
@@ -47,6 +48,9 @@ namespace Units
                 _gridPosition = newGridPosition;
             }
         }
+        
+        
+
 
         public void SetPrefabIndex(int index)
         {

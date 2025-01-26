@@ -42,17 +42,14 @@ namespace Actions
         public override string GetActionName() => "Shoot";
         private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
         
-        private void Update()
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_PlayBlasterFeedback()
         {
-            if (Object.HasInputAuthority)
+            Debug.Log($"[Shoot] Feedback RPC called on client: {Runner.LocalPlayer}");
+            if (fireFeedbackPlayer != null)
             {
-                bool currentlyFiring = IsFiring;
-                
-                if (currentlyFiring && !_wasFiring)
-                {
-                    fireFeedbackPlayer?.PlayFeedbacks();
-                }
-                _wasFiring = currentlyFiring;
+                fireFeedbackPlayer.PlayFeedbacks();
             }
         }
    
@@ -208,10 +205,7 @@ namespace Actions
             Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = true;
             FiringTimer = firingDuration;
-            if (IsLocalPlayerUnit())
-            {
-                fireFeedbackPlayer?.PlayFeedbacks();
-            }
+            RPC_PlayBlasterFeedback();
         }
     }
 }

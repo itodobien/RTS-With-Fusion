@@ -6,14 +6,14 @@ namespace Grid
 {
     public class LevelGrid : MonoBehaviour
     {
-        public static LevelGrid Instance { get; private set; }
-
+        public static LevelGrid Instance {get; private set;}
+        
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private int gridWidth = 20;
         [SerializeField] private int gridHeight = 20;
         [SerializeField] private float cellSize = 2f;
         private GridSystem<GridObject> _gridSystem;
-
+        
         private void Awake()
         {
             if (Instance != null)
@@ -22,10 +22,8 @@ namespace Grid
                 Destroy(gameObject);
                 return;
             }
-
             Instance = this;
-            _gridSystem = new GridSystem<GridObject>(gridWidth, gridHeight, cellSize,
-                (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
+            _gridSystem = new GridSystem<GridObject>(gridWidth, gridHeight, cellSize, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
             _gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
         }
 
@@ -50,6 +48,7 @@ namespace Grid
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
         public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
         public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
+        
 
 
         public bool HasUnitAtGridPosition(GridPosition gridPosition)
@@ -63,15 +62,13 @@ namespace Grid
                     return true;
                 }
             }
-
             return false;
         }
-
         public List<Unit> GetUnitAtGridPosition(GridPosition gridPosition)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             List<Unit> rawList = gridObject.GetUnitList();
-
+            
             List<Unit> validUnits = new List<Unit>();
             foreach (Unit unit in rawList)
             {
@@ -80,10 +77,8 @@ namespace Grid
                     validUnits.Add(unit);
                 }
             }
-
             return validUnits;
         }
-
         public int GetWidth() => _gridSystem.GetWidth();
         public int GetHeight() => _gridSystem.GetHeight();
         public float GetCellSize() => cellSize;

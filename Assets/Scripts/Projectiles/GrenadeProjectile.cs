@@ -43,9 +43,8 @@ namespace Projectiles
         {
             if (_hasExploded) return;
             _hasExploded = true;
-            Debug.Log("ExplodeVisuals called");
-
-            OnGrenadeExplode?.Invoke(this, EventArgs.Empty);
+            
+            RPC_TriggerExplosionFeedback();
 
             RPC_PlayExplosionEffect(transform.position);
             StartCoroutine(DespawnAfterDelay(0.3f));
@@ -66,6 +65,11 @@ namespace Projectiles
                 var explosionInstance = Instantiate(explosionVisualEffect, impactPosition, Quaternion.identity);
                 explosionInstance.Play();
             }
+        }
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_TriggerExplosionFeedback()
+        {
+            OnGrenadeExplode?.Invoke(this, EventArgs.Empty);
         }
 
         private IEnumerator DespawnAfterDelay(float delay)
