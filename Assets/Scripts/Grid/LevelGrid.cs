@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DestructibleObjects;
 using Units;
 using UnityEngine;
 
@@ -48,8 +49,6 @@ namespace Grid
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
         public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
         public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
-        
-
 
         public bool HasUnitAtGridPosition(GridPosition gridPosition)
         {
@@ -79,6 +78,23 @@ namespace Grid
             }
             return validUnits;
         }
+        public List<DestructibleObject> GetObjectsAtGridPosition(GridPosition gridPosition)
+        {
+            GridObject gridObjectList = _gridSystem.GetGridObject(gridPosition);
+            List<DestructibleObject> rawObjectList = gridObjectList.GetObjectList();
+            
+            List<DestructibleObject> gameObjects = new List<DestructibleObject>();
+            foreach (DestructibleObject obj in rawObjectList)
+            {
+                if (obj != null)
+                {
+                    gameObjects.Add(obj);
+                }
+            }
+            return gameObjects;
+        }
+        
+        
         public int GetWidth() => _gridSystem.GetWidth();
         public int GetHeight() => _gridSystem.GetHeight();
         public float GetCellSize() => cellSize;

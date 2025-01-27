@@ -156,5 +156,16 @@ namespace Actions
             if (_seeker == null) _seeker = GetComponent<Seeker>();
             _seeker.StartPath(transform.position, TargetPosition, OnPathComplete);
         }
+        public void ResetPath()
+        {
+            _path = null;
+            _currentWaypointIndex = 0;
+
+            if (IsMoving)
+            {
+                _seeker.CancelCurrentPathRequest();
+                _seeker.StartPath(transform.position, TargetPosition, OnPathComplete);
+            }
+        }
     }
 }

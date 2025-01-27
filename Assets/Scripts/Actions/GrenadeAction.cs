@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DestructibleObjects;
 using Fusion;
 using Grid;
 using MoreMountains.Feedbacks;
 using Projectiles;
 using Units;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Actions
 {
@@ -44,7 +47,6 @@ namespace Actions
                     validPositions.Add(pos);
                 }
             }
-
             return validPositions;
         }
 
@@ -148,8 +150,38 @@ namespace Actions
                         unit.Damage(grenadeDamageAmount);
                     }
                 }
+
+                if (unit != null && unit.Object && unit.Object.IsInSimulation)
+                {
+                    unit.ForceRecalculatePath();
+                }
+            }
+            
+            List<DestructibleObject> objectsInRange = GetObjectsInExplosionRange(explosionCenter, grenadeExplosionRadius);
+            
+            foreach (DestructibleObject destructibleObj in objectsInRange)
+            {
+                if (destructibleObj == null || destructibleObj.gameObject == null) continue;
+
+                Vector3 toObj = destructibleObj.transform.position - explosionCenter;
+                float sqrDist = toObj.sqrMagnitude;
+
+                if (sqrDist <= sqrRadius)
+                {
+                    if (!Physics.Raycast(explosionCenter + Vector3.up, toObj.normalized, toObj.magnitude,
+                            obstacleLayerMask))
+                    {
+                        destructibleObj.Damage(grenadeDamageAmount);
+                    }
+                }
             }
 
+            List<Unit> allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None).ToList();
+            foreach (Unit unit in allUnits)
+            {
+                if (unit == null || !unit.Object || !unit.Object.IsInSimulation) continue;
+                unit.ForceRecalculatePath();
+            }
             UnsubscribeFromGrenadeEvent();
             ActionComplete();
         }
@@ -182,8 +214,28 @@ namespace Actions
                     result.AddRange(unitsHere);
                 }
             }
-
             return result;
+        }
+        
+        private List<DestructibleObject> GetObjectsInExplosionRange(Vector3 centerWorldPos, float radius)
+        {
+            GridPosition centerGridPos = LevelGrid.Instance.GetGridPosition(centerWorldPos);
+            float cellSize = LevelGrid.Instance.GetCellSize();
+            int maxOffset = Mathf.CeilToInt(radius / cellSize);
+
+            List<DestructibleObject> objectList = new List<DestructibleObject>();
+
+            foreach (var testPos in ActionUtils.GetGridPositionsInRange(centerGridPos, maxOffset))
+            {
+                Vector3 cellWorldPos = LevelGrid.Instance.GetWorldPosition(testPos);
+                float sqrDist = (cellWorldPos - centerWorldPos).sqrMagnitude;
+                if (sqrDist <= (radius * radius))
+                {
+                    List<DestructibleObject> objectsHere = LevelGrid.Instance.GetObjectsAtGridPosition(testPos);
+                    objectList.AddRange(objectsHere);
+                }
+            }
+            return objectList;
         }
 
         private void OnDestroy()

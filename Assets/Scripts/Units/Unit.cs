@@ -2,7 +2,6 @@ using System.Collections;
 using Actions;
 using Fusion;
 using Grid;
-using Sirenix.OdinInspector;
 using UI;
 using UnityEngine;
 
@@ -48,9 +47,6 @@ namespace Units
                 _gridPosition = newGridPosition;
             }
         }
-        
-        
-
 
         public void SetPrefabIndex(int index)
         {
@@ -181,9 +177,18 @@ namespace Units
                     return (T) baseAction;
                 }
             }
-
             return null;
         }
+
+        public void ForceRecalculatePath()
+        {
+            if (TryGetComponent<MoveAction>(out var moveAction))
+            {
+                moveAction.ResetPath();
+                Debug.Log("Forcing unit to recalculate path in Unit.cs");
+            }
+        }
+
 
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;
