@@ -140,14 +140,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1073741824
-  uniqueID: 7810075089671534553
+  uniqueID: 2567364736718684742
   points:
-  - {x: 1.3068125, y: -0.5, z: -1.3602724}
-  - {x: -1.9140373, y: -0.5, z: -1.2770224}
-  - {x: -1.6793476, y: -0.5, z: 1.7146645}
-  - {x: 1.3863811, y: -0.5, z: 1.527667}
+  - {x: 1.3068125, y: 1, z: -1.3602724}
+  - {x: -1.9140373, y: 1, z: -1.2770224}
+  - {x: -1.6793476, y: 1, z: 1.7146645}
+  - {x: 1.3863811, y: 1, z: 1.527667}
   convex: 1
-  minBoundsHeight: 2
+  minBoundsHeight: 3
   penaltyDelta: 0
   modifyWalkability: 1
   setWalkability: 1

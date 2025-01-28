@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 4795687a73ea387448c2402d7d2e9739
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - grenadePrefab: {fileID: -4227373207856718915, guid: 3a83adf07d337a84d8527053b13da2ad, type: 3}
+  - grenadeSpawnPoint: {instanceID: 0}
+  - grenadeFeedbackPlayer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

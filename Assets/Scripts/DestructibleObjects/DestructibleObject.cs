@@ -6,37 +6,28 @@ using UnityEngine;
 
 namespace DestructibleObjects
 {
+    [RequireComponent(typeof(NetworkBehaviour))]
+    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(GraphUpdateScene))]
     public class DestructibleObject : NetworkBehaviour
     {
         [Networked] public NetworkBool IsDestroyed { get; set; }
+        
+        [SerializeField] private int maxHealth = 100;
+        [Networked] private int CurrentHealth { get; set; }
+        
         private GridPosition _gridPosition;
         private GraphUpdateScene _graphUpdateScene;
 
-        [SerializeField] private int maxHealth = 100;
-        [Networked] private int CurrentHealth { get; set; }
 
         public override void Spawned()
         {
             _graphUpdateScene = GetComponent<GraphUpdateScene>();
-            
-            if (_graphUpdateScene == null) {
-                Debug.LogError("GraphUpdateScene component missing on DestructibleObject!");
-            }
+            ValidateGraphUpdateScene();
+
             if (!IsDestroyed)
             {
-                CurrentHealth = maxHealth;
-                _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-                var gridObject = LevelGrid.Instance.GetGridSystem()?.GetGridObject(_gridPosition);
-                if (gridObject != null)
-                {
-                    gridObject.AddDestructibleObject(this);
-                    
-                }
-                else
-                {
-                    Debug.LogError($"Failed to add DestructibleObject to grid at position {_gridPosition}");
-                }
-                _graphUpdateScene = GetComponent<GraphUpdateScene>();
+                InitializeObject();
             }
             else
             {
@@ -47,62 +38,33 @@ namespace DestructibleObjects
 
         public void Damage(int damageAmount)
         {
-            if (HasStateAuthority && !IsDestroyed)
+            if (!HasStateAuthority || IsDestroyed) return;
+            
+            CurrentHealth -= damageAmount;
+            if (CurrentHealth <= 0)
             {
-                CurrentHealth -= damageAmount;
-                if (CurrentHealth <= 0)
-                {
-                    IsDestroyed = true;
-                    RPC_DestroyObject();
-                    Debug.Log("Object destroyed in Damage Method");
-                }
+                IsDestroyed = true;
+                RPC_DestroyObject();
             }
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_DestroyObject()
         {
-            if (LevelGrid.Instance != null && LevelGrid.Instance.GetGridSystem() != null)
-            {
-                var gridObject = LevelGrid.Instance.GetGridSystem().GetGridObject(_gridPosition);
-                if (gridObject != null) gridObject.RemoveDestructibleObject(this);
-            }
-
-            var collider = GetComponent<Collider>();
-            if (collider != null) collider.enabled = false;
-            if (_graphUpdateScene != null) _graphUpdateScene.enabled = false;
+            RemoveFromGrid();
+            DisableComponents();
 
             RescanWalkableArea();
             RPC_NotifyUnitsToRecalculatePaths();
+
             Runner.Despawn(Object);
-            Debug.Log("Object destroyed in RPC_DestroyObject");
         }
+
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_NotifyUnitsToRecalculatePaths()
         {
             ForceUnitsRecalculatePath();
-            Debug.Log("Notifying units to recalculate paths");
-        }
-
-        private void RescanWalkableArea()
-        {
-            AstarPath.active.Scan();
-            Debug.Log("Rescanning walkable area");
-        }
-
-        private void ForceUnitsRecalculatePath()
-        {
-            Debug.Log("Rescanning walkable area in ForceUnitsRecalculatePath");
-            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
-            foreach (var unit in allUnits)
-            {
-                if (unit != null && unit.Object != null && unit.Object.IsInSimulation)
-                {
-                    unit.ForceRecalculatePath();
-                    Debug.Log("Forcing unit to recalculate path");
-                }
-            }
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
@@ -112,11 +74,74 @@ namespace DestructibleObjects
                 Destroy(gameObject);
             }
         }
-
         public bool CanBeDamaged() => !IsDestroyed && CurrentHealth > 0;
-        
-
         public float GetHealthPercentage() => (float)CurrentHealth / maxHealth;
         
+        private void ValidateGraphUpdateScene()
+        {
+            if (_graphUpdateScene == null)
+            {
+                Debug.LogError("GraphUpdateScene component missing on DestructibleObject!");
+            }
+        }
+        
+        private void InitializeObject()
+        {
+            CurrentHealth = maxHealth;
+            _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+
+            var gridObject = LevelGrid.Instance.GetGridSystem()?.GetGridObject(_gridPosition);
+            if (gridObject != null)
+            {
+                gridObject.AddDestructibleObject(this);
+            }
+            else
+            {
+                Debug.LogError($"Failed to add DestructibleObject to grid at position {_gridPosition}");
+            }
+        }
+        
+        private void RemoveFromGrid()
+        {
+            if (LevelGrid.Instance?.GetGridSystem() == null) return;
+
+            var gridObject = LevelGrid.Instance.GetGridSystem().GetGridObject(_gridPosition);
+            gridObject?.RemoveDestructibleObject(this);
+        }
+        
+        private void DisableComponents()
+        {
+            var collider = GetComponent<Collider>();
+            if (collider != null) collider.enabled = false;
+
+            if (_graphUpdateScene != null) _graphUpdateScene.enabled = false;
+        }
+        
+        private void RescanWalkableArea()
+        {
+            if (AstarPath.active == null) return;
+            if (_graphUpdateScene != null)
+            {
+                _graphUpdateScene.Apply();
+            }
+            else
+            {
+                Bounds bounds = new Bounds(transform.position, Vector3.one * 5f);
+                var guo = new GraphUpdateObject(bounds);
+                AstarPath.active.UpdateGraphs(guo);
+            }
+        }
+
+        private void ForceUnitsRecalculatePath()
+        {
+            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
+            foreach (var unit in allUnits)
+            {
+                if (unit?.Object != null && unit.Object.IsInSimulation)
+                {
+                    unit.ForceRecalculatePath();
+                }
+            }
+        }
     }
 }

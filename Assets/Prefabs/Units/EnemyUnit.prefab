@@ -293,7 +293,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2295
 --- !u!114 &6042717949205207063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2401,6 +2401,7 @@ MonoBehaviour:
   maxThrowDistance: 5
   grenadeExplosionRadius: 4
   grenadeDamageAmount: 60
+  grenadeAmount: 4
   grenadePrefab: {fileID: -4227373207856718915, guid: 3a83adf07d337a84d8527053b13da2ad, type: 3}
   grenadeSpawnPoint: {fileID: 6293219503291399081}
   obstacleLayerMask:

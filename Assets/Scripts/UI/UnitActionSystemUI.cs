@@ -25,8 +25,8 @@ namespace UI
 
         private IEnumerator Start()
         {
-            yield return new WaitUntil(() =>
-                UnitSelectionManager.Instance != null && UnitActionSystem.Instance != null);
+            yield return new WaitUntil(() => UnitSelectionManager.Instance != null && UnitActionSystem.Instance != null);
+            
             UnitSelectionManager.Instance.OnSelectedUnitsChanged += UnitSelectionManager_OnSelectedUnitsChanged;
             UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
             _runner = FindObjectOfType<NetworkRunner>();

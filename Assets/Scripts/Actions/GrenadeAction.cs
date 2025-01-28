@@ -8,29 +8,34 @@ using MoreMountains.Feedbacks;
 using Projectiles;
 using Units;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Actions
 {
     public class GrenadeAction : BaseAction
     {
+        public event EventHandler OnGrenadeAmountChanged;
         [SerializeField] private int maxThrowDistance = 5;
         [SerializeField] private float grenadeExplosionRadius = 4f;
         [SerializeField] private int grenadeDamageAmount = 60;
+        [SerializeField] private int grenadeAmount = 4;
 
         [SerializeField] private GrenadeProjectile grenadePrefab;
         [SerializeField] private Transform grenadeSpawnPoint;
         [SerializeField] private LayerMask obstacleLayerMask;
         [SerializeField] private float grenadeFlightDuration = 1.2f;
+        
 
         [Header("Feel Feedbacks")] public MMF_Player grenadeFeedbackPlayer;
 
         [Networked] private bool IsThrowing { get; set; }
         [Networked] private float ThrowTimer { get; set; }
+        [Networked] private TickTimer life { get; set; }
+        
 
         private Vector3 _targetWorldPosition;
         private bool _wasThrowing;
         private GrenadeProjectile _spawnedGrenade;
+        private int grenadeDelayTime = 2;
 
         private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
         public override string GetActionName() => "Grenade";
@@ -68,7 +73,7 @@ namespace Actions
             StartAction(onActionComplete);
             _targetWorldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
-            if (grenadePrefab != null && grenadeSpawnPoint != null)
+            if (grenadePrefab != null && grenadeSpawnPoint != null && grenadeAmount > 0  && life.ExpiredOrNotRunning(Runner))
             {
                 Runner.Spawn(
                     grenadePrefab,
@@ -83,11 +88,18 @@ namespace Actions
                             Vector3 direction = (_targetWorldPosition - grenadeSpawnPoint.position).normalized;
                             _spawnedGrenade.ThrowGrenade(direction, _targetWorldPosition);
                             _spawnedGrenade.OnGrenadeExplode += HandleGrenadeExplode;
+                            UpdateGrenadeAmount(grenadeAmount - 1);
+
+                            life = TickTimer.CreateFromSeconds(Runner, grenadeDelayTime); 
+                            Debug.Log($"[Grenade] Grenade amount: {grenadeAmount}");
+                            if (grenadeAmount <= 0)
+                            {
+                                ActionComplete();
+                            }
                         }
                     }
                 );
             }
-
             IsThrowing = true;
             ThrowTimer = grenadeFlightDuration;
         }
@@ -132,59 +144,91 @@ namespace Actions
 
         private void ExplodeAtPosition(Vector3 explosionCenter)
         {
-            List<Unit> unitsInRadius = GetUnitsInExplosionRange(explosionCenter, grenadeExplosionRadius);
-            float sqrRadius = grenadeExplosionRadius * grenadeExplosionRadius;
+            // Units
+            var unitsInRadius = GetUnitsInExplosionRange(explosionCenter, grenadeExplosionRadius);
+            ApplyExplosionDamage(unitsInRadius, explosionCenter, grenadeExplosionRadius, obstacleLayerMask);
 
-            foreach (Unit unit in unitsInRadius)
+            // Destructible Objects
+            var objectsInRange = GetObjectsInExplosionRange(explosionCenter, grenadeExplosionRadius);
+            ApplyExplosionDamage(objectsInRange, explosionCenter, grenadeExplosionRadius, obstacleLayerMask);
+
+            // Recalculate paths for all units
+            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None).ToList();
+            foreach (var unit in allUnits)
             {
-                if (unit == null || !unit.Object || !unit.Object.IsInSimulation) continue;
-
-                Vector3 toUnit = unit.GetWorldPosition() - explosionCenter;
-                float sqrDist = toUnit.sqrMagnitude;
-
-                if (sqrDist <= sqrRadius)
-                {
-                    if (!Physics.Raycast(explosionCenter + Vector3.up, toUnit.normalized, toUnit.magnitude,
-                            obstacleLayerMask))
-                    {
-                        unit.Damage(grenadeDamageAmount);
-                    }
-                }
-
-                if (unit != null && unit.Object && unit.Object.IsInSimulation)
-                {
+                if (unit?.Object?.IsInSimulation == true)
                     unit.ForceRecalculatePath();
-                }
             }
-            
-            List<DestructibleObject> objectsInRange = GetObjectsInExplosionRange(explosionCenter, grenadeExplosionRadius);
-            
-            foreach (DestructibleObject destructibleObj in objectsInRange)
-            {
-                if (destructibleObj == null || destructibleObj.gameObject == null) continue;
-
-                Vector3 toObj = destructibleObj.transform.position - explosionCenter;
-                float sqrDist = toObj.sqrMagnitude;
-
-                if (sqrDist <= sqrRadius)
-                {
-                    if (!Physics.Raycast(explosionCenter + Vector3.up, toObj.normalized, toObj.magnitude,
-                            obstacleLayerMask))
-                    {
-                        destructibleObj.Damage(grenadeDamageAmount);
-                    }
-                }
-            }
-
-            List<Unit> allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None).ToList();
-            foreach (Unit unit in allUnits)
-            {
-                if (unit == null || !unit.Object || !unit.Object.IsInSimulation) continue;
-                unit.ForceRecalculatePath();
-            }
+    
             UnsubscribeFromGrenadeEvent();
             ActionComplete();
         }
+        
+        private void UpdateGrenadeAmount(int newAmount)
+        {
+            if (grenadeAmount != newAmount)
+            {
+                grenadeAmount = newAmount;
+                OnGrenadeAmountChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private Vector3 GetPosition(object target)
+        {
+            switch (target)
+            {
+                case Unit u:
+                    return u.GetWorldPosition();
+                case DestructibleObject d:
+                    return d.transform.position;
+                default:
+                    return Vector3.zero;
+            }
+        }
+
+        private void DamageTarget(object target)
+        {
+            switch (target)
+            {
+                case Unit u:
+                    u.Damage(grenadeDamageAmount);
+                    break;
+                case DestructibleObject d:
+                    d.Damage(grenadeDamageAmount);
+                    break;
+            }
+        }
+        
+        private List<T> GetInExplosionRange<T>(
+            Vector3 centerWorldPos,
+            float radius,
+            Func<GridPosition, List<T>> getEntitiesAtGridPos)
+        {
+            var centerGridPos = LevelGrid.Instance.GetGridPosition(centerWorldPos);
+            float cellSize = LevelGrid.Instance.GetCellSize();
+            int maxOffset = Mathf.CeilToInt(radius / cellSize);
+            float sqrRadius = radius * radius;
+
+            List<T> result = new List<T>();
+            foreach (var testPos in ActionUtils.GetGridPositionsInRange(centerGridPos, maxOffset))
+            {
+                Vector3 cellWorldPos = LevelGrid.Instance.GetWorldPosition(testPos);
+                if ((cellWorldPos - centerWorldPos).sqrMagnitude <= sqrRadius)
+                    result.AddRange(getEntitiesAtGridPos(testPos));
+            }
+            return result;
+        }
+        private void ApplyExplosionDamage<T>(IEnumerable<T> targets, Vector3 center, float radius, LayerMask obstacle)
+        {
+            float sqrRadius = radius * radius;
+            foreach (var target in targets)
+            {
+                Vector3 direction = GetPosition(target) - center;
+                if (direction.sqrMagnitude > sqrRadius) continue;
+                if (Physics.Raycast(center + Vector3.up, direction.normalized, direction.magnitude, obstacle)) continue;
+                DamageTarget(target);
+            }
+        }
+
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_PlayGrenadeFeedback()
@@ -198,49 +242,27 @@ namespace Actions
 
         private List<Unit> GetUnitsInExplosionRange(Vector3 centerWorldPos, float radius)
         {
-            GridPosition centerGridPos = LevelGrid.Instance.GetGridPosition(centerWorldPos);
-            float cellSize = LevelGrid.Instance.GetCellSize();
-            int maxOffset = Mathf.CeilToInt(radius / cellSize);
-
-            List<Unit> result = new List<Unit>();
-
-            foreach (var testPos in ActionUtils.GetGridPositionsInRange(centerGridPos, maxOffset))
-            {
-                Vector3 cellWorldPos = LevelGrid.Instance.GetWorldPosition(testPos);
-                float sqrDist = (cellWorldPos - centerWorldPos).sqrMagnitude;
-                if (sqrDist <= (radius * radius))
-                {
-                    List<Unit> unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPos);
-                    result.AddRange(unitsHere);
-                }
-            }
-            return result;
+            return GetInExplosionRange(
+                centerWorldPos,
+                radius,
+                pos => LevelGrid.Instance.GetUnitAtGridPosition(pos)
+            );
         }
         
         private List<DestructibleObject> GetObjectsInExplosionRange(Vector3 centerWorldPos, float radius)
         {
-            GridPosition centerGridPos = LevelGrid.Instance.GetGridPosition(centerWorldPos);
-            float cellSize = LevelGrid.Instance.GetCellSize();
-            int maxOffset = Mathf.CeilToInt(radius / cellSize);
-
-            List<DestructibleObject> objectList = new List<DestructibleObject>();
-
-            foreach (var testPos in ActionUtils.GetGridPositionsInRange(centerGridPos, maxOffset))
-            {
-                Vector3 cellWorldPos = LevelGrid.Instance.GetWorldPosition(testPos);
-                float sqrDist = (cellWorldPos - centerWorldPos).sqrMagnitude;
-                if (sqrDist <= (radius * radius))
-                {
-                    List<DestructibleObject> objectsHere = LevelGrid.Instance.GetObjectsAtGridPosition(testPos);
-                    objectList.AddRange(objectsHere);
-                }
-            }
-            return objectList;
+            return GetInExplosionRange(
+                centerWorldPos,
+                radius,
+                pos => LevelGrid.Instance.GetObjectsAtGridPosition(pos)
+            );
         }
 
         private void OnDestroy()
         {
             UnsubscribeFromGrenadeEvent();
         }
+        
+        public int GetGrenadeAmount() => grenadeAmount;
     }
 }

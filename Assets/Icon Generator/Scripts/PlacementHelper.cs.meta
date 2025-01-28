@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c63f37068cab50b4ba81b213a3e91d5c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 305166
+  packageName: Icon Generator | Ultimate Icon Creation Tool
+  packageVersion: 1.0
+  assetPath: Assets/Icon Generator/Scripts/PlacementHelper.cs
+  uploadId: 727255

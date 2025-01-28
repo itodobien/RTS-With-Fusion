@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0a7380c2ab39a204297911d2d7635d81
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 305166
+  packageName: Icon Generator | Ultimate Icon Creation Tool
+  packageVersion: 1.0
+  assetPath: Assets/Icon Generator/Presets/Template_UI.json
+  uploadId: 727255
