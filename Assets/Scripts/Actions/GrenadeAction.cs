@@ -17,7 +17,6 @@ namespace Actions
         [SerializeField] private int maxThrowDistance = 5;
         [SerializeField] private float grenadeExplosionRadius = 4f;
         [SerializeField] private int grenadeDamageAmount = 60;
-        [SerializeField] private int grenadeAmount = 4;
 
         [SerializeField] private GrenadeProjectile grenadePrefab;
         [SerializeField] private Transform grenadeSpawnPoint;
@@ -30,6 +29,7 @@ namespace Actions
         [Networked] private bool IsThrowing { get; set; }
         [Networked] private float ThrowTimer { get; set; }
         [Networked] private TickTimer life { get; set; }
+        [Networked] private int grenadeAmount { get; set; } = 4;
         
 
         private Vector3 _targetWorldPosition;
@@ -73,7 +73,7 @@ namespace Actions
             StartAction(onActionComplete);
             _targetWorldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
-            if (grenadePrefab != null && grenadeSpawnPoint != null && grenadeAmount > 0  && life.ExpiredOrNotRunning(Runner))
+            if (grenadePrefab != null && grenadeSpawnPoint != null && grenadeAmount > 0 && life.ExpiredOrNotRunning(Runner))
             {
                 Runner.Spawn(
                     grenadePrefab,
@@ -88,7 +88,7 @@ namespace Actions
                             Vector3 direction = (_targetWorldPosition - grenadeSpawnPoint.position).normalized;
                             _spawnedGrenade.ThrowGrenade(direction, _targetWorldPosition);
                             _spawnedGrenade.OnGrenadeExplode += HandleGrenadeExplode;
-                            UpdateGrenadeAmount(grenadeAmount - 1);
+                            RPC_UpdateGrenadeAmount(grenadeAmount - 1);
 
                             life = TickTimer.CreateFromSeconds(Runner, grenadeDelayTime); 
                             Debug.Log($"[Grenade] Grenade amount: {grenadeAmount}");
@@ -103,6 +103,14 @@ namespace Actions
             IsThrowing = true;
             ThrowTimer = grenadeFlightDuration;
         }
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RPC_UpdateGrenadeAmount(int newAmount)
+        {
+            grenadeAmount = newAmount;
+            OnGrenadeAmountChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public int GetGrenadeAmount() => grenadeAmount;
 
         private void UnsubscribeFromGrenadeEvent()
         {
@@ -262,7 +270,5 @@ namespace Actions
         {
             UnsubscribeFromGrenadeEvent();
         }
-        
-        public int GetGrenadeAmount() => grenadeAmount;
     }
 }

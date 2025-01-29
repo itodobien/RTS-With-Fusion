@@ -14,7 +14,6 @@ namespace Fusion
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
-        [SerializeField] public GameObject[] spawnLocations;
         public static BasicSpawner Instance { get; private set; }
         [SerializeField] public UnitDatabase unitDatabase;
         
@@ -40,11 +39,11 @@ namespace Fusion
         {
             if (_runner == null)
             {
-                if (GUI.Button(new Rect(0,0,200,40), "Host"))
+                if (GUI.Button(new Rect(50,50,200,50), "Host"))
                 {
                     StartGame(GameMode.Host);
                 }
-                if (GUI.Button(new Rect(0,40,200,40), "Join"))
+                if (GUI.Button(new Rect(50,100,200,50), "Join"))
                 {
                     StartGame(GameMode.Client);
                 }
