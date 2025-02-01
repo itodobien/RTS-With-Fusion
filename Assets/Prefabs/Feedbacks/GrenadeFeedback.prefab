@@ -279,7 +279,7 @@ MonoBehaviour:
           InterruptsOnStop: 1
           NumberOfRepeats: 0
           RepeatForever: 0
-          DelayBetweenRepeats: 1
+          DelayBetweenRepeats: 0
           PlayCount: 0
           LimitPlayCount: 0
           MaxPlayCount: 3

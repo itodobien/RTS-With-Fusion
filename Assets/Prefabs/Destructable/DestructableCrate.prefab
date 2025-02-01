@@ -127,6 +127,7 @@ MonoBehaviour:
   _IsDestroyed:
     _value: 0
   maxHealth: 10
+  fracturedPrefab: {fileID: 2825620809855270338, guid: 3c8b3b53c635ae443ac7a45621369b28, type: 3}
 --- !u!114 &8996324359209263702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,12 +141,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1073741824
-  uniqueID: 3704884656683563904
+  uniqueID: 1404202845872030250
   points:
-  - {x: 1.3068125, y: 1, z: -1.3602724}
-  - {x: -1.9140373, y: 1, z: -1.2770224}
-  - {x: -1.9085003, y: 1, z: 1.7146645}
-  - {x: 1.3863811, y: 1, z: 1.527667}
+  - {x: 1.5, y: 1, z: -1.5}
+  - {x: -1.5, y: 1, z: -1.5}
+  - {x: -1.5, y: 1, z: 1.5}
+  - {x: 1.5, y: 1, z: 1.5}
   convex: 1
   minBoundsHeight: 3
   penaltyDelta: 0

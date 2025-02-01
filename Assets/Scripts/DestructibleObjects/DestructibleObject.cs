@@ -13,12 +13,13 @@ namespace DestructibleObjects
     {
         [Networked] public NetworkBool IsDestroyed { get; set; }
         
-        [SerializeField] private int maxHealth = 100;
+        [SerializeField] private int maxHealth = 10;
         [Networked] private int CurrentHealth { get; set; }
+
+        [SerializeField] private GameObject fracturedPrefab;
         
         private GridPosition _gridPosition;
         private GraphUpdateScene _graphUpdateScene;
-
 
         public override void Spawned()
         {
@@ -53,9 +54,20 @@ namespace DestructibleObjects
         {
             RemoveFromGrid();
             DisableComponents();
-
             RescanWalkableArea();
             RPC_NotifyUnitsToRecalculatePaths();
+
+            if (DestructionManager.Instance != null)
+            {
+                Vector3 destroyPosition = transform.position;
+                Quaternion destroyRotation = transform.rotation;
+                Debug.Log($"Destroying at {destroyPosition}");
+                DestructionManager.Instance.RPC_SpawnFracturedEffect(destroyPosition, destroyRotation);
+            }
+            else
+            {
+                Debug.LogError("DestructionManager instance is not available.");
+            }
 
             Runner.Despawn(Object);
         }
@@ -74,8 +86,6 @@ namespace DestructibleObjects
                 Destroy(gameObject);
             }
         }
-        public bool CanBeDamaged() => !IsDestroyed && CurrentHealth > 0;
-        public float GetHealthPercentage() => (float)CurrentHealth / maxHealth;
         
         private void ValidateGraphUpdateScene()
         {
