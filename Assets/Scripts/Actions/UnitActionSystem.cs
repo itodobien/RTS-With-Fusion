@@ -94,6 +94,11 @@ namespace Actions
             {
                 oldDanceAction.StopDancing();
             }
+
+            if (_selectedAction is KnifeAction oldKnifeAction && oldKnifeAction.GetIsKnifeAttacking())
+            {
+                oldKnifeAction.StopKnifeAttack();
+            }
             _selectedAction = baseAction;
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -111,6 +116,15 @@ namespace Actions
                 if (danceAction.GetIsDancing())
                 {
                     danceAction.StopDancing();
+                }
+            }
+
+            if (actionType != ActionType.Knife)
+            {
+                KnifeAction knifeAction = selectedUnit.GetAction<KnifeAction>();
+                if (knifeAction.GetIsKnifeAttacking())
+                {
+                    knifeAction.StopKnifeAttack();
                 }
             }
 
@@ -135,6 +149,9 @@ namespace Actions
                     break;
                 case ActionType.Grenade:
                     selectedUnit.GetAction<GrenadeAction>().TakeAction(gridPosition, () => Debug.Log("Grenade complete"));
+                    break;
+                case ActionType.Knife:
+                    selectedUnit.GetAction<KnifeAction>().TakeAction(gridPosition, () => Debug.Log("Knife complete"));
                     break;
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");

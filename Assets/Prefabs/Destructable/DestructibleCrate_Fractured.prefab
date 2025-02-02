@@ -22355,7 +22355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca6e4c09ad237f4a8f8ba8bc98e8c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 5
+  explosionForce: 6
   explosionRadius: 5
   upwardModifier: 0.5
   explosionOffset: {x: 0, y: 0, z: 0}

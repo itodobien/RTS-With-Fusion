@@ -2251,6 +2251,7 @@ GameObject:
   - component: {fileID: 2439858525930125371}
   - component: {fileID: 4177402149150060516}
   - component: {fileID: -7148495712125798778}
+  - component: {fileID: -1086940230899949419}
   m_Layer: 6
   m_Name: UnitGrey
   m_TagString: Untagged
@@ -2523,7 +2524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1347411857
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 6264426077827160205}
@@ -2536,7 +2537,29 @@ MonoBehaviour:
   - {fileID: -2341473508910855156}
   - {fileID: 2439858525930125371}
   - {fileID: 4177402149150060516}
+  - {fileID: -1086940230899949419}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-1086940230899949419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af33903a9301fe43b81390104d6dbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knifeAttackRange: 1
+  knifeDamageAmount: 30
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  shoulderHeight: 1.7
+  rotationSpeed: 10
+  damageDelay: 1
+  knifeFeedbackPlayer: {fileID: 7818192346066723137, guid: 7a4fb3f687296e64abbf02592c822383, type: 3}
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

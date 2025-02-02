@@ -42,6 +42,10 @@ namespace UI
                 {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Grenade);
                 }
+                else if (_baseAction is KnifeAction)
+                {
+                    UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Knife);
+                }
                 else
                 {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.None);

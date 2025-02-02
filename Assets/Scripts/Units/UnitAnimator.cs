@@ -13,10 +13,12 @@ namespace Units
         private MoveAction _moveAction;
         private ShootAction _shootAction;
         private DanceAction _danceAction;
+        private KnifeAction _knifeAction;
     
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private static readonly int Shoot = Animator.StringToHash("Shoot");
         private static readonly int IsDancing = Animator.StringToHash("IsDancing");
+        private static readonly int IsKnifeAttacking = Animator.StringToHash("IsKnifeAttacking");
         
         private void Awake()
         {
@@ -41,6 +43,12 @@ namespace Units
                     danceAction.OnStartDancing += DanceAction_OnStartDancing;
                     danceAction.OnStopDancing += DanceAction_OnStopDancing;
                 }
+                else if (action is KnifeAction knifeAction)
+                {
+                    _knifeAction = knifeAction;
+                    knifeAction.OnStartKnifeAttack += KnifeAction_OnStartKnifeAttack;
+                    knifeAction.OnStopKnifeAttack += KnifeAction_OnStopKnifeAttack;
+                }
             }
         }
 
@@ -63,6 +71,12 @@ namespace Units
                 {
                     danceAction.OnStartDancing -= DanceAction_OnStartDancing;
                     danceAction.OnStopDancing -= DanceAction_OnStopDancing;
+                }
+                else if (action is KnifeAction knifeAction)
+                {
+                    _knifeAction = knifeAction;
+                    knifeAction.OnStartKnifeAttack -= KnifeAction_OnStartKnifeAttack;
+                    knifeAction.OnStopKnifeAttack -= KnifeAction_OnStopKnifeAttack;
                 }
             }
         }
@@ -98,6 +112,16 @@ namespace Units
             {
                 animator.SetBool(IsDancing, false);
             }
+
+            if (_knifeAction != null)
+            {
+                bool isCurrentlyKnifeAttacking = _knifeAction.GetIsKnifeAttacking();
+                animator.SetBool(IsKnifeAttacking, isCurrentlyKnifeAttacking);
+            }
+            else
+            {
+                animator.SetBool(IsKnifeAttacking, false);
+            }
         }
 
         private void MoveAction_OnStartMoving(object sender, EventArgs e)
@@ -113,7 +137,6 @@ namespace Units
         private void ShootAction_OnStartShooting(object sender, EventArgs e)
         {
             animator.SetBool(Shoot, true);
-            
         }
         
         private void ShootAction_OnStopShooting(object sender, EventArgs e)
@@ -129,6 +152,18 @@ namespace Units
         private void DanceAction_OnStopDancing(object sender, EventArgs e)
         {
             animator.SetBool(IsDancing, false);
+        }
+
+        private void KnifeAction_OnStartKnifeAttack(object sender, EventArgs e)
+        {
+            Debug.Log("Knife attack started.");
+            animator.SetBool(IsKnifeAttacking, true);
+        }
+
+        private void KnifeAction_OnStopKnifeAttack(object sender, EventArgs e)
+        {
+            Debug.Log("Knife attack stopped.");
+            animator.SetBool(IsKnifeAttacking, false);
         }
     }
 }

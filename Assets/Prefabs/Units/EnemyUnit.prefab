@@ -2251,6 +2251,7 @@ GameObject:
   - component: {fileID: 2439858525930125371}
   - component: {fileID: -8499180758491836250}
   - component: {fileID: -794335759598328786}
+  - component: {fileID: -3442318254698253154}
   m_Layer: 6
   m_Name: EnemyUnit
   m_TagString: Untagged
@@ -2401,7 +2402,6 @@ MonoBehaviour:
   maxThrowDistance: 5
   grenadeExplosionRadius: 4
   grenadeDamageAmount: 60
-  grenadeAmount: 4
   grenadePrefab: {fileID: -4227373207856718915, guid: 3a83adf07d337a84d8527053b13da2ad, type: 3}
   grenadeSpawnPoint: {fileID: 6293219503291399081}
   obstacleLayerMask:
@@ -2537,7 +2537,29 @@ MonoBehaviour:
   - {fileID: -8926113453434877496}
   - {fileID: 2439858525930125371}
   - {fileID: -8499180758491836250}
+  - {fileID: -3442318254698253154}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-3442318254698253154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af33903a9301fe43b81390104d6dbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knifeAttackRange: 1
+  knifeDamageAmount: 30
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  shoulderHeight: 1.7
+  rotationSpeed: 10
+  damageDelay: 1
+  knifeFeedbackPlayer: {fileID: 7818192346066723137, guid: 7a4fb3f687296e64abbf02592c822383, type: 3}
 --- !u!1001 &2567893523251301822
 PrefabInstance:
   m_ObjectHideFlags: 0

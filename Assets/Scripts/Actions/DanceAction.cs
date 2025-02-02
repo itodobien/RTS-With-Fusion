@@ -6,7 +6,6 @@ namespace Actions
 {
     public class DanceAction : BaseAction
     {
-
         public event EventHandler OnStartDancing;
         public event EventHandler OnStopDancing;
     

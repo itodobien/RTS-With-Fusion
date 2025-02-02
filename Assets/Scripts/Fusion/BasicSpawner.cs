@@ -96,8 +96,7 @@ namespace Fusion
 
                 if (player == runner.LocalPlayer)
                 {
-                    if (UnitActionSystem.Instance != null &&
-                        UnitActionSystem.Instance.Object.InputAuthority == PlayerRef.None)
+                    if (UnitActionSystem.Instance != null && UnitActionSystem.Instance.Object.InputAuthority == PlayerRef.None)
                     {
                         UnitActionSystem.Instance.Object.AssignInputAuthority(player);
                     }
