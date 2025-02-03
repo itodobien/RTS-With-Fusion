@@ -15,5 +15,9 @@ namespace Grid
         {
             meshRenderer.enabled = false;
         }
+        public void SetColor(Color color)
+        {
+            meshRenderer.material.color = color;
+        }
     }
 }

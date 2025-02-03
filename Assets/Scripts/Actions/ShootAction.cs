@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using Grid;
+using Managers;
 using MoreMountains.Feedbacks;
 using Projectiles;
 using Units;
@@ -58,28 +59,20 @@ namespace Actions
             GridPosition unitGridPosition = _unit.GetGridPosition();
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-            foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, maxShootDistance))
+            foreach (var enemyPosition in EnemyPositionManager.Instance.GetEnemyPositions())
             {
-                if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
-
-                var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
-
-                foreach (Unit potentialTarget in unitsHere)
+                int distance = GridPosition.GetDistance(unitGridPosition, enemyPosition);
+                if (distance <= maxShootDistance)
                 {
-                    if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
-                    if (potentialTarget == _unit) continue;
+                    Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+                    Vector3 targetPos = LevelGrid.Instance.GetWorldPosition(enemyPosition) + Vector3.up * shoulderHeight;
+                    Vector3 shootDir = (targetPos - shooterPos).normalized;
+                    float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
 
-                    if (potentialTarget.GetTeamID() != _unit.GetTeamID())
+                    if (!Physics.Raycast(shooterPos, shootDir, distanceToTarget, obstacleLayerMask))
                     {
-                        Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
-                        Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
-                        Vector3 shootDir = (targetPos - shooterPos).normalized;
-                        float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
-
-                        if (Physics.Raycast(shooterPos, shootDir, distanceToTarget, obstacleLayerMask)) continue;
+                        validGridPositionList.Add(enemyPosition);
                     }
-                    validGridPositionList.Add(testPosition);
-                    break;
                 }
             }
             return validGridPositionList;

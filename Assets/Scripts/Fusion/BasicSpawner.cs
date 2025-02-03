@@ -15,7 +15,10 @@ namespace Fusion
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
         public static BasicSpawner Instance { get; private set; }
+        
         [SerializeField] public UnitDatabase unitDatabase;
+        [SerializeField] private NetworkPrefabRef enemyPositionManagerPrefab;
+
         
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
@@ -72,7 +75,11 @@ namespace Fusion
                 Scene = scene,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
-            
+
+            if (_runner.IsServer)
+            {
+                _runner.Spawn(enemyPositionManagerPrefab, Vector3.zero, Quaternion.identity);
+            }
             UnitSelectionManager.Instance.SetActivePlayer(_runner.LocalPlayer);
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)

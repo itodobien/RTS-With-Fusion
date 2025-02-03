@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Grid
 {
@@ -51,6 +52,10 @@ namespace Grid
         public static GridPosition operator -(GridPosition a, GridPosition b)
         {
             return new GridPosition(a.x - b.x, a.z - b.z);
+        }
+        public static int GetDistance(GridPosition a, GridPosition b)
+        {
+            return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.z - b.z);
         }
     }
 }

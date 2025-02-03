@@ -2,6 +2,7 @@ using System.Collections;
 using Actions;
 using Fusion;
 using Grid;
+using Managers;
 using UI;
 using UnityEngine;
 
@@ -36,6 +37,10 @@ namespace Units
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
             _healthSystem.OnDeath += HealthSystem_OnDead;
+            if (Object.HasStateAuthority && EnemyPositionManager.Instance != null)
+            {
+                EnemyPositionManager.Instance.UpdateEnemyPositions(TeamID);
+            }
         }
 
         private void Update()
@@ -45,8 +50,14 @@ namespace Units
             {
                 LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
                 _gridPosition = newGridPosition;
+
+                if (Object.HasStateAuthority && EnemyPositionManager.Instance != null)
+                {
+                    EnemyPositionManager.Instance.UpdateEnemyPositions(TeamID);
+                }
             }
         }
+
 
         public void SetPrefabIndex(int index)
         {

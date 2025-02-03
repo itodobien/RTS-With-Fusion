@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Actions;
+using Managers;
 using Units;
 using UnityEngine;
 
@@ -61,11 +62,18 @@ namespace Grid
 
         private void ShowGridPositionList(List<GridPosition> gridPositionList)
         {
+            List<GridPosition> enemyPositions = EnemyPositionManager.Instance.GetEnemyPositions();
+
             foreach (GridPosition gridPosition in gridPositionList)
             {
+                bool enemyPresent = enemyPositions.Contains(gridPosition);
+                Color gridColor = enemyPresent ? Color.red : Color.green;
+                _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].SetColor(gridColor);
                 _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show();
             }
         }
+
+
 
         private void UpdateGridVisual()
         {
