@@ -36,7 +36,6 @@ public class KnifeAction : BaseAction
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_PlayKnifeFeedback()
     {
-        Debug.Log($"[Shoot] Feedback RPC called on client: {Runner.LocalPlayer}");
         if (knifeFeedbackPlayer != null)
         {
             knifeFeedbackPlayer.PlayFeedbacks();
@@ -62,10 +61,10 @@ public class KnifeAction : BaseAction
                 {
                     Vector3 attackerPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
                     Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
-                    Vector3 shootDir = (targetPos - attackerPos).normalized;
+                    Vector3 stabDir = (targetPos - attackerPos).normalized;
                     float distanceToTarget = Vector3.Distance(attackerPos, targetPos);
 
-                    if (Physics.Raycast(attackerPos, shootDir, distanceToTarget, obstacleLayerMask)) continue;
+                    if (Physics.Raycast(attackerPos, stabDir, distanceToTarget, obstacleLayerMask)) continue;
                 }
                 validGridPositionList.Add(testPosition);
                 break;

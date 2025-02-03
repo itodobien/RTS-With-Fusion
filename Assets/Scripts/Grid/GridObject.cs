@@ -32,21 +32,11 @@ namespace Grid
         public void AddUnit(Unit unit) => _unitList.Add(unit);
         public void RemoveUnit(Unit unit) => _unitList.Remove(unit);
         public List<Unit> GetUnitList() => _unitList;
-        public bool HasAnyUnit() => _unitList.Count > 0;
-       
         public void AddDestructibleObject (DestructibleObject destructibleObject) => _objectList.Add(destructibleObject);
         public void RemoveDestructibleObject(DestructibleObject destructibleObject) => _objectList.Remove(destructibleObject);
 
         public List<DestructibleObject> GetObjectList() => _objectList;
-        public bool HasAnyObject() => _objectList.Count > 0;
 
-        public Unit GetUnit()
-        {
-            if (HasAnyUnit())
-            {
-                return _unitList[0];
-            }
-            return null;
-        }
+       
     }
 }

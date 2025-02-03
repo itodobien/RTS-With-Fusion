@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Grid
 {
@@ -46,7 +45,7 @@ namespace Grid
             return new GridPosition(x, z);
         }
 
-        public void CreateDebugObjects(Transform debugPrefab)
+        /*public void CreateDebugObjects(Transform debugPrefab)
         {
             for (int x = 0; x < _width; x++)
             {
@@ -59,7 +58,7 @@ namespace Grid
                     gridDebugObject.SetGridObject(GetGridObject(gridPosition) as GridObject);
                 }
             }
-        }
+        }*/
 
         public TGridObject GetGridObject(GridPosition gridPosition)
         {
@@ -72,6 +71,5 @@ namespace Grid
         }
         public int GetWidth() => _width;
         public int GetHeight() => _height;
-        public Vector2Int GetOriginOffset() => _originOffset;
     }
 }
