@@ -50,11 +50,6 @@ namespace Units
             {
                 LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
                 _gridPosition = newGridPosition;
-
-                if (Object.HasStateAuthority && EnemyPositionManager.Instance != null)
-                {
-                    EnemyPositionManager.Instance.UpdateEnemyPositions(TeamID);
-                }
             }
         }
 

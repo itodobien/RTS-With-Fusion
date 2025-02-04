@@ -93,10 +93,8 @@ namespace UI
             }
         }
 
-        public void SetLocalPlayer(Player player)
-        {
-            _localPlayer = player;
-        }
+        public void SetLocalPlayer(Player player) => _localPlayer = player;
+        internal Player GetLocalPlayer() => _localPlayer;
         
         private void TrySingleUnitSelection(Vector3 mousePosition)
         {
@@ -167,7 +165,7 @@ namespace UI
                 
                 if (!unit.Object || !unit.Object.IsInSimulation) continue;
                         
-                if (unit.GetTeamID() ==  localPlayerTeam && unit.OwnerPlayerRef == _activePlayer)
+                if (unit.GetTeamID() == localPlayerTeam && unit.Object != null && unit.Object.IsValid)
                 {
                     if (Camera.main != null)
                     {

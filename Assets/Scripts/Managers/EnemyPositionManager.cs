@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 using Grid;
+using UI;
 using Units;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Managers
         [Networked]
         private NetworkString<_128> SerializedEnemyPositions { get; set; }
 
-        private List<GridPosition> _enemyPositions = new List<GridPosition>();
+        private readonly List<GridPosition> _enemyPositions = new();
 
         private string _lastSerialized;
 
@@ -42,6 +43,11 @@ namespace Managers
 
         public override void FixedUpdateNetwork()
         {
+            if (Object.HasStateAuthority)
+            {
+                UpdateEnemyPositions(0);
+            }
+    
             var currentValue = SerializedEnemyPositions.Value;
             if (_lastSerialized != currentValue)
             {
@@ -49,6 +55,7 @@ namespace Managers
                 DeserializeEnemyPositions();
             }
         }
+
 
         public void UpdateEnemyPositions(int localPlayerTeamID)
         {
@@ -100,11 +107,25 @@ namespace Managers
 
         public List<GridPosition> GetEnemyPositions()
         {
-            if (!Object.HasStateAuthority)
+            // Determine the local player's team ID
+            int localTeamID = UnitSelectionManager.Instance.GetLocalPlayer().GetTeamID();
+
+            // Create a fresh list of enemy grid positions
+            List<GridPosition> enemyPositions = new List<GridPosition>();
+
+            // Iterate over all units in the scene (using the appropriate sort mode if needed)
+            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
+            foreach (Unit unit in allUnits)
             {
-                DeserializeEnemyPositions();
+                // Add positions for units that are not on the local player's team
+                if (unit.GetTeamID() != localTeamID)
+                {
+                    enemyPositions.Add(unit.GetGridPosition());
+                }
             }
-            return _enemyPositions;
+
+            return enemyPositions;
         }
+
     }
 }
