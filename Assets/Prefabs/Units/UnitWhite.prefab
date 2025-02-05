@@ -2421,7 +2421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knifeAttackRange: 1
-  knifeDamageAmount: 30
+  knifeDamageAmount: 100
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 128

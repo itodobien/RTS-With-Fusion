@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Actions;
 using Fusion;
 using Grid;
+using Managers;
 using MoreMountains.Feedbacks;
 using Units;
 using UnityEngine;
@@ -46,28 +47,20 @@ public class KnifeAction : BaseAction
     {
         GridPosition unitGridPosition = Unit.GetGridPosition();
         List<GridPosition> validGridPositionList = new List<GridPosition>();
+        List<GridPosition> enemyPositions = EnemyPositionManager.Instance.GetEnemyPositionsForTeam(Unit.GetTeamID());
+    
         foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, knifeAttackRange))
         {
-            if (!LevelGrid.Instance.HasUnitAtGridPosition(testPosition)) continue;
+            if (!enemyPositions.Contains(testPosition)) continue;
 
-            var unitsHere = LevelGrid.Instance.GetUnitAtGridPosition(testPosition);
+            Vector3 attackerPos = Unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+            Vector3 targetPos = LevelGrid.Instance.GetWorldPosition(testPosition) + Vector3.up * shoulderHeight;
+            Vector3 stabDir = (targetPos - attackerPos).normalized;
+            float distanceToTarget = Vector3.Distance(attackerPos, targetPos);
 
-            foreach (Unit potentialTarget in unitsHere)
+            if (!Physics.Raycast(attackerPos, stabDir, distanceToTarget, obstacleLayerMask))
             {
-                if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
-                if (potentialTarget == Unit) continue;
-
-                if (potentialTarget.GetTeamID() != Unit.GetTeamID())
-                {
-                    Vector3 attackerPos = Unit.GetWorldPosition() + Vector3.up * shoulderHeight;
-                    Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
-                    Vector3 stabDir = (targetPos - attackerPos).normalized;
-                    float distanceToTarget = Vector3.Distance(attackerPos, targetPos);
-
-                    if (Physics.Raycast(attackerPos, stabDir, distanceToTarget, obstacleLayerMask)) continue;
-                }
                 validGridPositionList.Add(testPosition);
-                break;
             }
         }
         return validGridPositionList;
