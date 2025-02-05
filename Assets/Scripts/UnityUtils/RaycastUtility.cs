@@ -1,27 +1,30 @@
 using UnityEngine;
 
-public static class RaycastUtility 
+namespace UnityUtils
 {
-    public static bool TryRaycastFromCamera(Vector3 screenPos, out RaycastHit rayHit, float maxDistance = Mathf.Infinity)
+    public static class RaycastUtility 
     {
-        rayHit = default;
-
-        var cam = Camera.main;
-        if (cam == null)
+        public static bool TryRaycastFromCamera(Vector3 screenPos, out RaycastHit rayHit, float maxDistance = Mathf.Infinity)
         {
-            Debug.LogWarning("No Camera.main found for raycasting!");
-            return false;
-        }
-        Ray ray = cam.ScreenPointToRay(screenPos);
-        return Physics.Raycast(ray, out rayHit, maxDistance);
-    }
+            rayHit = default;
 
-    public static Vector3 GetMouseWorldPosition(LayerMask layerMask = default, Vector3 fallbackPosition = default)
-    {
-        if (TryRaycastFromCamera(Input.mousePosition, out RaycastHit hit))
-        {
-            return hit.point;
+            var cam = Camera.main;
+            if (cam == null)
+            {
+                Debug.LogWarning("No Camera.main found for raycasting!");
+                return false;
+            }
+            Ray ray = cam.ScreenPointToRay(screenPos);
+            return Physics.Raycast(ray, out rayHit, maxDistance);
         }
-        return fallbackPosition;
+
+        public static Vector3 GetMouseWorldPosition(LayerMask layerMask = default, Vector3 fallbackPosition = default)
+        {
+            if (TryRaycastFromCamera(Input.mousePosition, out RaycastHit hit))
+            {
+                return hit.point;
+            }
+            return fallbackPosition;
+        }
     }
 }

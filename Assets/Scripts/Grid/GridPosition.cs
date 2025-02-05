@@ -5,6 +5,10 @@ namespace Grid
 {
     public struct GridPosition : IEquatable<GridPosition>
     {
+        private static readonly GridPosition Invalid = new (int.MinValue, int.MinValue);
+        
+        public bool IsValid() => this != Invalid;
+
         public int x;
         public int z;
     

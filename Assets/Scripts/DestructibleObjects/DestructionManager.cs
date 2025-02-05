@@ -25,7 +25,6 @@ namespace DestructibleObjects
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_SpawnFracturedEffect(Vector3 pos, Quaternion rot)
         {
-            Debug.Log($"[DestructionManager] Spawning fractured effect at {pos} on {Runner.LocalPlayer}");
             if (fracturedCratePrefab != null)
             {
                 GameObject fracturedInstance = Instantiate(fracturedCratePrefab, pos, rot);

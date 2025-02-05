@@ -8,6 +8,7 @@ using UI;
 using Units;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityUtils;
 
 namespace Fusion
 {
@@ -157,50 +158,50 @@ namespace Fusion
 
             if (Input.GetMouseButton(0))
             {
-                data.buttons.Set(NetworkInputData.MOUSEBUTTON0, true);
+                data.Buttons.Set(NetworkInputData.Mousebutton0, true);
             }
             
             if (Input.GetMouseButton(1))
             {
-                data.buttons.Set(NetworkInputData.MOUSEBUTTON1, true);
+                data.Buttons.Set(NetworkInputData.Mousebutton1, true);
                 
                 if (RaycastUtility.TryRaycastFromCamera(Input.mousePosition, out RaycastHit rayHit))
                 {
                     if (rayHit.collider.TryGetComponent(out Unit hitUnit))
                     {
                         var hitGridPos = LevelGrid.Instance.GetGridPosition(hitUnit.GetWorldPosition());
-                        data.targetGridX = hitGridPos.x;
-                        data.targetGridZ = hitGridPos.z;
-                        data.targetPosition = rayHit.point;
+                        data.TargetGridX = hitGridPos.x;
+                        data.TargetGridZ = hitGridPos.z;
+                        data.TargetPosition = rayHit.point;
                     }
                     else
                     {
                         var clickedGridPosition = LevelGrid.Instance.GetGridPosition(rayHit.point);
-                        data.targetGridX = clickedGridPosition.x;
-                        data.targetGridZ = clickedGridPosition.z;
-                        data.targetPosition = rayHit.point;
+                        data.TargetGridX = clickedGridPosition.x;
+                        data.TargetGridZ = clickedGridPosition.z;
+                        data.TargetPosition = rayHit.point;
                     }
                 }
             }
 
             if (Input.GetKey(KeyCode.U))
             {
-                data.buttons.Set(NetworkInputData.SPAWNUNIT, true);
-                data.spawnPosition = MouseWorldPosition.GetMouseWorldPosition();
+                data.Buttons.Set(NetworkInputData.SpawnUnit, true);
+                data.SpawnPosition = MouseWorldPosition.GetMouseWorldPosition();
             }
             
             var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();
             if (selectionChange.HasValue)
             {
-                data.buttons.Set(NetworkInputData.SELECT_UNIT, true);
-                data.selectedUnitId = selectionChange.Value.unitId;
-                data.isSelected = selectionChange.Value.isSelected;                
+                data.Buttons.Set(NetworkInputData.SelectUnit, true);
+                data.SelectedUnitId = selectionChange.Value.unitId;
+                data.IsSelected = selectionChange.Value.isSelected;                
             }
             
             ActionType localAction = UnitActionSystem.Instance.GetLocalSelectedAction();
-            data.actionType = localAction;
+            data.ActionType = localAction;
 
-            data.buttons.Set(NetworkInputData.JUMP, Input.GetKey(KeyCode.Space));
+            data.Buttons.Set(NetworkInputData.Jump, Input.GetKey(KeyCode.Space));
             input.Set(data);
         }
     

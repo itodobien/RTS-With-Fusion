@@ -58,12 +58,12 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
-            if (_unit == null || !_unit.Object || !_unit.Object.IsInSimulation)
+            if (Unit == null || !Unit.Object || !Unit.Object.IsInSimulation)
             {
                 ActionComplete();
                 return;
             }
-            if (_unit.IsBusy && !IsMoving) return;
+            if (Unit.IsBusy && !IsMoving) return;
 
             if (IsMoving && _path != null)
             {
@@ -82,7 +82,7 @@ namespace Actions
                 StopMoving();
                 return;
             }
-            Vector3 finalDestination = _path.vectorPath[_path.vectorPath.Count - 1];
+            Vector3 finalDestination = _path.vectorPath[^1];
             float distanceToFinalDestination = Vector3.Distance(transform.position, finalDestination);
             if (distanceToFinalDestination <= stopDistance)
             {
@@ -128,7 +128,7 @@ namespace Actions
 
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
             return ActionUtils.GetGridPositionsInRange(unitGridPosition, maxMoveDistance).Where(pos => pos != unitGridPosition).ToList();
         }
 

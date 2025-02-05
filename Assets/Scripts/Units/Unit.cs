@@ -2,7 +2,6 @@ using System.Collections;
 using Actions;
 using Fusion;
 using Grid;
-using Managers;
 using UI;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace Units
         [SerializeField] private float delayTimer = .2f;
         [SerializeField] private Transform originalRootBone;
 
-        [Networked] public bool IsBusy { get; set; }
+        [Networked] public bool IsBusy { get; private set; }
         [Networked] public PlayerRef OwnerPlayerRef { get; set; }
         [Networked] private int TeamID { get; set; }
         [Networked] private int PrefabIndex { get; set; }
@@ -145,8 +144,8 @@ namespace Units
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_SpawnLocalRagdoll(Vector3 position, Quaternion rotation, int prefabIndex)
         {
-            var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[PrefabIndex];
-            GameObject ragdoll = Instantiate(unitData.ragdollPrefab, transform.position, transform.rotation);
+            var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[prefabIndex]; // Using parameter
+            GameObject ragdoll = Instantiate(unitData.ragdollPrefab, position, rotation); // Using parameters
             UnitRagdoll unitRagdoll = ragdoll.GetComponent<UnitRagdoll>();
 
             if (unitRagdoll != null)
@@ -157,7 +156,7 @@ namespace Units
 
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
-            if (_gridPosition != null)
+            if (_gridPosition.IsValid())
             {
                 LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
             }
@@ -169,9 +168,9 @@ namespace Units
         {
             foreach (BaseAction baseAction in _baseActionsArray)
             {
-                if (baseAction is T)
+                if (baseAction is T action)
                 {
-                    return (T) baseAction;
+                    return action;
                 }
             }
             return null;
@@ -185,7 +184,6 @@ namespace Units
                 Debug.Log("Forcing unit to recalculate path in Unit.cs");
             }
         }
-
 
         public GridPosition GetGridPosition() => _gridPosition;
         public BaseAction[] GetBaseActionArray() => _baseActionsArray;

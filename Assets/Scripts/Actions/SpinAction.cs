@@ -18,7 +18,7 @@ namespace Actions
         
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
 
             return new List<GridPosition>
             {
@@ -34,7 +34,7 @@ namespace Actions
                 return;
             }
             
-            if (_unit.IsBusy || IsSpinning)
+            if (Unit.IsBusy || IsSpinning)
             {
                 onActionComplete?.Invoke();
             }
@@ -47,9 +47,8 @@ namespace Actions
 
         public override void FixedUpdateNetwork()
         {
-            if (_unit == null || !_unit.Object || !_unit.Object.IsInSimulation)
+            if (Unit == null || !Unit.Object || !Unit.Object.IsInSimulation)
             {
-                Debug.Log($"{GetActionName()} => Our acting unit is gone or out of simulation, force-completing action.");
                 ActionComplete();
                 return;
             }

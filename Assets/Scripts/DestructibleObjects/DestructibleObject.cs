@@ -11,7 +11,7 @@ namespace DestructibleObjects
     [RequireComponent(typeof(GraphUpdateScene))]
     public class DestructibleObject : NetworkBehaviour
     {
-        [Networked] public NetworkBool IsDestroyed { get; set; }
+        [Networked] private NetworkBool IsDestroyed { get; set; }
         
         [SerializeField] private int maxHealth = 10;
         [Networked] private int CurrentHealth { get; set; }
@@ -33,7 +33,6 @@ namespace DestructibleObjects
             else
             {
                 DestroyImmediate(gameObject);
-                Debug.Log("Object destroyed in Spawned Method else statement");
             }
         }
 
@@ -61,7 +60,6 @@ namespace DestructibleObjects
             {
                 Vector3 destroyPosition = transform.position;
                 Quaternion destroyRotation = transform.rotation;
-                Debug.Log($"Destroying at {destroyPosition}");
                 DestructionManager.Instance.RPC_SpawnFracturedEffect(destroyPosition, destroyRotation);
             }
             else
@@ -121,8 +119,8 @@ namespace DestructibleObjects
         
         private void DisableComponents()
         {
-            var collider = GetComponent<Collider>();
-            if (collider != null) collider.enabled = false;
+            var colliderComponent = GetComponent<Collider>();
+            if (colliderComponent != null) colliderComponent.enabled = false;
 
             if (_graphUpdateScene != null) _graphUpdateScene.enabled = false;
         }

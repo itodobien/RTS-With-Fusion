@@ -1,75 +1,77 @@
 using Actions;
-using UnityEngine;
-using UI;
 using Units;
+using UnityEngine;
 
-public class UIManager : MonoBehaviour
+namespace UI
 {
-    public static UIManager Instance { get; private set; }
-
-    [SerializeField] private GameObject grenadeCountUIPrefab;
-    private GameObject grenadeCountUIInstance;
-
-    private void Awake()
+    public class UIManager : MonoBehaviour
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+        private static UIManager Instance { get; set; }
 
-    private void Start()
-    {
-        UnitSelectionManager.Instance.OnSelectedUnitsChanged += HandleUnitSelectionChanged;
-    }
+        [SerializeField] private GameObject grenadeCountUIPrefab;
+        private GameObject _grenadeCountUIInstance;
 
-    private void OnDestroy()
-    {
-        if (UnitSelectionManager.Instance != null)
+        private void Awake()
         {
-            UnitSelectionManager.Instance.OnSelectedUnitsChanged -= HandleUnitSelectionChanged;
-        }
-    }
-
-    private void HandleUnitSelectionChanged(object sender, System.EventArgs e)
-    {
-        var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
-        if (selectedUnits.Count > 0)
-        {
-            Unit selectedUnit = selectedUnits[0];
-            if (selectedUnit.GetAction<GrenadeAction>() != null)
+            if (Instance == null)
             {
-                CreateGrenadeCountUI();
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void Start()
+        {
+            UnitSelectionManager.Instance.OnSelectedUnitsChanged += HandleUnitSelectionChanged;
+        }
+
+        private void OnDestroy()
+        {
+            if (UnitSelectionManager.Instance != null)
+            {
+                UnitSelectionManager.Instance.OnSelectedUnitsChanged -= HandleUnitSelectionChanged;
+            }
+        }
+
+        private void HandleUnitSelectionChanged(object sender, System.EventArgs e)
+        {
+            var selectedUnits = UnitSelectionManager.Instance.GetSelectedUnits();
+            if (selectedUnits.Count > 0)
+            {
+                Unit selectedUnit = selectedUnits[0];
+                if (selectedUnit.GetAction<GrenadeAction>() != null)
+                {
+                    CreateGrenadeCountUI();
+                }
+                else
+                {
+                    DestroyGrenadeCountUI();
+                }
             }
             else
             {
                 DestroyGrenadeCountUI();
             }
         }
-        else
-        {
-            DestroyGrenadeCountUI();
-        }
-    }
 
-    private void CreateGrenadeCountUI()
-    {
-        if (grenadeCountUIInstance == null)
+        private void CreateGrenadeCountUI()
         {
-            grenadeCountUIInstance = Instantiate(grenadeCountUIPrefab, transform);
+            if (_grenadeCountUIInstance == null)
+            {
+                _grenadeCountUIInstance = Instantiate(grenadeCountUIPrefab, transform);
+            }
         }
-    }
 
-    private void DestroyGrenadeCountUI()
-    {
-        if (grenadeCountUIInstance != null)
+        private void DestroyGrenadeCountUI()
         {
-            Destroy(grenadeCountUIInstance);
-            grenadeCountUIInstance = null;
+            if (_grenadeCountUIInstance != null)
+            {
+                Destroy(_grenadeCountUIInstance);
+                _grenadeCountUIInstance = null;
+            }
         }
     }
 }

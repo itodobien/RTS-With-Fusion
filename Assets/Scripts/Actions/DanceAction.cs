@@ -16,7 +16,7 @@ namespace Actions
     
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
 
             return new List<GridPosition>
             {
@@ -32,7 +32,7 @@ namespace Actions
                 return;
             }
             
-            if (_unit.IsBusy || IsDancing)
+            if (Unit.IsBusy || IsDancing)
             {
                 onActionComplete?.Invoke();
                 return;

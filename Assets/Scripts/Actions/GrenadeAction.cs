@@ -35,14 +35,13 @@ namespace Actions
         private Vector3 _targetWorldPosition;
         private bool _wasThrowing;
         private GrenadeProjectile _spawnedGrenade;
-        private int grenadeDelayTime = 2;
+        private const int GrenadeDelayTime = 2;
 
-        private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
         public override string GetActionName() => "Grenade";
 
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
             List<GridPosition> validPositions = new List<GridPosition>();
 
             foreach (var pos in ActionUtils.GetGridPositionsInRange(unitGridPosition, maxThrowDistance))
@@ -90,7 +89,7 @@ namespace Actions
                             _spawnedGrenade.OnGrenadeExplode += HandleGrenadeExplode;
                             RPC_UpdateGrenadeAmount(grenadeAmount - 1);
 
-                            life = TickTimer.CreateFromSeconds(Runner, grenadeDelayTime); 
+                            life = TickTimer.CreateFromSeconds(Runner, GrenadeDelayTime); 
                             if (grenadeAmount <= 0)
                             {
                                 ActionComplete();
@@ -151,34 +150,22 @@ namespace Actions
 
         private void ExplodeAtPosition(Vector3 explosionCenter)
         {
-            // Units
             var unitsInRadius = GetUnitsInExplosionRange(explosionCenter, grenadeExplosionRadius);
             ApplyExplosionDamage(unitsInRadius, explosionCenter, grenadeExplosionRadius, obstacleLayerMask);
 
-            // Destructible Objects
             var objectsInRange = GetObjectsInExplosionRange(explosionCenter, grenadeExplosionRadius);
             ApplyExplosionDamage(objectsInRange, explosionCenter, grenadeExplosionRadius, obstacleLayerMask);
 
-            // Recalculate paths for all units
             var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None).ToList();
             foreach (var unit in allUnits)
             {
                 if (unit?.Object?.IsInSimulation == true)
                     unit.ForceRecalculatePath();
             }
-    
             UnsubscribeFromGrenadeEvent();
             ActionComplete();
         }
         
-        private void UpdateGrenadeAmount(int newAmount)
-        {
-            if (grenadeAmount != newAmount)
-            {
-                grenadeAmount = newAmount;
-                OnGrenadeAmountChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
         private Vector3 GetPosition(object target)
         {
             switch (target)

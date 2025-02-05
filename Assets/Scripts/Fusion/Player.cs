@@ -19,7 +19,6 @@ namespace Fusion
         {
             if (Object.HasStateAuthority)
             {
-                Debug.Log($"[Unit] Setting TeamID={teamID} for {name}");
                 TeamID = teamID;
             }
         }
@@ -35,11 +34,11 @@ namespace Fusion
             {
                 if (HasStateAuthority && Delay.ExpiredOrNotRunning(Runner))
                 {
-                    if (data.buttons.IsSet(NetworkInputData.SPAWNUNIT)) 
+                    if (data.Buttons.IsSet(NetworkInputData.SpawnUnit)) 
                     {
                         Delay = TickTimer.CreateFromSeconds(Runner, spawnDelay);
-                        Vector3 spawnPos = data.spawnPosition != Vector3.zero
-                            ? data.spawnPosition
+                        Vector3 spawnPos = data.SpawnPosition != Vector3.zero
+                            ? data.SpawnPosition
                             : transform.position;
                         
                         var unitData = BasicSpawner.Instance.unitDatabase.unitDataList[UnitPrefabIndex];

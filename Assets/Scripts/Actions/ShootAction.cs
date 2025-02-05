@@ -41,13 +41,10 @@ namespace Actions
         public Unit GetTargetUnit() => _targetUnit;
         
         public override string GetActionName() => "Shoot";
-        private bool IsLocalPlayerUnit() => _unit.Object.HasInputAuthority;
-        
         
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_PlayBlasterFeedback()
         {
-            Debug.Log($"[Shoot] Feedback RPC called on client: {Runner.LocalPlayer}");
             if (fireFeedbackPlayer != null)
             {
                 fireFeedbackPlayer.PlayFeedbacks();
@@ -56,17 +53,15 @@ namespace Actions
    
         public override List<GridPosition> GetValidActionGridPositionList()
         {
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-            Debug.Log($"[ShootAction] Shooter TeamID: {_unit.GetTeamID()}");
-
-            foreach (var enemyPosition in EnemyPositionManager.Instance.GetEnemyPositionsForTeam(_unit.GetTeamID()))
+            foreach (var enemyPosition in EnemyPositionManager.Instance.GetEnemyPositionsForTeam(Unit.GetTeamID()))
             {
                 int distance = GridPosition.GetDistance(unitGridPosition, enemyPosition);
                 if (distance <= maxShootDistance)
                 {
-                    Vector3 shooterPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+                    Vector3 shooterPos = Unit.GetWorldPosition() + Vector3.up * shoulderHeight;
                     Vector3 targetPos = LevelGrid.Instance.GetWorldPosition(enemyPosition) + Vector3.up * shoulderHeight;
                     Vector3 shootDir = (targetPos - shooterPos).normalized;
                     float distanceToTarget = Vector3.Distance(shooterPos, targetPos);
@@ -87,7 +82,7 @@ namespace Actions
                 onActionComplete?.Invoke();
                 return;
             }
-            if (_unit.IsBusy || IsFiring || IsAiming)
+            if (Unit.IsBusy || IsFiring || IsAiming)
             {
                 onActionComplete?.Invoke();
                 return;
@@ -98,15 +93,13 @@ namespace Actions
             {
                 Unit candidateTarget = unitAtPos[0];
 
-                if (candidateTarget == _unit || candidateTarget.GetTeamID() == _unit.GetTeamID())
+                if (candidateTarget == Unit || candidateTarget.GetTeamID() == Unit.GetTeamID())
                 {
-                    Debug.Log($"ShootAction Aborted: Same Team. Shooter TeamID={_unit.GetTeamID()}");
                     onActionComplete?.Invoke();
                     return;
                 }
                 _targetUnit = candidateTarget;
                 TargetUnitId = _targetUnit.Object.Id;
-                Debug.Log("Target unit:" + _targetUnit.Object.Id);
             }
             else
             {
@@ -128,7 +121,6 @@ namespace Actions
             {
                 if (TargetUnitId != default)
                 {
-                    Debug.Log("Target is gone, aborting ShootAction");
                     IsFiring = false;
                     IsAiming = false;
                     ActionComplete();
@@ -155,12 +147,11 @@ namespace Actions
         {
             if (_targetUnit == null)
             {
-                Debug.LogWarning("Tried to ain with no targets");
                 IsAiming = false;
                 ActionComplete();
                 return;
             }
-            Vector3 direction = (_targetUnit.GetWorldPosition() - _unit.GetWorldPosition()).normalized;
+            Vector3 direction = (_targetUnit.GetWorldPosition() - Unit.GetWorldPosition()).normalized;
             direction.y = 0; 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, aimRotationSpeed * Runner.DeltaTime);
@@ -176,7 +167,6 @@ namespace Actions
         {
             if (_targetUnit == null || !_targetUnit.Object || !_targetUnit.Object.IsInSimulation)
             {
-                Debug.LogWarning("Target is no longer valid, aborting firing");
                 IsFiring = false;
                 ActionComplete();
                 return;
@@ -198,7 +188,6 @@ namespace Actions
             );
             
             _targetUnit.Damage(shotDamageAmount);
-            Debug.Log($"Unit {_unit.name} fired at position {targetPosition}");
             IsFiring = true;
             FiringTimer = firingDuration;
             RPC_PlayBlasterFeedback();

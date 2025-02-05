@@ -44,7 +44,7 @@ public class KnifeAction : BaseAction
 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
-        GridPosition unitGridPosition = _unit.GetGridPosition();
+        GridPosition unitGridPosition = Unit.GetGridPosition();
         List<GridPosition> validGridPositionList = new List<GridPosition>();
         foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, knifeAttackRange))
         {
@@ -55,11 +55,11 @@ public class KnifeAction : BaseAction
             foreach (Unit potentialTarget in unitsHere)
             {
                 if (!potentialTarget.Object || !potentialTarget.Object.IsInSimulation) continue;
-                if (potentialTarget == _unit) continue;
+                if (potentialTarget == Unit) continue;
 
-                if (potentialTarget.GetTeamID() != _unit.GetTeamID())
+                if (potentialTarget.GetTeamID() != Unit.GetTeamID())
                 {
-                    Vector3 attackerPos = _unit.GetWorldPosition() + Vector3.up * shoulderHeight;
+                    Vector3 attackerPos = Unit.GetWorldPosition() + Vector3.up * shoulderHeight;
                     Vector3 targetPos = potentialTarget.GetWorldPosition() + Vector3.up * shoulderHeight;
                     Vector3 stabDir = (targetPos - attackerPos).normalized;
                     float distanceToTarget = Vector3.Distance(attackerPos, targetPos);
@@ -81,7 +81,7 @@ public class KnifeAction : BaseAction
             return;
         }
 
-        if (_unit.IsBusy || IsKnifeAttacking)
+        if (Unit.IsBusy || IsKnifeAttacking)
         {
             onActionComplete?.Invoke();
             return;
@@ -92,7 +92,7 @@ public class KnifeAction : BaseAction
         {
             Unit candidateTarget = unitAtPos[0];
 
-            if (candidateTarget == _unit || candidateTarget.GetTeamID() == _unit.GetTeamID())
+            if (candidateTarget == Unit || candidateTarget.GetTeamID() == Unit.GetTeamID())
             {
                 onActionComplete?.Invoke();
                 return;
@@ -120,7 +120,6 @@ public class KnifeAction : BaseAction
         {
             if (TargetUnitId != default)
             {
-                Debug.Log("Target is gone, aborting Knife Attack");
                 IsKnifeAttacking = false;
                 IsRotating = false;
                 ActionComplete();
@@ -153,12 +152,11 @@ public class KnifeAction : BaseAction
     {
         if (_targetUnit == null || !_targetUnit.Object || !_targetUnit.Object.IsInSimulation)
         {
-            Debug.LogWarning("Target is no longer valid, aborting knife attack");
             IsKnifeAttacking = false;
             ActionComplete();
             return;
         }
-        Vector3 direction = (_targetUnit.GetWorldPosition() - _unit.GetWorldPosition()).normalized;
+        Vector3 direction = (_targetUnit.GetWorldPosition() - Unit.GetWorldPosition()).normalized;
         _targetUnit.Damage(knifeDamageAmount);
         RPC_PlayKnifeFeedback();
         IsKnifeAttacking = false;

@@ -15,25 +15,25 @@ namespace Fusion
     }
     public struct NetworkInputData : INetworkInput
     {
-        public const byte MOUSEBUTTON0 = 0;
-        public const byte MOUSEBUTTON1 = 1;
-        public const byte SPAWNUNIT = 2;
-        public const byte JUMP = 3;
-        public const byte SPIN = 4;
-        public const byte SELECT_UNIT = 5;
+        public const byte Mousebutton0 = 0;
+        public const byte Mousebutton1 = 1;
+        public const byte SpawnUnit = 2;
+        public const byte Jump = 3;
+        public const byte Spin = 4;
+        public const byte SelectUnit = 5;
         
-        public Vector3 direction;
-        public NetworkButtons buttons;
-        public Vector3 targetPosition;
-        public Vector3 spawnPosition;
+        public Vector3 Direction;
+        public NetworkButtons Buttons;
+        public Vector3 TargetPosition;
+        public Vector3 SpawnPosition;
         
-        public int targetGridX;
-        public int targetGridZ;
+        public int TargetGridX;
+        public int TargetGridZ;
         
-        public NetworkId selectedUnitId;
-        public bool isSelected;
+        public NetworkId SelectedUnitId;
+        public bool IsSelected;
         
-        public ActionType actionType;
+        public ActionType ActionType;
     }
     
 }

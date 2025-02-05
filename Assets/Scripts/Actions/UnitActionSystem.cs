@@ -169,27 +169,20 @@ namespace Actions
                 {
                     NetworkInputData data = maybeData.Value;
 
-                    if (data.buttons.IsSet(NetworkInputData.SELECT_UNIT))
+                    if (data.Buttons.IsSet(NetworkInputData.SelectUnit))
                     {
-                        NetworkObject changeObj = Runner.FindObject(data.selectedUnitId);
+                        NetworkObject changeObj = Runner.FindObject(data.SelectedUnitId);
                         if (changeObj != null && changeObj.TryGetComponent<Unit>(out var changedUnit))
                         {
-                            if (data.isSelected)
-                            {
-                                SetSelectedUnitForPlayer(playerRef, changedUnit);
-                            }
-                            else
-                            {
-                                SetSelectedUnitForPlayer(playerRef, null);
-                            }
+                            SetSelectedUnitForPlayer(playerRef, data.IsSelected ? changedUnit : null);
                         }
                     }
 
-                    if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                    if (data.Buttons.IsSet(NetworkInputData.Mousebutton1))
                     {
-                        GridPosition clickedGridPosition = new GridPosition(data.targetGridX, data.targetGridZ);
+                        GridPosition clickedGridPosition = new GridPosition(data.TargetGridX, data.TargetGridZ);
 
-                        HandleSelectedAction(playerRef, data.actionType, clickedGridPosition);
+                        HandleSelectedAction(playerRef, data.ActionType, clickedGridPosition);
                     }
                 }
             }

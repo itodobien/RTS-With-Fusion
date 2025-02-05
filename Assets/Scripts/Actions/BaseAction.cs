@@ -9,29 +9,29 @@ namespace Actions
 {
     public abstract class BaseAction : NetworkBehaviour
     {
-        protected Unit _unit;
+        protected Unit Unit;
         private Action _onActionComplete;
 
         public abstract string GetActionName();
 
         protected virtual void Awake()
         {
-            _unit = GetComponent<Unit>();
+            Unit = GetComponent<Unit>();
         }
 
         protected void StartAction(Action onActionComplete = null)
         {
-            if (_unit == null) return;
+            if (Unit == null) return;
 
-            _unit.SetIsBusy(true);
+            Unit.SetIsBusy(true);
             _onActionComplete = onActionComplete;
         }
 
         protected void ActionComplete()
         {
-            if (_unit == null) return;
+            if (Unit == null) return;
 
-            _unit.SetIsBusy(false);
+            Unit.SetIsBusy(false);
             _onActionComplete?.Invoke();
         }
 
