@@ -37,10 +37,6 @@ namespace Units
             _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
             _healthSystem.OnDeath += HealthSystem_OnDead;
-            if (Object.HasStateAuthority && EnemyPositionManager.Instance != null)
-            {
-                EnemyPositionManager.Instance.UpdateEnemyPositions(TeamID);
-            }
         }
 
         private void Update()
@@ -82,9 +78,10 @@ namespace Units
 
         public void SetTeamID(int newTeamID)
         {
-            if (HasStateAuthority)
+            if (Object.HasStateAuthority)
             {
                 TeamID = newTeamID;
+                Debug.Log($"[Unit] Setting TeamID={newTeamID} for {Object.Id}");
             }
         }
 
@@ -136,18 +133,12 @@ namespace Units
             {
                 UnitSelectionManager.Instance.ForceDeselectUnit(foundUnit);
             }
-            else
-            {
-                UnitSelectionManager.Instance.ForceDeselectUnitById(deadUnitId);
-            }
 
             var currentlySelected = UnitActionSystem.Instance.GetSelectedUnitForPlayer(ownerPlayerRef);
-            if (currentlySelected != null && currentlySelected.Object != null)
+            if (currentlySelected != null && currentlySelected.Object != null && 
+                currentlySelected.Object.Id == deadUnitId)
             {
-                if (currentlySelected.Object.Id == deadUnitId)
-                {
-                    UnitActionSystem.Instance.SetSelectedUnitForPlayer(ownerPlayerRef, null);
-                }
+                UnitActionSystem.Instance.SetSelectedUnitForPlayer(ownerPlayerRef, null);
             }
         }
 

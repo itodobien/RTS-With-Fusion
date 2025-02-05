@@ -11,13 +11,6 @@ namespace Managers
     {
         public static EnemyPositionManager Instance { get; private set; }
 
-        [Networked]
-        private NetworkString<_128> SerializedEnemyPositions { get; set; }
-
-        private readonly List<GridPosition> _enemyPositions = new();
-
-        private string _lastSerialized;
-
         private void Awake()
         {
             if (Instance == null)
@@ -29,101 +22,44 @@ namespace Managers
                 Destroy(gameObject);
             }
         }
-
-        public override void Spawned()
-        {
-            if (Object.HasStateAuthority)
-            {
-                UpdateEnemyPositions(0);
-            }
-
-            _lastSerialized = SerializedEnemyPositions.Value;
-            DeserializeEnemyPositions();
-        }
-
-        public override void FixedUpdateNetwork()
-        {
-            if (Object.HasStateAuthority)
-            {
-                UpdateEnemyPositions(0);
-            }
-    
-            var currentValue = SerializedEnemyPositions.Value;
-            if (_lastSerialized != currentValue)
-            {
-                _lastSerialized = currentValue;
-                DeserializeEnemyPositions();
-            }
-        }
-
-
-        public void UpdateEnemyPositions(int localPlayerTeamID)
-        {
-            if (!Object.HasStateAuthority) return;
-
-            _enemyPositions.Clear();
-            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
-            foreach (var unit in allUnits)
-            {
-                if (unit.GetTeamID() != localPlayerTeamID)
-                {
-                    _enemyPositions.Add(unit.GetGridPosition());
-                }
-            }
-
-            SerializeEnemyPositions();
-        }
-
-        private void SerializeEnemyPositions()
-        {
-            var posStrings = new List<string>();
-            foreach (GridPosition gridPos in _enemyPositions)
-            {
-                posStrings.Add($"{gridPos.x},{gridPos.z}");
-            }
-            SerializedEnemyPositions = string.Join("|", posStrings);
-        }
-
-        private void DeserializeEnemyPositions()
-        {
-            string serialized = SerializedEnemyPositions.Value;
-            _enemyPositions.Clear();
-
-            if (string.IsNullOrEmpty(serialized))
-                return;
-
-            string[] positions = serialized.Split('|');
-            foreach (string pos in positions)
-            {
-                string[] coords = pos.Split(',');
-                if (coords.Length == 2 &&
-                    int.TryParse(coords[0], out int x) &&
-                    int.TryParse(coords[1], out int z))
-                {
-                    _enemyPositions.Add(new GridPosition(x, z));
-                }
-            }
-        }
-
         public List<GridPosition> GetEnemyPositions()
         {
-            // Determine the local player's team ID
-            int localTeamID = UnitSelectionManager.Instance.GetLocalPlayer().GetTeamID();
+            var localPlayer = UnitSelectionManager.Instance.GetLocalPlayer();
+            if (localPlayer == null) return new List<GridPosition>();
 
-            // Create a fresh list of enemy grid positions
+            int localTeamID = localPlayer.GetTeamID();
             List<GridPosition> enemyPositions = new List<GridPosition>();
 
-            // Iterate over all units in the scene (using the appropriate sort mode if needed)
             var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
             foreach (Unit unit in allUnits)
             {
-                // Add positions for units that are not on the local player's team
-                if (unit.GetTeamID() != localTeamID)
+                if (unit != null && unit.Object != null && unit.Object.IsValid)
                 {
-                    enemyPositions.Add(unit.GetGridPosition());
+                    int unitTeamID = unit.GetTeamID();
+            
+                    if (unitTeamID != localTeamID && unit.Object.IsValid)
+                    {
+                        enemyPositions.Add(unit.GetGridPosition());
+                    }
                 }
             }
-
+            return enemyPositions;
+        }
+        
+        public List<GridPosition> GetEnemyPositionsForTeam(int teamID)
+        {
+            List<GridPosition> enemyPositions = new List<GridPosition>();
+            var allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
+            foreach (Unit unit in allUnits)
+            {
+                if (unit != null && unit.Object != null && unit.Object.IsValid)
+                {
+                    if (unit.GetTeamID() != teamID)
+                    {
+                        enemyPositions.Add(unit.GetGridPosition());
+                    }
+                }
+            }
             return enemyPositions;
         }
 

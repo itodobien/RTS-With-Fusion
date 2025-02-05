@@ -218,31 +218,19 @@ namespace UI
             }
             return null;
         }
-        
-        public void ForceDeselectUnitById(NetworkId unitId)
+
+        public void ForceDeselectUnit(Unit unit)
         {
-            Unit existing = _selectedUnits.FirstOrDefault(u => u.Object != null && u.Object.Id == unitId);
-            if (existing != null)
+            if (unit == null || !unit.Object || !unit.Object.IsInSimulation)
+                return;
+        
+            if (_selectedUnits.Remove(unit))
             {
-                _selectedUnits.Remove(existing);
-                _pendingSelectionChanges.Add((unitId, false));
+                _pendingSelectionChanges.Add((unit.Object.Id, false));
                 OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public void ForceDeselectUnit(Unit unit)
-        {
-            if (_selectedUnits.Contains(unit))
-            {
-                if (_selectedUnits.Remove(unit))
-                {
-                    Debug.Log("[ForceDeselectUnit] Removed unit from selection");
-                    _pendingSelectionChanges.Add((unit.Object.Id, false));
-                    OnSelectedUnitsChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-        
         public void CleanupDestroyedUnits()
         {
             int removedCount = _selectedUnits.RemoveAll(unit => unit == null || !unit.Object || !unit.Object.IsInSimulation);

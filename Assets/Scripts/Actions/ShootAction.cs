@@ -59,7 +59,9 @@ namespace Actions
             GridPosition unitGridPosition = _unit.GetGridPosition();
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-            foreach (var enemyPosition in EnemyPositionManager.Instance.GetEnemyPositions())
+            Debug.Log($"[ShootAction] Shooter TeamID: {_unit.GetTeamID()}");
+
+            foreach (var enemyPosition in EnemyPositionManager.Instance.GetEnemyPositionsForTeam(_unit.GetTeamID()))
             {
                 int distance = GridPosition.GetDistance(unitGridPosition, enemyPosition);
                 if (distance <= maxShootDistance)
@@ -98,11 +100,13 @@ namespace Actions
 
                 if (candidateTarget == _unit || candidateTarget.GetTeamID() == _unit.GetTeamID())
                 {
+                    Debug.Log($"ShootAction Aborted: Same Team. Shooter TeamID={_unit.GetTeamID()}");
                     onActionComplete?.Invoke();
                     return;
                 }
                 _targetUnit = candidateTarget;
                 TargetUnitId = _targetUnit.Object.Id;
+                Debug.Log("Target unit:" + _targetUnit.Object.Id);
             }
             else
             {
@@ -166,7 +170,6 @@ namespace Actions
             {
                 IsAiming = false;
                 HandleFiring();
-                Debug.Log("Aiming complete. Transitioning to firing...");
             }
         }
         private void HandleFiring()

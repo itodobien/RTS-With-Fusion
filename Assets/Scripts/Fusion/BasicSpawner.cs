@@ -24,7 +24,7 @@ namespace Fusion
     
         private NetworkRunner _runner;
         private NetworkObject _unitActionSystem;
-        private static int _nextTeamId;
+        private int _nextTeamId;
 
         private void Awake()
         {

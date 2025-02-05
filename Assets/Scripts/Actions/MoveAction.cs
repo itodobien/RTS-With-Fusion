@@ -49,7 +49,6 @@ namespace Actions
         {
             if (p.error)
             {
-                Debug.LogWarning($"Path failed: {p.errorLog}");
                 _path = null;
                 return;
             }

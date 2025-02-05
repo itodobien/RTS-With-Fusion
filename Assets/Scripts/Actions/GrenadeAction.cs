@@ -91,7 +91,6 @@ namespace Actions
                             RPC_UpdateGrenadeAmount(grenadeAmount - 1);
 
                             life = TickTimer.CreateFromSeconds(Runner, grenadeDelayTime); 
-                            Debug.Log($"[Grenade] Grenade amount: {grenadeAmount}");
                             if (grenadeAmount <= 0)
                             {
                                 ActionComplete();
@@ -241,7 +240,6 @@ namespace Actions
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_PlayGrenadeFeedback()
         {
-            Debug.Log($"[Grenade] Feedback RPC called on client: {Runner.LocalPlayer}");
             if (grenadeFeedbackPlayer != null)
             {
                 grenadeFeedbackPlayer.PlayFeedbacks();
