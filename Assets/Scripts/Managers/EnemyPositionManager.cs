@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
 using Grid;
-using UI;
 using Units;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ namespace Managers
                 Destroy(gameObject);
             }
         }
-        public List<GridPosition> GetEnemyPositions()
+        /*public List<GridPosition> GetEnemyPositions()
         {
             var localPlayer = UnitSelectionManager.Instance.GetLocalPlayer();
             if (localPlayer == null) return new List<GridPosition>();
@@ -44,7 +43,7 @@ namespace Managers
                 }
             }
             return enemyPositions;
-        }
+        }*/
         
         public List<GridPosition> GetEnemyPositionsForTeam(int teamID)
         {

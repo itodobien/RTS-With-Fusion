@@ -13,6 +13,8 @@ namespace Grid
         [SerializeField] private Transform gridSystemVisualSinglePrefab;
     
         private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
+        
+        private Unit _unit;
 
         private void Awake()
         {
@@ -62,7 +64,7 @@ namespace Grid
 
         private void ShowGridPositionList(List<GridPosition> gridPositionList)
         {
-            List<GridPosition> enemyPositions = EnemyPositionManager.Instance.GetEnemyPositions();
+            List<GridPosition> enemyPositions = EnemyPositionManager.Instance.GetEnemyPositionsForTeam(_unit.GetTeamID());
 
             foreach (GridPosition gridPosition in gridPositionList)
             {
@@ -80,6 +82,8 @@ namespace Grid
         
             List<Unit> selectedUnits = UI.UnitSelectionManager.Instance.GetSelectedUnits();
             if (selectedUnits.Count == 0) return;
+            
+            _unit = selectedUnits[0];
             
             BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
             if (selectedAction == null) return;

@@ -129,8 +129,7 @@ namespace Actions
         public override List<GridPosition> GetValidActionGridPositionList()
         {
             GridPosition unitGridPosition = _unit.GetGridPosition();
-            return ActionUtils.GetGridPositionsInRange(unitGridPosition, maxMoveDistance).Where(pos => pos != unitGridPosition 
-                    && !LevelGrid.Instance.HasUnitAtGridPosition(pos)).ToList();
+            return ActionUtils.GetGridPositionsInRange(unitGridPosition, maxMoveDistance).Where(pos => pos != unitGridPosition).ToList();
         }
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
@@ -140,7 +139,7 @@ namespace Actions
                 onActionComplete?.Invoke();
                 return;
             }
-            if (!IsValidActionGridPosition(gridPosition))
+            if (!IsValidActionGridPosition(gridPosition) || LevelGrid.Instance.HasUnitAtGridPosition(gridPosition))
             {
                 onActionComplete?.Invoke();
                 return;
