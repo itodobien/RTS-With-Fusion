@@ -236,7 +236,7 @@ namespace MoreMountains.Tools
 		public float TextValueMultiplier = 1f;
 		/// the format in which the text should display
 		[Tooltip("the format in which the text should display")]
-		public string TextFormat = "{000}";
+		public string TextFormat = "000";
 		/// whether or not to display the total after the current value 
 		[Tooltip("whether or not to display the total after the current value")]
 		public bool DisplayTotal = false;

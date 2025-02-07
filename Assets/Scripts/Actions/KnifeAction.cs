@@ -37,8 +37,7 @@ namespace Actions
         public override string GetActionName() => "Knife";
         public bool GetIsKnifeAttacking() => IsKnifeAttacking;
         
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void RPC_PlayKnifeFeedback()
+        private void PlayKnifeFeedback()
         {
             if (knifeFeedbackPlayer != null)
             {
@@ -49,6 +48,13 @@ namespace Actions
                 });
             }
         }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+        private void RPC_PlayKnifeFeedback()
+        {
+            PlayKnifeFeedback();
+        }
+
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete = null)
         {
@@ -73,7 +79,7 @@ namespace Actions
             StartAction(onActionComplete);
             IsRotating = true;
             IsKnifeAttacking = false;
-            FeedBackTimer = TickTimer.CreateFromSeconds(Runner, feedbackDelay); // Start feedback timer here
+            FeedBackTimer = TickTimer.CreateFromSeconds(Runner, feedbackDelay);
             OnStartKnifeAttack?.Invoke(this, EventArgs.Empty);
         }
 
@@ -86,7 +92,7 @@ namespace Actions
             if (ShouldPlayFeedback())
             {
                 RPC_PlayKnifeFeedback();
-                FeedBackTimer = TickTimer.None; // Reset the timer after triggering feedback
+                FeedBackTimer = TickTimer.None; 
             }
 
             if (IsRotating)

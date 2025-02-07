@@ -2431,7 +2431,7 @@ MonoBehaviour:
   shoulderHeight: 1.7
   rotationSpeed: 10
   damageDelay: 0.7
-  actionCompleteDelay: 0
+  feedbackDelay: 0.5
   knifeFeedbackPlayer: {fileID: 8409969792572296129}
 --- !u!1 &9093941791551120463
 GameObject:
