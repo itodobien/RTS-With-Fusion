@@ -2,6 +2,7 @@ using System;
 using Actions;
 using Fusion;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Units
 {
@@ -9,6 +10,10 @@ namespace Units
     {
         [SerializeField] private Animator animator;
         [SerializeField] private NetworkMecanimAnimator networkMecanimAnimator;
+        [SerializeField] private GameObject rifleGameObject;
+        [SerializeField] private GameObject knifeGameObject;
+        
+        [Networked] private bool IsKnifeEquipped { get; set; }
         
         private MoveAction _moveAction;
         private ShootAction _shootAction;
@@ -79,6 +84,23 @@ namespace Units
                     knifeAction.OnStopKnifeAttack -= KnifeAction_OnStopKnifeAttack;
                 }
             }
+        }
+
+        private void Start()
+        {
+            EquipRifle();
+        }
+        
+        public override void Render()
+        {
+            base.Render();
+            UpdateWeaponVisibility();
+        }
+        
+        private void UpdateWeaponVisibility()
+        {
+            rifleGameObject.SetActive(!IsKnifeEquipped);
+            knifeGameObject.SetActive(IsKnifeEquipped);
         }
 
         private void Update()
@@ -156,14 +178,26 @@ namespace Units
 
         private void KnifeAction_OnStartKnifeAttack(object sender, EventArgs e)
         {
-            Debug.Log("Knife attack started.");
+            EquipKnife();
             animator.SetBool(IsKnifeAttacking, true);
         }
 
         private void KnifeAction_OnStopKnifeAttack(object sender, EventArgs e)
         {
-            Debug.Log("Knife attack stopped.");
+            IsKnifeEquipped = false;
+            EquipRifle();
+            UpdateWeaponVisibility();
             animator.SetBool(IsKnifeAttacking, false);
+        }
+
+        private void EquipKnife()
+        {
+            IsKnifeEquipped = true;
+        }
+        private void EquipRifle()
+        {
+            IsKnifeEquipped = false;
+
         }
     }
 }

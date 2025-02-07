@@ -133,7 +133,7 @@ MonoBehaviour:
   InScriptDrivenPause: 0
   FeedbacksList:
   - rid: 6027772878419394825
-  - rid: 6027772874639278564
+  - rid: 1725757280751977198
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   RestoreInitialValuesOnDisable: 0
@@ -142,11 +142,11 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6027772874639278564
-      type: {class: MMF_MasterAudio, ns: , asm: Assembly-CSharp}
+    - rid: 1725757280751977198
+      type: {class: MMF_MasterAudio, ns: Integrations, asm: Assembly-CSharp}
       data:
         Active: 1
-        UniqueID: -1594072881
+        UniqueID: 446867156
         Label: MasterAudio Feedback
         OriginalLabel: MasterAudio Feedback
         ChannelMode: 0

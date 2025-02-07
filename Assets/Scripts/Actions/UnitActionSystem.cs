@@ -94,11 +94,7 @@ namespace Actions
             {
                 oldDanceAction.StopDancing();
             }
-
-            if (_selectedAction is KnifeAction oldKnifeAction && oldKnifeAction.GetIsKnifeAttacking())
-            {
-                oldKnifeAction.StopKnifeAttack();
-            }
+            
             _selectedAction = baseAction;
             OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -118,15 +114,7 @@ namespace Actions
                     danceAction.StopDancing();
                 }
             }
-
-            if (actionType != ActionType.Knife)
-            {
-                KnifeAction knifeAction = selectedUnit.GetAction<KnifeAction>();
-                if (knifeAction.GetIsKnifeAttacking())
-                {
-                    knifeAction.StopKnifeAttack();
-                }
-            }
+            
 
             switch (actionType)
             {

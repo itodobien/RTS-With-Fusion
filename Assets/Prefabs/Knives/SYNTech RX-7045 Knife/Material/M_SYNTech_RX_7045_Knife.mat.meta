@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 581f6c0475c8b354482fed245c340deb
+timeCreated: 1518718027
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 111628
+  packageName: SYNTech RX-7045 Knife
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Knives/SYNTech RX-7045 Knife/Material/M_SYNTech_RX_7045_Knife.mat
+  uploadId: 230320

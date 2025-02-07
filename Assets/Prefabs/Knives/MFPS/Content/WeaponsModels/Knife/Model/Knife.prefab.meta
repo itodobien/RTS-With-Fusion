@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 05ba221c3dd45a743a753526f846396e
+timeCreated: 1510787956
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 101171
+  packageName: MFPS 2.0: Multiplayer FPS
+  packageVersion: 1.9.4
+  assetPath: Assets/Prefabs/Knives/MFPS/Content/WeaponsModels/Knife/Model/Knife.prefab
+  uploadId: 667555
