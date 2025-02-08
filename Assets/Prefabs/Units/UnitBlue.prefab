@@ -2240,20 +2240,22 @@ GameObject:
   - component: {fileID: 7290747777559168935}
   - component: {fileID: 2148023841894036030}
   - component: {fileID: -9001857743557495382}
+  - component: {fileID: 6726622070269061756}
+  - component: {fileID: 1468944368860069611}
   - component: {fileID: 6264426077827160205}
   - component: {fileID: 302747443033000789}
   - component: {fileID: -8491581314537173707}
   - component: {fileID: -815629911742533964}
   - component: {fileID: 5777643120302542092}
+  - component: {fileID: 5164575690677644422}
+  - component: {fileID: 1907132775920660022}
   - component: {fileID: 2513909572344953795}
   - component: {fileID: -3677547835509593020}
   - component: {fileID: 3633962395186661532}
   - component: {fileID: -3468046403819524359}
   - component: {fileID: 2439858525930125371}
-  - component: {fileID: -7791543049761559965}
   - component: {fileID: -3755225203486317406}
-  - component: {fileID: 1907132775920660022}
-  - component: {fileID: 5164575690677644422}
+  - component: {fileID: -7791543049761559965}
   m_Layer: 6
   m_Name: UnitBlue
   m_TagString: Untagged
@@ -2333,6 +2335,44 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
+--- !u!114 &6726622070269061756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f586f285b3847808d79083bd19ef1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1073741824
+  quality: 1
+  splitAtEveryPortal: 0
+  accountForGridPenalties: 0
+--- !u!114 &1468944368860069611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1073741824
+  smoothType: 2
+  subdivisions: 2
+  iterations: 2
+  strength: 0.5
+  uniformLength: 1
+  maxSegmentLength: 2
+  bezierTangentLength: 0.4
+  offset: 0.2
+  factor: 0.1
 --- !u!114 &6264426077827160205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2414,6 +2454,40 @@ MonoBehaviour:
     m_Bits: 128
   grenadeFlightDuration: 1.2
   grenadeFeedbackPlayer: {fileID: 4185988007103658626}
+--- !u!114 &5164575690677644422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678fac6f44200724d9c639aa0099fd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1907132775920660022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894382734379626466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af33903a9301fe43b81390104d6dbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knifeAttackRange: 1
+  knifeDamageAmount: 100
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  shoulderHeight: 1.7
+  rotationSpeed: 10
+  damageDelay: 0.7
+  feedbackDelay: 0.1
+  knifeFeedbackPlayer: {fileID: 7078836459934643046}
 --- !u!114 &2513909572344953795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2498,23 +2572,6 @@ MonoBehaviour:
   StateHashes: 00000000331bc665dd790e10011cc384eadf4b7980f985bda349861bf3df96d57190da50ab6fa49f0e2b4320
   TriggerHashes: 00000000
   TotalWords: 1
---- !u!114 &-7791543049761559965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!114 &-3755225203486317406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2536,16 +2593,16 @@ MonoBehaviour:
   - {fileID: 302747443033000789}
   - {fileID: -815629911742533964}
   - {fileID: 5777643120302542092}
+  - {fileID: 5164575690677644422}
+  - {fileID: 1907132775920660022}
   - {fileID: 2513909572344953795}
   - {fileID: -3677547835509593020}
   - {fileID: 3633962395186661532}
   - {fileID: -3468046403819524359}
   - {fileID: 2439858525930125371}
   - {fileID: -7791543049761559965}
-  - {fileID: 1907132775920660022}
-  - {fileID: 5164575690677644422}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &1907132775920660022
+--- !u!114 &-7791543049761559965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2554,31 +2611,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8894382734379626466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af33903a9301fe43b81390104d6dbbe, type: 3}
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knifeAttackRange: 1
-  knifeDamageAmount: 100
-  obstacleLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  shoulderHeight: 1.7
-  rotationSpeed: 10
-  damageDelay: 0.7
-  feedbackDelay: 0.1
-  knifeFeedbackPlayer: {fileID: 7078836459934643046}
---- !u!114 &5164575690677644422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8894382734379626466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 678fac6f44200724d9c639aa0099fd30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &1027622007451210279
 PrefabInstance:
   m_ObjectHideFlags: 0

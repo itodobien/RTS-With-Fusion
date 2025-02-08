@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Grid;
+using Integrations.Interfaces;
 using UnityEngine;
 
 namespace Actions
@@ -9,8 +10,8 @@ namespace Actions
     {
         
         public event EventHandler OnInteract;
-        
-        private int interactRange = 1;
+
+        private const int InteractRange = 1;
         public override string GetActionName() => "Interact";
     
 
@@ -19,10 +20,10 @@ namespace Actions
             GridPosition unitGridPosition = Unit.GetGridPosition();
             List<GridPosition> validGridPositionList = new List<GridPosition>();
     
-            foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, interactRange))
+            foreach (var testPosition in ActionUtils.GetGridPositionsInRange(unitGridPosition, InteractRange))
             {
-                Door door = LevelGrid.Instance.GetDoorAtGridPosition(testPosition);
-                if (door == null) continue;
+                IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(testPosition);
+                if (interactable == null) continue;
                 
                 validGridPositionList.Add(testPosition);
             }
@@ -39,13 +40,20 @@ namespace Actions
             StartAction(onActionComplete);
             OnInteract?.Invoke(this, EventArgs.Empty);
             
-            Door door = LevelGrid.Instance.GetDoorAtGridPosition(gridPosition);
-            if (door != null)
+            IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(gridPosition);
+            if (interactable != null)
             {
-                door.RPC_RequestInteract(); 
+                interactable.Interact(() => 
+                {
+                    Debug.Log("Interaction Complete");
+                    ActionComplete();
+                });
             }
-            Debug.Log("Interacting (Client Request)");
-            ActionComplete();
+            else
+            {
+                Debug.Log("No interactable object found");
+                ActionComplete();
+            }
         }
     }
 }

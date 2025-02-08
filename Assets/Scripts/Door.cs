@@ -1,10 +1,12 @@
+using System;
 using DG.Tweening;
 using Fusion;
 using Grid;
+using Integrations.Interfaces;
 using Pathfinding;
 using UnityEngine;
 
-public class Door : NetworkBehaviour
+public class Door : NetworkBehaviour, IInteractable
 {
     [Networked] private bool IsDoorOpen { get; set; }
     
@@ -32,20 +34,9 @@ public class Door : NetworkBehaviour
     private void Start()
     {
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetDoorAtGridPosition(_gridPosition, this);
+        LevelGrid.Instance.SetInteractableAtGridPosition(_gridPosition, this);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_RequestInteract()
-    {
-        if (!_hasSpawned) return;
-        if (Time.time - _lastInteractTime < _interactCooldown) return;
-        
-        _lastInteractTime = Time.time;
-        
-        if (IsDoorOpen) RPC_CloseDoor();
-        else RPC_OpenDoor();
-    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_OpenDoor() => OpenDoor();
@@ -94,5 +85,24 @@ public class Door : NetworkBehaviour
         foreach (var colliders in GetComponentsInChildren<Collider>())
             colliders.enabled = true;
         if (_graphUpdateScene != null) _graphUpdateScene.enabled = true;
+    }
+
+    public void Interact(Action onInteractionComplete)
+    {
+        if (!_hasSpawned) return;
+        if (Time.time - _lastInteractTime < _interactCooldown) return;
+        
+        _lastInteractTime = Time.time;
+        
+        if (IsDoorOpen) RPC_CloseDoor();
+        else RPC_OpenDoor();
+
+        onInteractionComplete?.Invoke();
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestInteract()
+    {
+        Interact(null);
     }
 }

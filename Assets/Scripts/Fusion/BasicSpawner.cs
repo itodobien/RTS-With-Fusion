@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityUtils;
 
+
 namespace Fusion
 {
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
@@ -19,7 +20,7 @@ namespace Fusion
         
         [SerializeField] public UnitDatabase unitDatabase;
         [SerializeField] private NetworkPrefabRef enemyPositionManagerPrefab;
-
+        [SerializeField ]private InteractSphere _interactSphere;
         
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters;
     
@@ -37,6 +38,8 @@ namespace Fusion
                 return;
             }
             Instance = this;
+            
+            _interactSphere = FindObjectOfType<InteractSphere>();
         }
         
         private void OnGUI()
@@ -188,6 +191,14 @@ namespace Fusion
             {
                 data.Buttons.Set(NetworkInputData.SpawnUnit, true);
                 data.SpawnPosition = MouseWorldPosition.GetMouseWorldPosition();
+            }
+
+            if (Input.GetKey(KeyCode.C))
+            {
+                data.Buttons.Set(NetworkInputData.SwitchMaterial, true);
+                Debug.Log("SwitchMaterial button pressed.BasicSpawner.cs");
+                _interactSphere.SwitchMaterial();
+                
             }
             
             var selectionChange = UnitSelectionManager.Instance.GetNextSelectionChange();

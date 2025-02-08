@@ -12,7 +12,7 @@ namespace Fusion
         Dance = 4,
         Grenade = 5,
         Knife = 6,
-        Interact
+        Interact = 7
     }
     public struct NetworkInputData : INetworkInput
     {
@@ -22,6 +22,7 @@ namespace Fusion
         public const byte Jump = 3;
         public const byte Spin = 4;
         public const byte SelectUnit = 5;
+        public const byte SwitchMaterial = 6;
         
         public Vector3 Direction;
         public NetworkButtons Buttons;

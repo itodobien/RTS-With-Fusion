@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DestructibleObjects;
+using Integrations.Interfaces;
 using Units;
 using UnityEngine;
 
@@ -32,6 +33,7 @@ namespace Grid
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
             gridObject.AddUnit(unit);
         }
+        
 
         internal void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
@@ -92,17 +94,17 @@ namespace Grid
             }
             return gameObjects;
         }
-
-        public Door GetDoorAtGridPosition(GridPosition gridPosition)
+        
+        public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.GetDoor();
+            return gridObject.GetInteractable();
         }
-
-        public void SetDoorAtGridPosition(GridPosition gridPosition, Door door)
+        
+        public void SetInteractableAtGridPosition(GridPosition gridPosition, IInteractable interactable)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            gridObject.SetDoor(door);
+            gridObject.SetInteractable(interactable);
         }
         
         public int GetWidth() => _gridSystem.GetWidth();
