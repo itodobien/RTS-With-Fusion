@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f83a5f20d1ee8e94d8f3e5385ff606be
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Addons/Survival Buildings/Models/Wood Buildings/Fragments/Mesh Data/Wood Wall_Fragments.asset
+  uploadId: 683841

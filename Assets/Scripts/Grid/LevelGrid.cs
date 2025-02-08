@@ -9,7 +9,6 @@ namespace Grid
     {
         public static LevelGrid Instance {get; private set;}
         
-        /*[SerializeField] private Transform gridDebugObjectPrefab;*/
         [SerializeField] private int gridWidth = 20;
         [SerializeField] private int gridHeight = 20;
         [SerializeField] private float cellSize = 2f;
@@ -24,8 +23,8 @@ namespace Grid
                 return;
             }
             Instance = this;
-            _gridSystem = new GridSystem<GridObject>(gridWidth, gridHeight, cellSize, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
-            /*_gridSystem.CreateDebugObjects(gridDebugObjectPrefab);*/
+            _gridSystem = new GridSystem<GridObject>(gridWidth, gridHeight, cellSize, (g, gridPosition) => 
+                new GridObject(g, gridPosition));
         }
 
         public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
@@ -93,7 +92,18 @@ namespace Grid
             }
             return gameObjects;
         }
-        
+
+        public Door GetDoorAtGridPosition(GridPosition gridPosition)
+        {
+            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+            return gridObject.GetDoor();
+        }
+
+        public void SetDoorAtGridPosition(GridPosition gridPosition, Door door)
+        {
+            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+            gridObject.SetDoor(door);
+        }
         
         public int GetWidth() => _gridSystem.GetWidth();
         public int GetHeight() => _gridSystem.GetHeight();

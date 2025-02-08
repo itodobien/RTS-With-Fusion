@@ -46,6 +46,10 @@ namespace UI
                 {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Knife);
                 }
+                else if (_baseAction is InteractAction)
+                {
+                    UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.Interact);
+                }
                 else
                 {
                     UnitActionSystem.Instance.SetLocalSelectedAction(ActionType.None);

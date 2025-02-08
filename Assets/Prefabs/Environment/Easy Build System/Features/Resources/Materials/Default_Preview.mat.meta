@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75763a96044062145903eed7888a25f7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Features/Resources/Materials/Default_Preview.mat
+  uploadId: 683841

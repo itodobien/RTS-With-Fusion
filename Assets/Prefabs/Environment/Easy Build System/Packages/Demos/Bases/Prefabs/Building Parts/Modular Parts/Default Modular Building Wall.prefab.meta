@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6e2154020fb4afd42939f2c13ecb1282
+labels:
+- BuildingPart
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Demos/Bases/Prefabs/Building Parts/Modular Parts/Default Modular Building Wall.prefab
+  uploadId: 683841

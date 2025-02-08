@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7b91dc95f99e71349b0c6860b8fe9b96
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 0
+  packageName: Game Creator 2 Inventory Integration
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Integrations/Game Creator 2 Inventory Integration/Items/Screw.asset
+  uploadId: 683841

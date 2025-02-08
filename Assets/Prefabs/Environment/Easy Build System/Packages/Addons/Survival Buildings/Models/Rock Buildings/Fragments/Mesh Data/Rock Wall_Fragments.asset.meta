@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 79555db0bbbadfb4f9ce288817850ef5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Addons/Survival Buildings/Models/Rock Buildings/Fragments/Mesh Data/Rock Wall_Fragments.asset
+  uploadId: 683841

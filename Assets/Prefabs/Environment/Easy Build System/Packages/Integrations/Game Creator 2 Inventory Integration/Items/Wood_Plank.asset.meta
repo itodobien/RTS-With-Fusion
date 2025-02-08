@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4cf289e36f449364a93bfb936f8a9c37
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 0
+  packageName: Game Creator 2 Inventory Integration
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Integrations/Game Creator 2 Inventory Integration/Items/Wood_Plank.asset
+  uploadId: 683841

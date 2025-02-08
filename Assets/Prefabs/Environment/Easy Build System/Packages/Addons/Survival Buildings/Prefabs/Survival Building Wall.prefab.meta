@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 548e795a4943d824db189a46f004fdea
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Addons/Survival Buildings/Prefabs/Survival Building Wall.prefab
+  uploadId: 683841

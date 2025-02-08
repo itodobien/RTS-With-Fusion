@@ -114,7 +114,6 @@ namespace Actions
                     danceAction.StopDancing();
                 }
             }
-            
 
             switch (actionType)
             {
@@ -132,15 +131,23 @@ namespace Actions
                     if (!validPositions.Contains(gridPosition)) return;
                     shootAction.TakeAction(gridPosition, () => Debug.Log("Shoot complete"));
                     break;
+                
                 case ActionType.Dance:
                     selectedUnit.GetAction<DanceAction>().TakeAction(gridPosition, () => Debug.Log("Dance complete"));
                     break;
+                
                 case ActionType.Grenade:
                     selectedUnit.GetAction<GrenadeAction>().TakeAction(gridPosition, () => Debug.Log("Grenade complete"));
                     break;
+                
                 case ActionType.Knife:
                     selectedUnit.GetAction<KnifeAction>().TakeAction(gridPosition, () => Debug.Log("Knife complete"));
                     break;
+                
+                case ActionType.Interact:
+                    selectedUnit.GetAction<InteractAction>().TakeAction(gridPosition, () => Debug.Log("Interact complete"));
+                    break;
+                
                 default:
                     Debug.LogWarning($"Unknown action type: {actionType}");
                     break;

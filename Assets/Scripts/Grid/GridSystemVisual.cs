@@ -62,34 +62,82 @@ namespace Grid
             }
         }
 
-        private void ShowGridPositionList(List<GridPosition> gridPositionList)
+        private void ShowGridPositionList(List<GridPosition> gridPositionList, BaseAction selectedAction)
         {
             List<GridPosition> enemyPositions = EnemyPositionManager.Instance.GetEnemyPositionsForTeam(_unit.GetTeamID());
 
             foreach (GridPosition gridPosition in gridPositionList)
             {
-                bool enemyPresent = enemyPositions.Contains(gridPosition);
-                Color gridColor = enemyPresent ? Color.red : Color.green;
+                Color gridColor;
+                if (selectedAction is InteractAction)
+                {
+                    gridColor = Color.yellow;
+                }
+                else
+                {
+                    bool enemyPresent = enemyPositions.Contains(gridPosition);
+                    gridColor = enemyPresent ? Color.red : Color.green;
+                }
                 _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].SetColor(gridColor);
                 _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show();
             }
         }
 
-
         private void UpdateGridVisual()
         {
             HideAllGridPositions();
-        
+    
             List<Unit> selectedUnits = UI.UnitSelectionManager.Instance.GetSelectedUnits();
             if (selectedUnits.Count == 0) return;
-            
+    
             _unit = selectedUnits[0];
-            
+    
             BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
             if (selectedAction == null) return;
-            
+    
             List<GridPosition> validPosition = selectedAction.GetValidActionGridPositionList();
-            ShowGridPositionList(validPosition);
+            ShowGridPositionList(validPosition, selectedAction); // Pass selectedAction here
         }
+        
+        /*private void UpdateGridVisual()
+        {
+            HideAllGridPosition();
+
+            Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+            BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+
+            GridVisualType gridVisualType;
+
+            switch (selectedAction)
+            {
+                default:
+                case MoveAction moveAction:
+                    gridVisualType = GridVisualType.White;
+                    break;
+                case SpinAction spinAction:
+                    gridVisualType = GridVisualType.Blue;
+                    break;
+                case ShootAction shootAction:
+                    gridVisualType = GridVisualType.Red;
+
+                    ShowGridPositionRange(selectedUnit.GetGridPosition(), shootAction.GetMaxShootDistance(), GridVisualType.RedSoft);
+                    break;
+                case GrenadeAction grenadeAction:
+                    gridVisualType = GridVisualType.Yellow;
+                    break;
+                case SwordAction swordAction:
+                    gridVisualType = GridVisualType.Red;
+
+                    ShowGridPositionRangeSquare(selectedUnit.GetGridPosition(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
+                    break;
+                case InteractAction interactAction:
+                    gridVisualType = GridVisualType.Blue;
+                    break;
+            }
+
+            ShowGridPositionList(
+                selectedAction.GetValidActionGridPositionList(), gridVisualType);
+        }*/
+
     }
 }

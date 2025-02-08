@@ -10,6 +10,7 @@ namespace Grid
         private readonly List<Unit> _unitList;
         private readonly List<DestructibleObject> _objectList;
         private readonly GridPosition _gridPosition;
+        private Door _door;
 
         public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
         {
@@ -34,6 +35,9 @@ namespace Grid
         public List<Unit> GetUnitList() => _unitList;
         public void AddDestructibleObject (DestructibleObject destructibleObject) => _objectList.Add(destructibleObject);
         public void RemoveDestructibleObject(DestructibleObject destructibleObject) => _objectList.Remove(destructibleObject);
+        
+        public Door GetDoor() => _door;
+        public void SetDoor(Door door) => _door = door;
 
         public List<DestructibleObject> GetObjectList() => _objectList;
 

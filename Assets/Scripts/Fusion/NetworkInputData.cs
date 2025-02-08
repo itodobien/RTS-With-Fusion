@@ -11,7 +11,8 @@ namespace Fusion
         Shoot = 3,
         Dance = 4,
         Grenade = 5,
-        Knife = 6
+        Knife = 6,
+        Interact
     }
     public struct NetworkInputData : INetworkInput
     {

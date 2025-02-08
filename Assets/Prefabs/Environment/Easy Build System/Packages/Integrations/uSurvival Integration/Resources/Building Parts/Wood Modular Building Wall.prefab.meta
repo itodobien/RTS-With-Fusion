@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 586fe5f6563c10844a09f51f8d41fade
+labels:
+- BuildingPart
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45394
+  packageName: Easy Build System - Modular Building System
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Integrations/uSurvival Integration/Resources/Building Parts/Wood Modular Building Wall.prefab
+  uploadId: 683841

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 40eb6a4df2428fb43abf6e0ebef9d74a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 0
+  packageName: Game Creator 2 Inventory Integration
+  packageVersion: 6.8.1
+  assetPath: Assets/Prefabs/Environment/Easy Build System/Packages/Integrations/Game Creator 2 Inventory Integration/Prefabs/Pickup_Screw.prefab
+  uploadId: 683841

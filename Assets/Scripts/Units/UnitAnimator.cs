@@ -25,6 +25,7 @@ namespace Units
         private static readonly int IsDancing = Animator.StringToHash("IsDancing");
         private static readonly int IsKnifeAttacking = Animator.StringToHash("IsKnifeAttacking");
         
+        
         private void Awake()
         {
             var actions = GetComponents<BaseAction>();
