@@ -3,6 +3,7 @@ using DG.Tweening;
 using Fusion;
 using Grid;
 using Integrations.Interfaces;
+using MoreMountains.Feedbacks;
 using Pathfinding;
 using UnityEngine;
 
@@ -20,6 +21,10 @@ public class Door : NetworkBehaviour, IInteractable
     private readonly float _interactCooldown = 0.5f;
 
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
+    
+    [Header("Feel Feedbacks")]
+    public MMF_Player doorOpenFeedbackPlayer;
+    public MMF_Player doorCloseFeedbackPlayer;
 
     public override void Spawned()
     {
@@ -46,6 +51,7 @@ public class Door : NetworkBehaviour, IInteractable
 
     private void OpenDoor()
     {
+        RPC_PlayDoorOpenFeedback();
         IsDoorOpen = true;
         DisableComponents();
         UpdateDoorVisuals();
@@ -54,6 +60,7 @@ public class Door : NetworkBehaviour, IInteractable
 
     private void CloseDoor()
     {
+        RPC_PlayDoorCloseFeedback();
         IsDoorOpen = false;
         EnableComponents();
         UpdateDoorVisuals();
@@ -104,5 +111,23 @@ public class Door : NetworkBehaviour, IInteractable
     public void RPC_RequestInteract()
     {
         Interact(null);
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayDoorOpenFeedback()
+    {
+        if (doorOpenFeedbackPlayer != null)
+        {
+            doorOpenFeedbackPlayer.PlayFeedbacks();
+        }
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayDoorCloseFeedback()
+    {
+        if (doorCloseFeedbackPlayer != null)
+        {
+            doorCloseFeedbackPlayer.PlayFeedbacks();
+        }
     }
 }
